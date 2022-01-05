@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/home';
-import FileDropzone from './components/dropzone';
-import { db } from './nedb/items';
-import Signup from './auth/signup';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./components/home";
+import FileDropzone from "./components/dropzone";
+import { db } from "./nedb/items";
+import Signup from "./auth/signup";
 
 function App() {
 	const [items, setItems] = useState([]);

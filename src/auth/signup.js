@@ -1,8 +1,8 @@
-import React from 'react';
-import { db } from '../nedb/items';
+import React from "react";
+import { db } from "../nedb/items";
 
 function Signup() {
-	const signInUser = (e) => {
+	const signInUser = (e: React.FormEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		const username = e.target.elements.username.value;
 		const password = e.target.elements.password.value;
@@ -11,18 +11,22 @@ function Signup() {
 		let doc = {
 			username,
 			dateAdded: String(
-				new Date().getDate() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getFullYear()
-			)
+				new Date().getDate() +
+					"/" +
+					(new Date().getMonth() + 1) +
+					"/" +
+					new Date().getFullYear()
+			),
 		};
 		db.insert(doc, (err, newDoc) => {
 			if (!err) {
-				console.info('Item Added');
+				console.info("Item Added");
 			}
 		});
 
 		db.find({ username }, function (err, docs) {
 			if (!err) {
-				console.log('found this : ', docs);
+				console.log("found this : ", docs);
 			}
 		});
 	};
