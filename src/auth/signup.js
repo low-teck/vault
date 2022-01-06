@@ -2,10 +2,10 @@ import React from "react";
 import { db } from "../nedb/items";
 
 function Signup() {
-	const signInUser = (e: React.FormEvent<HTMLInputElement>) => {
+	const signInUser = (e) => {
 		e.preventDefault();
-		const username = e.target.elements.username.value;
-		const password = e.target.elements.password.value;
+		const username = e.target.username.value;
+		const password = e.target.password.value;
 		console.log(username, password);
 
 		let doc = {

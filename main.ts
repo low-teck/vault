@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 
@@ -8,6 +8,7 @@ function createWindow() {
 		height: 600,
 		webPreferences: {
 			preload: path.join(__dirname, "preload.js"),
+			nodeIntegration: true,
 		},
 	});
 	win.loadURL(
@@ -16,6 +17,10 @@ function createWindow() {
 			: `file://${path.join(__dirname, "./public/index.html")}`
 	);
 }
+
+ipcMain.on("fauxcmd", async (event, args) => {
+	console.log("hehe");
+});
 
 app.whenReady().then(() => {
 	createWindow();

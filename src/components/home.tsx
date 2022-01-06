@@ -16,6 +16,9 @@ function Home() {
 					Upload Document
 				</Button>
 			</Link>
+			<Link to="/signup">
+				<Button>Signup</Button>
+			</Link>
 			<Container>
 				<h1>MY FILES</h1>
 			</Container>
