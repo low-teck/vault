@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
 const db = require("./db.ts");
+const keytar = require("keytar");
 
 const createWindow = () => {
 	const win = new BrowserWindow({
@@ -19,6 +20,14 @@ const createWindow = () => {
 			? "http://localhost:3000"
 			: `file://${path.join(__dirname, "./public/index.html")}`
 	);
+
+	ipcMain.on("signup", async (event, args) => {
+		await keytar.setPassword("Vault", "admin", args.password);
+		const secret = await keytar.getPassword("Vault", "admin");
+		console.log(secret);
+		event.returnValue = "got it!";
+	});
+
 	ipcMain.on("fauxcmd", (e, a) => {
 		let doc = {
 			username: "low-teck",
@@ -36,7 +45,7 @@ const createWindow = () => {
 			}
 		});
 
-		db.store.find({ username: "tanmay" }, function (err, docs) {
+		db.store.find({ username: "low-teck" }, function (err, docs) {
 			if (!err) {
 				console.log("found this : ", docs);
 			}
