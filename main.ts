@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const isDev = require("electron-is-dev");
+const db = require("./db.ts");
 
 const createWindow = () => {
 	const win = new BrowserWindow({
@@ -19,7 +20,27 @@ const createWindow = () => {
 			: `file://${path.join(__dirname, "./public/index.html")}`
 	);
 	ipcMain.on("fauxcmd", (e, a) => {
-		console.log("hello");
+		let doc = {
+			username: "low-teck",
+			dateAdded: String(
+				new Date().getDate() +
+					"/" +
+					(new Date().getMonth() + 1) +
+					"/" +
+					new Date().getFullYear()
+			),
+		};
+		db.store.insert(doc, (err, newDoc) => {
+			if (!err) {
+				console.info("Item Added");
+			}
+		});
+
+		db.store.find({ username: "tanmay" }, function (err, docs) {
+			if (!err) {
+				console.log("found this : ", docs);
+			}
+		});
 	});
 };
 

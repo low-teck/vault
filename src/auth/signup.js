@@ -1,5 +1,5 @@
 import React from "react";
-import { db } from "../nedb/items";
+// import { db } from "../nedb/items";
 
 function Signup() {
 	const signInUser = (e) => {
@@ -18,17 +18,17 @@ function Signup() {
 					new Date().getFullYear()
 			),
 		};
-		db.insert(doc, (err, newDoc) => {
-			if (!err) {
-				console.info("Item Added");
-			}
-		});
+		// db.insert(doc, (err, newDoc) => {
+		// 	if (!err) {
+		// 		console.info("Item Added");
+		// 	}
+		// });
 
-		db.find({ username }, function (err, docs) {
-			if (!err) {
-				console.log("found this : ", docs);
-			}
-		});
+		// db.find({ username }, function (err, docs) {
+		// 	if (!err) {
+		// 		console.log("found this : ", docs);
+		// 	}
+		// });
 	};
 
 	return (
