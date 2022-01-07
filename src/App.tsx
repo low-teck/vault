@@ -4,7 +4,7 @@ import Home from "./components/home";
 import FileDropzone from "./components/dropzone";
 import { db } from "./nedb/items";
 import Signup from "./auth/signup";
-import { ipcRenderer } from "electron";
+const { ipcRenderer } = window.require("electron");
 
 function App() {
 	const [items, setItems] = useState([]);
@@ -18,7 +18,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		// ipcRenderer.sendSync("fauxcmd");
+		ipcRenderer.sendSync("fauxcmd");
 		getAllItems();
 	}, []);
 
