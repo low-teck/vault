@@ -18,10 +18,6 @@ function createWindow() {
 	);
 }
 
-ipcMain.on("fauxcmd", async (event, args) => {
-	console.log("hehe");
-});
-
 app.whenReady().then(() => {
 	createWindow();
 
