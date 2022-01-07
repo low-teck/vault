@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-const { ipcRenderer } = window.require("electron");
+const { ipcRenderer } = window.require('electron');
 
 const validationSchema = Yup.object({
 	password: Yup.string()
-		.required("Password is required to access the vault")
-		.min(6, "Password should be atleast 6 characters in length"),
+		.required('Password is required to access the vault')
+		.min(6, 'Password should be atleast 6 characters in length'),
 	confirmPassword: Yup.string()
-		.required("Confirm the password entered above")
+		.required('Confirm the password entered above')
 		.min(6)
-		.oneOf([Yup.ref("password"), null], "Passwords must match"),
+		.oneOf([Yup.ref('password'), null], 'Passwords must match')
 });
 
 const Signup = () => {
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
-			password: "",
-			confirmPassword: "",
+			password: '',
+			confirmPassword: ''
 		},
 		validationSchema,
 		onSubmit: async (values) => {
 			setLoading(true);
-			ipcRenderer.sendSync("signup", { password: "tanmay" });
+			ipcRenderer.sendSync('signup', { password: 'tanmay' });
 			setLoading(false);
 			formik.resetForm();
-		},
+		}
 	});
 	useEffect(() => {}, []);
 	// const signInUser = (e) => {

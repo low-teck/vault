@@ -1,0 +1,17 @@
+{
+	"name": "Vault",
+	"version": "1.0.0",
+	"main": "./src/index.js",
+	"license": "MIT",
+	"devDependencies": {
+		"electron": "^16.0.6"
+	},
+	"scripts": {
+		"electron": "electron src",
+		"start": "NODE_ENV=dev nodemon --watch ./src/**/* --watch . --exec 'yarn electron'"
+	},
+	"dependencies": {
+		"nedb-promises": "^5.0.3",
+		"nodemon": "^2.0.15"
+	}
+}
