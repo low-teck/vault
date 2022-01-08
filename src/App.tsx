@@ -19,7 +19,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		ipcRenderer.sendSync("fauxcmd");
+		ipcRenderer.invoke("fauxcmd");
 		getAllItems();
 	}, []);
 

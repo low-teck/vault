@@ -18,7 +18,7 @@ function createWindow() {
 
 	mainWindow.loadURL("http://localhost:3000");
 
-	ipcMain.on("fauxcmd", (e, a) => {
+	ipcMain.handle("fauxcmd", (e, a) => {
 		let doc = {
 			username: "low-teck",
 			dateAdded: String(
