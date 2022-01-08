@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Box, Center, Stack, Text } from '@chakra-ui/react';
-import { FormItem, MotionButton } from './formHelpers';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Box, Center, Stack, Text } from "@chakra-ui/react";
+import { FormItem, MotionButton } from "./formHelpers";
+import { Link } from "react-router-dom";
 
-const { ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
 	password: Yup.string()
-		.required('Password is required to access the vault')
-		.min(6, 'Password should be atleast 6 characters in length'),
+		.required("Password is required to access the vault")
+		.min(6, "Password should be atleast 6 characters in length"),
 	confirmPassword: Yup.string()
-		.required('Confirm the password entered above')
+		.required("Confirm the password entered above")
 		.min(6)
-		.oneOf([Yup.ref('password'), null], 'Passwords must match')
+		.oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
 const Signup = () => {
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
-			password: '',
-			confirmPassword: ''
+			password: "",
+			confirmPassword: "",
 		},
 		validationSchema,
 		onSubmit: async (values) => {
 			setLoading(true);
-			const val = await ipcRenderer.invoke('SIGN_UP', {
-				password: values.password
+			const val = await ipcRenderer.invoke("SIGN_UP", {
+				password: values.password,
 			});
 			console.log(val);
 			setLoading(false);
 			formik.resetForm();
-		}
+		},
 	});
 	useEffect(() => {}, []);
 	return (
@@ -44,9 +44,9 @@ const Signup = () => {
 						<Center>
 							<Text
 								fontSize={{
-									base: '24px',
-									md: '40px',
-									lg: '50px'
+									base: "24px",
+									md: "40px",
+									lg: "50px",
 								}}
 								fontWeight="bold"
 								fontFamily="Comfortaa"
@@ -59,7 +59,7 @@ const Signup = () => {
 						label="Password"
 						value={formik.values.password}
 						touched={formik.touched.password}
-						onChange={formik.handleChange('password')}
+						onChange={formik.handleChange("password")}
 						placeholder="Enter your password..."
 						error={formik.errors.password}
 					/>
@@ -67,19 +67,24 @@ const Signup = () => {
 						label="Confirm Password"
 						value={formik.values.confirmPassword}
 						touched={formik.touched.confirmPassword}
-						onChange={formik.handleChange('confirmPassword')}
+						onChange={formik.handleChange("confirmPassword")}
 						placeholder="Confirm your password..."
 						error={formik.errors.confirmPassword}
 					/>
-					<MotionButton colorScheme="cyan" loading={loading} type="submit" label="Sign Up" />
+					<MotionButton
+						colorScheme="cyan"
+						loading={loading}
+						type="submit"
+						label="Sign Up"
+					/>
 					<Link to="/login">
 						<Text
-							style={{ cursor: 'pointer' }}
+							style={{ cursor: "pointer" }}
 							as="u"
 							fontSize={{
-								base: '10px',
-								md: '10px',
-								lg: '15px'
+								base: "10px",
+								md: "10px",
+								lg: "15px",
 							}}
 						>
 							Already have an account? Login

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
-import Home from './components/home';
-import FileDropzone from './components/dropzone';
-import Signup from './auth/signup';
-import Signin from './auth/signin';
-import PrivateRoute from './components/privateRoute';
-const { ipcRenderer } = window.require('electron');
+import React, { useState, useEffect } from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
+import Home from "./components/home";
+import FileDropzone from "./components/dropzone";
+import Signup from "./auth/signup";
+import Signin from "./auth/signin";
+import PrivateRoute from "./components/privateRoute";
+const { ipcRenderer } = window.require("electron");
 
 function App() {
 	const [items, setItems] = useState([]);
@@ -19,7 +19,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		ipcRenderer.sendSync('fauxcmd');
+		ipcRenderer.sendSync("fauxcmd");
 		getAllItems();
 	}, []);
 

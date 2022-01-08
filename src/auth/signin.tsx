@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Box, Center, Stack, Text } from '@chakra-ui/react';
-import { FormItem, MotionButton } from './formHelpers';
-import { Link } from 'react-router-dom';
-const { ipcRenderer } = window.require('electron');
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Box, Center, Stack, Text } from "@chakra-ui/react";
+import { FormItem, MotionButton } from "./formHelpers";
+import { Link } from "react-router-dom";
+const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
 	password: Yup.string()
-		.required('Password is required to access the vault')
-		.min(6, 'Password should be atleast 6 characters in length')
+		.required("Password is required to access the vault")
+		.min(6, "Password should be atleast 6 characters in length"),
 });
 
 const Signin = () => {
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
-			password: ''
+			password: "",
 		},
 		validationSchema,
 		onSubmit: async (values) => {
 			setLoading(true);
-			const val = await ipcRenderer.invoke('SIGN_IN', {
-				password: values.password
+			const val = await ipcRenderer.invoke("SIGN_IN", {
+				password: values.password,
 			});
 			console.log(val);
 			setLoading(false);
 			formik.resetForm();
-		}
+		},
 	});
 	useEffect(() => {}, []);
 	return (
@@ -38,9 +38,9 @@ const Signin = () => {
 						<Center>
 							<Text
 								fontSize={{
-									base: '24px',
-									md: '40px',
-									lg: '50px'
+									base: "24px",
+									md: "40px",
+									lg: "50px",
 								}}
 								fontWeight="bold"
 								fontFamily="Comfortaa"
@@ -53,20 +53,25 @@ const Signin = () => {
 						label="Password"
 						value={formik.values.password}
 						touched={formik.touched.password}
-						onChange={formik.handleChange('password')}
+						onChange={formik.handleChange("password")}
 						placeholder="Enter your password..."
 						error={formik.errors.password}
 					/>
 
-					<MotionButton colorScheme="cyan" loading={loading} type="submit" label="Login" />
+					<MotionButton
+						colorScheme="cyan"
+						loading={loading}
+						type="submit"
+						label="Login"
+					/>
 					<Link to="/signup">
 						<Text
-							style={{ cursor: 'pointer' }}
+							style={{ cursor: "pointer" }}
 							as="u"
 							fontSize={{
-								base: '10px',
-								md: '10px',
-								lg: '15px'
+								base: "10px",
+								md: "10px",
+								lg: "15px",
 							}}
 						>
 							Don't have an account? Signup
