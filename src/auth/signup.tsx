@@ -1,68 +1,84 @@
-import React, { useEffect, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Box, Center, Stack, Text } from "@chakra-ui/react";
+import { FormItem, MotionButton } from "./formHelpers";
 
-const { ipcRenderer } = window.require('electron');
+const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
 	password: Yup.string()
-		.required('Password is required to access the vault')
-		.min(6, 'Password should be atleast 6 characters in length'),
+		.required("Password is required to access the vault")
+		.min(6, "Password should be atleast 6 characters in length"),
 	confirmPassword: Yup.string()
-		.required('Confirm the password entered above')
+		.required("Confirm the password entered above")
 		.min(6)
-		.oneOf([Yup.ref('password'), null], 'Passwords must match')
+		.oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
 const Signup = () => {
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
-			password: '',
-			confirmPassword: ''
+			password: "",
+			confirmPassword: "",
 		},
 		validationSchema,
 		onSubmit: async (values) => {
 			setLoading(true);
-			ipcRenderer.sendSync('signup', { password: 'tanmay' });
+			const val = await ipcRenderer.send("signup", {
+				password: values.password,
+			});
+			console.log(val);
 			setLoading(false);
 			formik.resetForm();
-		}
+		},
 	});
 	useEffect(() => {}, []);
-	// const signInUser = (e) => {
-	// 	e.preventDefault();
-	// 	const username = e.target.username.value;
-	// 	const password = e.target.password.value;
-	// 	console.log(username, password);
-
-	// 	let doc = {
-	// 		username,
-	// 		dateAdded: String(
-	// 			new Date().getDate() +
-	// 				"/" +
-	// 				(new Date().getMonth() + 1) +
-	// 				"/" +
-	// 				new Date().getFullYear()
-	// 		),
-	// 	};
-	// 	// db.insert(doc, (err, newDoc) => {
-	// 	if (!err) {
-	// 		console.info("Item Added");
-	// 	}
-	// });
-
-	// db.find({ username }, function (err, docs) {
-	// 	if (!err) {
-	// 		console.log("found this : ", docs);
-	// 	}
-	// });
 	return (
-		<>
-			<div>
-				<p>Tanmay</p>
-			</div>
-		</>
+		<Box>
+			<Center h="100vh">
+				<form onSubmit={formik.handleSubmit}>
+					<Stack spacing={[5, 10, 30]} w={[300, 350, 350]}>
+						<Center>
+							<Text
+								fontSize={{
+									base: "24px",
+									md: "40px",
+									lg: "50px",
+								}}
+								fontWeight="bold"
+								fontFamily="Comfortaa"
+							>
+								Signup
+							</Text>
+						</Center>
+					</Stack>
+					<FormItem
+						label="Password"
+						value={formik.values.password}
+						touched={formik.touched.password}
+						onChange={formik.handleChange("password")}
+						placeholder="Enter your password..."
+						error={formik.errors.password}
+					/>
+					<FormItem
+						label="Confirm Password"
+						value={formik.values.confirmPassword}
+						touched={formik.touched.confirmPassword}
+						onChange={formik.handleChange("confirmPassword")}
+						placeholder="Confirm your password..."
+						error={formik.errors.confirmPassword}
+					/>
+					<MotionButton
+						colorScheme="cyan"
+						loading={loading}
+						type="submit"
+						label="Sign Up"
+					/>
+				</form>
+			</Center>
+		</Box>
 	);
 };
 
