@@ -26,7 +26,7 @@ const Signup = () => {
 		validationSchema,
 		onSubmit: async (values) => {
 			setLoading(true);
-			const val = await ipcRenderer.send("signup", {
+			const val = await ipcRenderer.invoke("SIGN_UP", {
 				password: values.password,
 			});
 			console.log(val);
