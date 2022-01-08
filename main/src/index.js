@@ -1,6 +1,7 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const { createCredentials, getCredentials } = require('./queries');
 
 function createWindow() {
 	// Create the browser window.
@@ -18,6 +19,20 @@ function createWindow() {
 	// and load the index.html of the app.
 	// mainWindow.loadFile('index.html');
 	mainWindow.loadURL('http://localhost:3000');
+
+	ipcMain.on('fauxcmd', (e, a) => {
+		let doc = {
+			username: 'low-teck',
+			dateAdded: String(
+				new Date().getDate() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getFullYear()
+			)
+		};
+		// createCredentials(doc);
+		console.log(
+			'All credentials: ',
+			getCredentials().then((res) => console.log(res.proxies[3].label))
+		);
+	});
 
 	// Open the DevTools.
 	// mainWindow.webContents.openDevTools()
