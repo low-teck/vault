@@ -4,30 +4,24 @@ import * as Yup from 'yup';
 import { Box, Center, Stack, Text } from '@chakra-ui/react';
 import { FormItem, MotionButton } from './formHelpers';
 import { Link } from 'react-router-dom';
-
 const { ipcRenderer } = window.require('electron');
 
 const validationSchema = Yup.object({
 	password: Yup.string()
 		.required('Password is required to access the vault')
-		.min(6, 'Password should be atleast 6 characters in length'),
-	confirmPassword: Yup.string()
-		.required('Confirm the password entered above')
-		.min(6)
-		.oneOf([Yup.ref('password'), null], 'Passwords must match')
+		.min(6, 'Password should be atleast 6 characters in length')
 });
 
-const Signup = () => {
+const Signin = () => {
 	const [loading, setLoading] = useState(false);
 	const formik = useFormik({
 		initialValues: {
-			password: '',
-			confirmPassword: ''
+			password: ''
 		},
 		validationSchema,
 		onSubmit: async (values) => {
 			setLoading(true);
-			const val = await ipcRenderer.invoke('SIGN_UP', {
+			const val = await ipcRenderer.invoke('SIGN_IN', {
 				password: values.password
 			});
 			console.log(val);
@@ -51,7 +45,7 @@ const Signup = () => {
 								fontWeight="bold"
 								fontFamily="Comfortaa"
 							>
-								Signup
+								Login
 							</Text>
 						</Center>
 					</Stack>
@@ -63,16 +57,9 @@ const Signup = () => {
 						placeholder="Enter your password..."
 						error={formik.errors.password}
 					/>
-					<FormItem
-						label="Confirm Password"
-						value={formik.values.confirmPassword}
-						touched={formik.touched.confirmPassword}
-						onChange={formik.handleChange('confirmPassword')}
-						placeholder="Confirm your password..."
-						error={formik.errors.confirmPassword}
-					/>
-					<MotionButton colorScheme="cyan" loading={loading} type="submit" label="Sign Up" />
-					<Link to="/login">
+
+					<MotionButton colorScheme="cyan" loading={loading} type="submit" label="Login" />
+					<Link to="/signup">
 						<Text
 							style={{ cursor: 'pointer' }}
 							as="u"
@@ -82,7 +69,7 @@ const Signup = () => {
 								lg: '15px'
 							}}
 						>
-							Already have an account? Login
+							Don't have an account? Signup
 						</Text>
 					</Link>
 				</form>
@@ -91,4 +78,4 @@ const Signup = () => {
 	);
 };
 
-export default Signup;
+export default Signin;
