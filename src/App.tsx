@@ -9,14 +9,6 @@ const { ipcRenderer } = window.require("electron");
 function App() {
     const [user, setUser] = useState(false);
 
-    // const getAllItems = () => {
-    // db.find({}, (err: any, docs: any) => {
-    // 	if (!err) {
-    // 		setItems(docs);
-    // 	}
-    // });
-    // };
-
     useEffect(() => {
         console.log("before :", user);
         async function getUser() {

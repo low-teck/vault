@@ -8,6 +8,7 @@ const {
     getAllFiles,
 } = require("./queries");
 const keytar = require("keytar");
+const os = require("os");
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -21,35 +22,17 @@ function createWindow() {
         },
     });
 
+    const username = os.userInfo().username;
+
     mainWindow.loadURL("http://localhost:3000");
 
-    ipcMain.handle("fauxcmd", (e, a) => {
-        // let doc = {
-        //     username: "low-teck",
-        //     dateAdded: String(
-        //         new Date().getDate() +
-        //             "/" +
-        //             (new Date().getMonth() + 1) +
-        //             "/" +
-        //             new Date().getFullYear()
-        //     ),
-        // };
-        // createCredentials(doc);
-        console.log(
-            "All files ",
-            getAllFiles().then((res) => {
-                console.log(res);
-            })
-        );
-    });
-
     ipcMain.handle("SIGN_UP", async (event, args) => {
-        await keytar.setPassword("vault", "user", args.password);
+        await keytar.setPassword("vault", username, args.password);
         return "SUCCESS";
     });
 
     ipcMain.handle("SIGN_IN", async (event, args) => {
-        const password = await keytar.getPassword("vault", "user");
+        const password = await keytar.getPassword("vault", username);
         if (password === args.password) {
             return "SUCCESS";
         }
@@ -65,7 +48,7 @@ function createWindow() {
         return "DONE";
     });
     ipcMain.handle("USER_EXISTS", async (event, args) => {
-        const password = await keytar.getPassword("vault", "user");
+        const password = await keytar.getPassword("vault", username);
         if (!password) {
             return false;
         }
