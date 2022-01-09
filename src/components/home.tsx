@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Container, Stack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-function Home() {
+const Home = () => {
     return (
         <Box>
             <Stack spacing={4} direction="row" align="right">
@@ -24,6 +24,6 @@ function Home() {
             </Container>
         </Box>
     );
-}
+};
 
 export default Home;

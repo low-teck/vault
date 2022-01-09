@@ -26,3 +26,8 @@ export interface MotionButtonProps {
 	isDisabled?: boolean;
 	onClick?: React.MouseEventHandler;
 }
+
+export interface SecureAuthFormItemProps extends AuthFormItemProps {
+	show: boolean;
+	toggle: React.MouseEventHandler;
+}

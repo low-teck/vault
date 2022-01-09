@@ -104,7 +104,7 @@ const FileDropzone = () => {
 
 export default FileDropzone;
 
-function encrypt(input: File) {
+const encrypt = (input: File) => {
     var file = input;
     var reader = new FileReader();
     reader.onload = async () => {
@@ -131,9 +131,9 @@ function encrypt(input: File) {
     };
     reader.readAsArrayBuffer(file);
     // console.log(file);
-}
+};
 
-function decrypt(input: File) {
+const decrypt = (input: File) => {
     var file = input;
     var reader = new FileReader();
     reader.onload = () => {
@@ -154,9 +154,9 @@ function decrypt(input: File) {
         window.URL.revokeObjectURL(url);
     };
     reader.readAsText(file);
-}
+};
 
-function convertWordArrayToUint8Array(wordArray: CryptoJS.lib.WordArray) {
+const convertWordArrayToUint8Array = (wordArray: CryptoJS.lib.WordArray) => {
     var arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
     var length = wordArray.hasOwnProperty("sigBytes")
         ? wordArray.sigBytes
@@ -173,4 +173,4 @@ function convertWordArrayToUint8Array(wordArray: CryptoJS.lib.WordArray) {
         uInt8Array[index++] = word & 0xff;
     }
     return uInt8Array;
-}
+};

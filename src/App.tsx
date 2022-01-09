@@ -6,16 +6,17 @@ import Signup from "./auth/signup";
 import Signin from "./auth/signin";
 const { ipcRenderer } = window.require("electron");
 
-function App() {
+const App = () => {
     const [user, setUser] = useState(false);
+
+    const getUser = async () => {
+        const val = await ipcRenderer.invoke("USER_EXISTS");
+        console.log("after :", val);
+        setUser(val);
+    };
 
     useEffect(() => {
         console.log("before :", user);
-        async function getUser() {
-            const val = await ipcRenderer.invoke("USER_EXISTS");
-            console.log("after :", val);
-            setUser(val);
-        }
         getUser();
     }, []);
 
@@ -28,6 +29,6 @@ function App() {
             <Route path="/" element={user === true ? <Signin /> : <Signup />} />
         </Routes>
     );
-}
+};
 
 export default App;

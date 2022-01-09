@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
-import { FormItem, MotionButton } from "./formHelpers";
+import { FormItem, MotionButton, SecureFormItem } from "./formHelpers";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
@@ -15,6 +15,7 @@ const validationSchema = Yup.object({
 
 const Signin = () => {
 	const [loading, setLoading] = useState(false);
+	const [show, setShow] = useState(false);
 	const navigate = useNavigate();
 	const toast = useToast();
 	const formik = useFormik({
@@ -48,7 +49,12 @@ const Signin = () => {
 			formik.resetForm();
 		},
 	});
-	useEffect(() => {}, []);
+
+	const handleClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		setShow(!show);
+	};
+
 	return (
 		<Box>
 			<Center h="100vh">
@@ -68,13 +74,15 @@ const Signin = () => {
 							</Text>
 						</Center>
 					</Stack>
-					<FormItem
+					<SecureFormItem
 						label="Password"
 						value={formik.values.password}
 						touched={formik.touched.password}
 						onChange={formik.handleChange("password")}
+						toggle={handleClick}
 						placeholder="Enter your password..."
 						error={formik.errors.password}
+						show={show}
 					/>
 
 					<MotionButton

@@ -5,9 +5,14 @@ import {
 	FormLabel,
 	Input,
 	InputGroup,
+	InputRightElement,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { AuthFormItemProps, MotionButtonProps } from "../types";
+import {
+	AuthFormItemProps,
+	MotionButtonProps,
+	SecureAuthFormItemProps,
+} from "../types";
 
 const ButtonWMotion = motion(Button);
 
@@ -58,6 +63,42 @@ export const FormItem = ({
 					focusBorderColor="cyan.300"
 					variant={variant}
 				/>
+			</InputGroup>
+			<Box h="1vh" textColor="palevioletred">
+				{error && touched ? error : null}
+			</Box>
+		</FormControl>
+	);
+};
+
+export const SecureFormItem = ({
+	isRequired = true,
+	label,
+	toggle,
+	show,
+	value,
+	onChange,
+	error,
+	touched,
+	placeholder,
+}: SecureAuthFormItemProps) => {
+	return (
+		<FormControl isRequired={isRequired}>
+			<FormLabel>{label}</FormLabel>
+			<InputGroup>
+				<Input
+					onChange={onChange}
+					value={value}
+					variant="filled"
+					type={show ? "text" : "password"}
+					focusBorderColor="cyan.300"
+					placeholder={placeholder}
+				/>
+				<InputRightElement width="4.5rem">
+					<Button h="1.75rem" size="sm" onClick={toggle}>
+						{show ? "Hide" : "Show"}
+					</Button>
+				</InputRightElement>
 			</InputGroup>
 			<Box h="1vh" textColor="palevioletred">
 				{error && touched ? error : null}

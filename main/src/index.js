@@ -39,20 +39,21 @@ function createWindow() {
         return "FAILED";
     });
 
-    ipcMain.handle("ENC_FILE", async (event, args) => {
-        const file = {
-            filename: args.filename,
-            file: args.file,
-        };
-        saveFile(file);
-        return "DONE";
-    });
     ipcMain.handle("USER_EXISTS", async (event, args) => {
         const password = await keytar.getPassword("vault", username);
         if (!password) {
             return false;
         }
         return true;
+    });
+
+    ipcMain.handle("ENC_FILE", async (event, args) => {
+        const file = {
+            filename: args.filename,
+            file: args.file,
+        };
+        await saveFile(file);
+        return "DONE";
     });
 }
 
