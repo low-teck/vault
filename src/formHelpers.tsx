@@ -12,7 +12,7 @@ import {
 	AuthFormItemProps,
 	MotionButtonProps,
 	SecureAuthFormItemProps,
-} from "../types";
+} from "./types";
 
 const ButtonWMotion = motion(Button);
 

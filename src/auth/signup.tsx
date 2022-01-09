@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
-import { FormItem, MotionButton } from "./formHelpers";
+import { FormItem, MotionButton } from "../formHelpers";
 import { Link, useNavigate } from "react-router-dom";
 
 const { ipcRenderer } = window.require("electron");
