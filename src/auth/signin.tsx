@@ -83,19 +83,6 @@ const Signin = () => {
 						type="submit"
 						label="Login"
 					/>
-					<Link to="/signup">
-						<Text
-							style={{ cursor: "pointer" }}
-							as="u"
-							fontSize={{
-								base: "10px",
-								md: "10px",
-								lg: "15px",
-							}}
-						>
-							Don't have an account? Signup
-						</Text>
-					</Link>
 				</form>
 			</Center>
 		</Box>

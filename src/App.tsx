@@ -1,39 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./components/home";
 import FileDropzone from "./components/dropzone";
 import Signup from "./auth/signup";
 import Signin from "./auth/signin";
-import PrivateRoute from "./components/privateRoute";
 const { ipcRenderer } = window.require("electron");
 
 function App() {
-	const [items, setItems] = useState([]);
+	const [user, setUser] = useState(false);
 
-	const getAllItems = () => {
-		// db.find({}, (err: any, docs: any) => {
-		// 	if (!err) {
-		// 		setItems(docs);
-		// 	}
-		// });
-	};
+	// const getAllItems = () => {
+	// db.find({}, (err: any, docs: any) => {
+	// 	if (!err) {
+	// 		setItems(docs);
+	// 	}
+	// });
+	// };
 
 	useEffect(() => {
-		ipcRenderer.invoke("fauxcmd");
-		getAllItems();
+		setUser(ipcRenderer.invoke("USER_EXISTS"));
 	}, []);
 
 	return (
-		<HashRouter>
-			<Routes>
-				<Route path="/" element={<PrivateRoute />}>
-					<Route path="/home" element={<Home />} />
-				</Route>
-				<Route path="/upload" element={<FileDropzone />} />
-				<Route path="/signup" element={<Signup />} />
-				<Route path="/login" element={<Signin />} />
-			</Routes>
-		</HashRouter>
+		<Routes>
+			<Route path="/home" element={<Home />} />
+			<Route path="/upload" element={<FileDropzone />} />
+			<Route path="/auth" element={!user ? <Signin /> : <Signup />} />
+			<Route path="/login" element={<Signin />} />
+			<Route path="/" element={!user ? <Signin /> : <Signup />} />
+		</Routes>
 	);
 }
 

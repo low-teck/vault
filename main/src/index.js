@@ -48,6 +48,14 @@ function createWindow() {
 		}
 		return "FAILED";
 	});
+
+	ipcMain.handle("USER_EXISTS", async (event, args) => {
+		const password = await keytar.getPassword("vault", "user");
+		if (!password) {
+			return false;
+		}
+		return true;
+	});
 }
 
 app.whenReady().then(() => {

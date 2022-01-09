@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
+import { HashRouter as Router } from "react-router-dom";
 
 const colors = {
 	brand: {
@@ -14,8 +15,10 @@ const colors = {
 
 const theme = extendTheme({ colors });
 ReactDOM.render(
-	<ChakraProvider theme={theme}>
-		<App />
-	</ChakraProvider>,
+	<Router>
+		<ChakraProvider theme={theme}>
+			<App />
+		</ChakraProvider>
+	</Router>,
 	document.getElementById("root")
 );
