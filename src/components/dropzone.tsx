@@ -62,7 +62,7 @@ const FileDropzone = () => {
     return (
         <Box>
             <Box>
-                <Link to="/">
+                <Link to="/home">
                     <Button
                         size="md"
                         height="48px"
