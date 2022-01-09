@@ -45,7 +45,7 @@ function createWindow() {
 
     ipcMain.handle("SIGN_UP", async (event, args) => {
         await keytar.setPassword("vault", "user", args.password);
-        return "DONE";
+        return "SUCCESS";
     });
 
     ipcMain.handle("SIGN_IN", async (event, args) => {
@@ -64,7 +64,15 @@ function createWindow() {
         saveFile(file);
         return "DONE";
     });
+    ipcMain.handle("USER_EXISTS", async (event, args) => {
+        const password = await keytar.getPassword("vault", "user");
+        if (!password) {
+            return false;
+        }
+        return true;
+    });
 }
+
 app.whenReady().then(() => {
     createWindow();
 

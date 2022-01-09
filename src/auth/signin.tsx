@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
 import { FormItem, MotionButton } from "./formHelpers";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
@@ -14,6 +15,8 @@ const validationSchema = Yup.object({
 
 const Signin = () => {
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+	const toast = useToast();
 	const formik = useFormik({
 		initialValues: {
 			password: "",
@@ -25,6 +28,22 @@ const Signin = () => {
 				password: values.password,
 			});
 			console.log(val);
+			if (val === "SUCCESS") {
+				toast({
+					title: `Welcome back!`,
+					isClosable: true,
+					variant: "left-accent",
+					status: "success",
+				});
+				navigate("/home");
+			} else {
+				toast({
+					title: "Wrong password, try again",
+					isClosable: true,
+					variant: "left-accent",
+					status: "error",
+				});
+			}
 			setLoading(false);
 			formik.resetForm();
 		},
@@ -64,19 +83,6 @@ const Signin = () => {
 						type="submit"
 						label="Login"
 					/>
-					<Link to="/signup">
-						<Text
-							style={{ cursor: "pointer" }}
-							as="u"
-							fontSize={{
-								base: "10px",
-								md: "10px",
-								lg: "15px",
-							}}
-						>
-							Don't have an account? Signup
-						</Text>
-					</Link>
 				</form>
 			</Center>
 		</Box>
