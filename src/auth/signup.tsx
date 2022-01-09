@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
 import { FormItem, MotionButton } from "./formHelpers";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { ipcRenderer } = window.require("electron");
 
@@ -19,6 +19,8 @@ const validationSchema = Yup.object({
 
 const Signup = () => {
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
+	const toast = useToast();
 	const formik = useFormik({
 		initialValues: {
 			password: "",
@@ -31,6 +33,15 @@ const Signup = () => {
 				password: values.password,
 			});
 			console.log(val);
+			if (val === "SUCCESS") {
+				toast({
+					title: "Signed up successfully!",
+					isClosable: true,
+					variant: "left-accent",
+					status: "success",
+				});
+				navigate("/login");
+			}
 			setLoading(false);
 			formik.resetForm();
 		},

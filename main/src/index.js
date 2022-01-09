@@ -18,7 +18,7 @@ function createWindow() {
 
 	mainWindow.loadURL("http://localhost:3000");
 
-	ipcMain.handle("fauxcmd", (e, a) => {
+	ipcMain.handle("fauxcmd", async (e, a) => {
 		let doc = {
 			username: "low-teck",
 			dateAdded: String(
@@ -29,16 +29,16 @@ function createWindow() {
 					new Date().getFullYear()
 			),
 		};
-		// createCredentials(doc);
-		console.log(
-			"All credentials: ",
-			getCredentials().then((res) => console.log(res.proxies[3].label))
-		);
+		createCredentials(doc);
+		console.log("All credentials: ");
+		const res = await getCredentials();
+		console.log(res);
 	});
 
 	ipcMain.handle("SIGN_UP", async (event, args) => {
 		await keytar.setPassword("vault", "user", args.password);
-		return "DONE";
+		console.log("done");
+		return "SUCCESS";
 	});
 
 	ipcMain.handle("SIGN_IN", async (event, args) => {
@@ -49,6 +49,7 @@ function createWindow() {
 		return "FAILED";
 	});
 }
+
 app.whenReady().then(() => {
 	createWindow();
 

@@ -27,7 +27,7 @@ function App() {
 		<HashRouter>
 			<Routes>
 				<Route path="/" element={<PrivateRoute />}>
-					<Route path="/" element={<Home />} />
+					<Route path="/home" element={<Home />} />
 				</Route>
 				<Route path="/upload" element={<FileDropzone />} />
 				<Route path="/signup" element={<Signup />} />
