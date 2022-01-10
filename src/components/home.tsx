@@ -7,6 +7,7 @@ import {
     Stack,
     Text,
     HStack,
+    Heading,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Menu from "./menu";
@@ -18,22 +19,23 @@ const { ipcRenderer } = window.require("electron");
 const Home = () => {
     const [list, setList] = useState<any[]>([]);
 
-    async function getData() {
+    const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
-        console.log("data :", data);
         const items: any[] = [];
-        data.map((item: any) => {
-            items.push(item);
-        });
-        setList(items);
+        if (data) {
+            data.map((item: any) => {
+                items.push(item);
+            });
+            setList(items);
+        }
         console.log("list :", list);
-    }
+    };
 
     useEffect(() => {
         getData();
     });
 
-    function findAndDecrypt(filename: any) {
+    const findAndDecrypt = (filename: any) => {
         let file = null;
         list.map((item: any) => {
             if (item.file.filename === filename) {
@@ -41,15 +43,16 @@ const Home = () => {
             }
         });
         // decrypt and download file
-    }
+    };
 
     return (
         <Box w="100vw" h="100vh">
-            <Stack spacing={4} direction="row" align="right">
+            <Stack spacing={4} direction="row">
                 <Menu />
             </Stack>
             <Container>
-                <h1>MY FILES</h1>
+                <Heading>my files</Heading>
+                <br />
                 <List spacing={5}>
                     {list.map((item: any) => (
                         <>

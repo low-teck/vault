@@ -84,7 +84,7 @@ const ChangePasswordForm = () => {
                         error={formik.errors.newPassword}
                         show={show[1]}
                     />
-                    <Button loading={loading} type="submit" variant="ghost">
+                    <Button type="submit" variant="ghost">
                         change
                     </Button>
                 </Stack>

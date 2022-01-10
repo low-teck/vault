@@ -21,10 +21,7 @@ const getFile = async (filename) => {
 
 const getAllFiles = async () => {
     const files = await db.data.find({});
-    if (files.length === 0) {
-        return null;
-    }
-    return files;
+    return files.length ? files : null;
 };
 
 module.exports = {

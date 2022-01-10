@@ -1,5 +1,7 @@
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
     Accordion,
+    Box,
     Button,
     Drawer,
     DrawerBody,
@@ -8,6 +10,7 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
+    IconButton,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
@@ -36,9 +39,15 @@ const Menu = () => {
 
     return (
         <>
-            <Button ref={btnRef} colorScheme="teal" onClick={onOpen}>
-                Menu
-            </Button>
+            <IconButton
+                alignSelf="flex-end"
+                margin="2rem"
+                aria-label="menu"
+                ref={btnRef}
+                colorScheme="teal"
+                onClick={onOpen}
+                icon={<HamburgerIcon />}
+            />
             <Drawer
                 size="sm"
                 isOpen={isOpen}
