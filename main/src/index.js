@@ -31,6 +31,15 @@ function createWindow() {
         return "SUCCESS";
     });
 
+    ipcMain.handle("CHANGE_PASS", async (event, args) => {
+        const password = await keytar.getPassword("vault", username);
+        if (password !== args.password) return "FAILED";
+        else {
+            await keytar.setPassword("vault", username, args.newPassword);
+            return "SUCCESS";
+        }
+    });
+
     ipcMain.handle("SIGN_IN", async (event, args) => {
         const password = await keytar.getPassword("vault", username);
         if (password === args.password) {

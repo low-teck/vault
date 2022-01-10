@@ -23,7 +23,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormItem } from "../formHelpers";
+import { FormItem } from "../../formHelpers";
+import ChangePassword from "./changePasswordForm";
 
 const Menu = () => {
     const [sortCriteria, setSortCriteria] = useState("date");
@@ -68,7 +69,7 @@ const Menu = () => {
                         <Accordion allowToggle={true}>
                             <AccordionItem>
                                 <AccordionButton onClick={handleAddFile}>
-                                    add a file to Vault
+                                    add a file to vault
                                 </AccordionButton>
                             </AccordionItem>
                             <AccordionItem>
@@ -112,9 +113,7 @@ const Menu = () => {
                                     change password
                                 </AccordionButton>
                                 <AccordionPanel>
-                                    {
-                                        // TODO: formik form to update password
-                                    }
+                                    <ChangePassword />
                                 </AccordionPanel>
                             </AccordionItem>
                         </Accordion>

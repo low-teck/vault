@@ -30,7 +30,7 @@ const Signin = () => {
 			console.log(val);
 			if (val === "SUCCESS") {
 				toast({
-					title: `Welcome back!`,
+					title: `welcome back :)`,
 					isClosable: true,
 					variant: "left-accent",
 					status: "success",
@@ -38,7 +38,7 @@ const Signin = () => {
 				navigate("/home");
 			} else {
 				toast({
-					title: "Wrong password, try again",
+					title: "wrong password, try again",
 					isClosable: true,
 					variant: "left-accent",
 					status: "error",

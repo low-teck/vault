@@ -35,7 +35,7 @@ const Signup = () => {
 			console.log(val);
 			if (val === "SUCCESS") {
 				toast({
-					title: "Signed up successfully!",
+					title: "password set!",
 					isClosable: true,
 					variant: "left-accent",
 					status: "success",
