@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import {
     Box,
     Button,
@@ -8,9 +8,11 @@ import {
     List,
     ListItem,
     Text,
+    useToast,
 } from "@chakra-ui/react";
 import { useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
+import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
 
 interface FileWithPreview extends File {
@@ -19,6 +21,8 @@ interface FileWithPreview extends File {
 
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>();
+    const navigate = useNavigate();
+    const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {
             let files = acceptedFiles.map((file) =>
@@ -59,6 +63,89 @@ const FileDropzone = () => {
             );
         });
 
+    const encrypt = (input: File) => {
+        var file = input;
+        var reader = new FileReader();
+        reader.onload = async () => {
+            var key = "1234567887654321";
+            // @ts-ignore
+            var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
+            var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
+
+            var fileEnc = new Blob([encrypted]); // Create blob from string
+
+            // var a = document.createElement("a");
+            // var url = window.URL.createObjectURL(fileEnc);
+            // var filename = file.name;
+            // a.href = url;
+            // a.download = filename;
+            // a.click();
+            const result = await ipcRenderer.invoke("ENC_FILE", {
+                file: encrypted,
+                filename: file.name,
+            });
+            if (result === "DONE") {
+                toast({
+                    title: `Your file ${file.name} has been encrypted successfully. You can delete the original file.`,
+                    isClosable: true,
+                    variant: "left-accent",
+                    status: "success",
+                });
+            }
+
+            // window.URL.revokeObjectURL(url);
+        };
+        reader.readAsArrayBuffer(file);
+        navigate("/home");
+        // console.log(file);
+    };
+
+    const decrypt = (input: File) => {
+        var file = input;
+        var reader = new FileReader();
+        reader.onload = () => {
+            var key = "1234567887654321";
+            if (!reader.result) return;
+            // @ts-ignore
+            var decrypted = CryptoJS.AES.decrypt(reader.result, key); // Decryption: I: Base64 encoded string (OpenSSL-format) -> O: WordArray
+            var typedArray = convertWordArrayToUint8Array(decrypted); // Convert: WordArray -> typed array
+
+            var fileDec = new Blob([typedArray]); // Create blob from typed array
+
+            var a = document.createElement("a");
+            var url = window.URL.createObjectURL(fileDec);
+            var filename = file.name.substr(0, file.name.length - 4);
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        };
+        reader.readAsText(file);
+    };
+
+    const convertWordArrayToUint8Array = (
+        wordArray: CryptoJS.lib.WordArray
+    ) => {
+        var arrayOfWords = wordArray.hasOwnProperty("words")
+            ? wordArray.words
+            : [];
+        var length = wordArray.hasOwnProperty("sigBytes")
+            ? wordArray.sigBytes
+            : arrayOfWords.length * 4;
+        var uInt8Array = new Uint8Array(length),
+            index = 0,
+            word,
+            i;
+        for (i = 0; i < length; i++) {
+            word = arrayOfWords[i];
+            uInt8Array[index++] = word >> 24;
+            uInt8Array[index++] = (word >> 16) & 0xff;
+            uInt8Array[index++] = (word >> 8) & 0xff;
+            uInt8Array[index++] = word & 0xff;
+        }
+        return uInt8Array;
+    };
+
     return (
         <Box>
             <Box>
@@ -90,87 +177,16 @@ const FileDropzone = () => {
                         </Button>
                     )}
                 </ListItem>
-                <ListItem key="decrypt-file">
+                {/* <ListItem key="decrypt-file">
                     {files && (
                         <Button onClick={() => decrypt(files[0])}>
                             Decrypt
                         </Button>
                     )}
-                </ListItem>
+                </ListItem> */}
             </List>
         </Box>
     );
 };
 
 export default FileDropzone;
-
-const encrypt = (input: File) => {
-    var file = input;
-    var reader = new FileReader();
-    reader.onload = async () => {
-        var key = "1234567887654321";
-        // @ts-ignore
-        var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
-        var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
-
-        var fileEnc = new Blob([encrypted]); // Create blob from string
-
-        // var a = document.createElement("a");
-        // var url = window.URL.createObjectURL(fileEnc);
-        // var filename = file.name;
-        // a.href = url;
-        // a.download = filename;
-        // a.click();
-        const result = await ipcRenderer.invoke("ENC_FILE", {
-            file: encrypted,
-            filename: file.name,
-        });
-        console.log(result);
-
-        // window.URL.revokeObjectURL(url);
-    };
-    reader.readAsArrayBuffer(file);
-    // console.log(file);
-};
-
-const decrypt = (input: File) => {
-    var file = input;
-    var reader = new FileReader();
-    reader.onload = () => {
-        var key = "1234567887654321";
-        if (!reader.result) return;
-        // @ts-ignore
-        var decrypted = CryptoJS.AES.decrypt(reader.result, key); // Decryption: I: Base64 encoded string (OpenSSL-format) -> O: WordArray
-        var typedArray = convertWordArrayToUint8Array(decrypted); // Convert: WordArray -> typed array
-
-        var fileDec = new Blob([typedArray]); // Create blob from typed array
-
-        var a = document.createElement("a");
-        var url = window.URL.createObjectURL(fileDec);
-        var filename = file.name.substr(0, file.name.length - 4);
-        a.href = url;
-        a.download = filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-    };
-    reader.readAsText(file);
-};
-
-const convertWordArrayToUint8Array = (wordArray: CryptoJS.lib.WordArray) => {
-    var arrayOfWords = wordArray.hasOwnProperty("words") ? wordArray.words : [];
-    var length = wordArray.hasOwnProperty("sigBytes")
-        ? wordArray.sigBytes
-        : arrayOfWords.length * 4;
-    var uInt8Array = new Uint8Array(length),
-        index = 0,
-        word,
-        i;
-    for (i = 0; i < length; i++) {
-        word = arrayOfWords[i];
-        uInt8Array[index++] = word >> 24;
-        uInt8Array[index++] = (word >> 16) & 0xff;
-        uInt8Array[index++] = (word >> 8) & 0xff;
-        uInt8Array[index++] = word & 0xff;
-    }
-    return uInt8Array;
-};

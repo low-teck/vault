@@ -1,10 +1,11 @@
 import { AccordionButton, AccordionItem } from "@chakra-ui/react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const AddFileItem = () => {
-    // TODO
+    const navigate = useNavigate();
     const handleAddFile = () => {
-        console.log("added");
+        navigate("/upload");
     };
 
     return (

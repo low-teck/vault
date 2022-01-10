@@ -64,6 +64,11 @@ function createWindow() {
         await saveFile(file);
         return "DONE";
     });
+
+    ipcMain.handle("GET_DATA", async (event, args) => {
+        const files = await getAllFiles();
+        return files;
+    });
 }
 
 app.whenReady().then(() => {
