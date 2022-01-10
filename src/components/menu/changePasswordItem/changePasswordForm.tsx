@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, Center, Stack, Text, useToast } from "@chakra-ui/react";
-import { MotionButton, SecureFormItem } from "../../formHelpers";
+import { SecureFormItem } from "../../../formHelpers";
 const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
@@ -14,7 +14,7 @@ const validationSchema = Yup.object({
         .min(6, "Password should be atleast 6 characters in length"),
 });
 
-const ChangePassword = () => {
+const ChangePasswordForm = () => {
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState([false, false]);
     const toast = useToast();
@@ -93,4 +93,4 @@ const ChangePassword = () => {
     );
 };
 
-export default ChangePassword;
+export default ChangePasswordForm;
