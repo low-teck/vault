@@ -5,7 +5,7 @@ const {
     createCredentials,
     getCredentials,
     saveFile,
-    getAllFiles,
+    getAllFileNames,
 } = require("./queries");
 const keytar = require("keytar");
 const os = require("os");
@@ -66,7 +66,7 @@ function createWindow() {
     });
 
     ipcMain.handle("GET_DATA", async (event, args) => {
-        const files = await getAllFiles();
+        const files = await getAllFileNames();
         return files;
     });
 }

@@ -17,33 +17,26 @@ import { DownloadIcon } from "@chakra-ui/icons";
 const { ipcRenderer } = window.require("electron");
 
 const Home = () => {
-    const [list, setList] = useState<any[]>([]);
+    const [filenames, setFilenames] = useState<String[]>([]);
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
-        const items: any[] = [];
-        if (data) {
-            data.map((item: any) => {
-                items.push(item);
-            });
-            setList(items);
-        }
-        console.log("list :", list);
+        setFilenames(data);
     };
 
     useEffect(() => {
         getData();
-    });
+    }, []);
 
-    const findAndDecrypt = (filename: any) => {
-        let file = null;
-        list.map((item: any) => {
-            if (item.file.filename === filename) {
-                file = item;
-            }
-        });
-        // decrypt and download file
-    };
+    // const findAndDecrypt = (filename: any) => {
+    //     let file = null;
+    //     list.map((item: any) => {
+    //         if (item.file.filename === filename) {
+    //             file = item;
+    //         }
+    //     });
+    //     // decrypt and download file
+    // };
 
     return (
         <Box w="100vw" h="100vh">
@@ -53,27 +46,29 @@ const Home = () => {
             <Container>
                 <Heading>my files</Heading>
                 <br />
-                <List spacing={5}>
-                    {list.map((item: any) => (
-                        <>
-                            <ListItem key={item.file.filename}>
-                                <HStack spacing={5} justify="space-between">
-                                    <HStack>
-                                        <ListIcon
-                                            as={ArrowRightIcon}
-                                            color="green.500"
-                                        />
-                                        <Text>{item.file.filename}</Text>
+                {filenames && (
+                    <List spacing={5}>
+                        {filenames.map((filename: any) => (
+                            <>
+                                <ListItem key={filename}>
+                                    <HStack spacing={5} justify="space-between">
+                                        <HStack>
+                                            <ListIcon
+                                                as={ArrowRightIcon}
+                                                color="green.500"
+                                            />
+                                            <Text>{filename}</Text>
+                                        </HStack>
+                                        <span>
+                                            <DownloadIcon w={6} h={6} />
+                                        </span>
                                     </HStack>
-                                    <span>
-                                        <DownloadIcon w={6} h={6} />
-                                    </span>
-                                </HStack>
-                            </ListItem>
-                            <Divider />
-                        </>
-                    ))}
-                </List>
+                                </ListItem>
+                                <Divider />
+                            </>
+                        ))}
+                    </List>
+                )}
             </Container>
         </Box>
     );

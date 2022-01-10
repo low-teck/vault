@@ -19,9 +19,10 @@ const getFile = async (filename) => {
     return file;
 };
 
-const getAllFiles = async () => {
-    const files = await db.data.find({});
-    return files.length ? files : null;
+const getAllFileNames = async () => {
+    let files = await db.data.find({});
+    const fileNames = files ? files.map((file) => file.file.filename) : [];
+    return fileNames;
 };
 
 module.exports = {
@@ -29,5 +30,5 @@ module.exports = {
     getCredentials,
     saveFile,
     getFile,
-    getAllFiles,
+    getAllFileNames,
 };
