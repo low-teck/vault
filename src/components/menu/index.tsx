@@ -1,8 +1,5 @@
 import {
     Accordion,
-    AccordionButton,
-    AccordionItem,
-    AccordionPanel,
     Button,
     Drawer,
     DrawerBody,
@@ -14,7 +11,7 @@ import {
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";

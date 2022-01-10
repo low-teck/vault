@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Center, Container, Stack } from "@chakra-ui/react";
+import { Box, Button, Center, Container, Stack, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Menu from "./menu";
 
@@ -12,6 +12,7 @@ const Home = () => {
                 </Stack>
                 <Container>
                     <h1>MY FILES</h1>
+                    <Text>Tanmay</Text>
                 </Container>
             </Center>
         </Box>

@@ -4,6 +4,7 @@ import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
 import { HashRouter as Router } from "react-router-dom";
+import "./fonts/Patrick_Hand/PatrickHand-Regular.ttf";
 
 const colors = {
 	brand: {
@@ -11,9 +12,13 @@ const colors = {
 		800: "#153e75",
 		700: "#2a69ac",
 	},
+	fonts: {
+		body: "Patrick Hand",
+	},
 };
 
 const theme = extendTheme({ colors });
+
 ReactDOM.render(
 	<Router>
 		<ChakraProvider theme={theme}>
