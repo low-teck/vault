@@ -25,6 +25,8 @@ const getAllFileNames = async () => {
     return fileNames;
 };
 
+const removeFiles = async () => {};
+
 module.exports = {
     createCredentials,
     getCredentials,

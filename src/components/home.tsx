@@ -9,7 +9,6 @@ import {
     HStack,
     Heading,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import Menu from "./menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
 import { ArrowRightIcon } from "@chakra-ui/icons";

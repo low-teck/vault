@@ -4,6 +4,7 @@ import Home from "./components/home";
 import FileDropzone from "./components/dropzone";
 import Signup from "./auth/signup";
 import Signin from "./auth/signin";
+import SetKeyDialog from "./components/setKey";
 const { ipcRenderer } = window.require("electron");
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/upload" element={<FileDropzone />} />
             <Route path="/auth" element={!user ? <Signin /> : <Signup />} />
             <Route path="/login" element={<Signin />} />
+            <Route path="/key" element={<SetKeyDialog />} />
             <Route path="/" element={user === true ? <Signin /> : <Signup />} />
         </Routes>
     );

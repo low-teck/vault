@@ -32,6 +32,7 @@ const Signup = () => {
 			const val = await ipcRenderer.invoke("SIGN_UP", {
 				password: values.password,
 			});
+			const key = await ipcRenderer.invoke("IS_KEY");
 			console.log(val);
 			if (val === "SUCCESS") {
 				toast({
@@ -40,7 +41,8 @@ const Signup = () => {
 					variant: "left-accent",
 					status: "success",
 				});
-				navigate("/login");
+				if (key) navigate("/login");
+				else navigate("/key");
 			}
 			setLoading(false);
 			formik.resetForm();
@@ -62,31 +64,31 @@ const Signup = () => {
 								fontWeight="bold"
 								fontFamily="Comfortaa"
 							>
-								Signup
+								signup
 							</Text>
 						</Center>
 					</Stack>
 					<FormItem
-						label="Password"
+						label="password"
 						value={formik.values.password}
 						touched={formik.touched.password}
 						onChange={formik.handleChange("password")}
-						placeholder="Enter your password..."
+						placeholder="enter your password..."
 						error={formik.errors.password}
 					/>
 					<FormItem
-						label="Confirm Password"
+						label="confirm Password"
 						value={formik.values.confirmPassword}
 						touched={formik.touched.confirmPassword}
 						onChange={formik.handleChange("confirmPassword")}
-						placeholder="Confirm your password..."
+						placeholder="confirm your password..."
 						error={formik.errors.confirmPassword}
 					/>
 					<MotionButton
 						colorScheme="cyan"
 						loading={loading}
 						type="submit"
-						label="Sign Up"
+						label="sign ip"
 					/>
 				</form>
 			</Center>

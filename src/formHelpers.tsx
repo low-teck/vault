@@ -32,7 +32,6 @@ export const MotionButton = ({
 			variant={variant}
 			isDisabled={isDisabled}
 			isLoading={loading}
-			fontFamily="Hachi Maru Pop"
 			whileTap={{ scale: 0.9 }}
 			type={type}
 			onClick={onClick}

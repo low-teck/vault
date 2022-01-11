@@ -56,6 +56,22 @@ function createWindow() {
         return true;
     });
 
+    ipcMain.handle("DELETE_ACCOUNT", async (event, args) => {
+        try {
+            await keytar.deletePassword("vault", username);
+            await keytar.deletePassword("vault_enc_key", username);
+            await removeFiles();
+            return true;
+        } catch (e) {
+            return false;
+        }
+    });
+
+    ipcMain.handle("IS_KEY", async (event, args) => {
+        const key = await keytar.getPassword("vault_enc_key", username);
+        return key !== null;
+    });
+
     ipcMain.handle("ENC_FILE", async (event, args) => {
         const file = {
             filename: args.filename,
