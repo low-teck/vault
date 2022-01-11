@@ -6,6 +6,7 @@ const {
     getCredentials,
     saveFile,
     getAllFileNames,
+    removeFiles,
 } = require("./queries");
 const keytar = require("keytar");
 const os = require("os");
@@ -58,9 +59,10 @@ function createWindow() {
 
     ipcMain.handle("DELETE_ACCOUNT", async (event, args) => {
         try {
+            await removeFiles();
             await keytar.deletePassword("vault", username);
             await keytar.deletePassword("vault_enc_key", username);
-            await removeFiles();
+
             return true;
         } catch (e) {
             return false;

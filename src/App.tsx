@@ -17,18 +17,17 @@ const App = () => {
     };
 
     useEffect(() => {
-        console.log("before :", user);
         getUser();
-    }, []);
+    });
 
     return (
         <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/upload" element={<FileDropzone />} />
-            <Route path="/auth" element={!user ? <Signin /> : <Signup />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Signin />} />
             <Route path="/key" element={<SetKeyDialog />} />
-            <Route path="/" element={user === true ? <Signin /> : <Signup />} />
+            <Route path="/" element={user ? <Signin /> : <Signup />} />
         </Routes>
     );
 };

@@ -20,6 +20,7 @@ import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
 import FilterItem from "./filterItem";
 import SortItem from "./sortItem";
+import DeleteAccount from "./changePasswordItem/DeleteAccount";
 
 const Menu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,6 +71,7 @@ const Menu = () => {
                     </DrawerBody>
 
                     <DrawerFooter>
+                        <DeleteAccount />
                         <Button variant="ghost" mr={3} onClick={handleLogout}>
                             logout
                         </Button>

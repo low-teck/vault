@@ -25,7 +25,10 @@ const getAllFileNames = async () => {
     return fileNames;
 };
 
-const removeFiles = async () => {};
+const removeFiles = async () => {
+    const res = await db.data.remove({}, { multi: true });
+    return res;
+};
 
 module.exports = {
     createCredentials,
@@ -33,4 +36,5 @@ module.exports = {
     saveFile,
     getFile,
     getAllFileNames,
+    removeFiles,
 };
