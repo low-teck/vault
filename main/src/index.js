@@ -7,6 +7,7 @@ const {
     saveFile,
     getAllFileNames,
     removeFiles,
+    getFile,
 } = require("./queries");
 const keytar = require("keytar");
 const os = require("os");
@@ -55,6 +56,12 @@ function createWindow() {
             return false;
         }
         return true;
+    });
+
+    ipcMain.handle("DOWNLOAD_FILE", async (event, args) => {
+        const file = await getFile(args.filename);
+        //decrypt file and return
+        return "SUCCESS";
     });
 
     ipcMain.handle("DELETE_ACCOUNT", async (event, args) => {

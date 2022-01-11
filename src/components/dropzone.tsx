@@ -79,7 +79,7 @@ const FileDropzone = () => {
             });
             if (result === "DONE") {
                 toast({
-                    title: `Your file ${file.name} has been encrypted successfully. You can delete the original file.`,
+                    title: `${file.name} saved! you can now delete the original file :)`,
                     isClosable: true,
                     variant: "left-accent",
                     status: "success",

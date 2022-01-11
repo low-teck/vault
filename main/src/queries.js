@@ -15,7 +15,7 @@ const saveFile = async (file) => {
 };
 
 const getFile = async (filename) => {
-    const file = await db.data.findOne({ filename });
+    const file = await db.data.findOne({ "file.filename": filename });
     return file;
 };
 

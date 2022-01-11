@@ -5,7 +5,8 @@
 -   [ ] ui
 -   [x] os username as the user
 -   [x] form to change password
--   [ ] map name to file and download file
+-   [x] map name to file and download file
 -   [x] show names of enc files
 -   [x] menu ui
 -   [x] key + delete account flow
+-   [ ] encryption, decryption and save on main thread
