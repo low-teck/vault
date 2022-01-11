@@ -9,4 +9,4 @@
 -   [x] show names of enc files
 -   [x] menu ui
 -   [x] key + delete account flow
--   [ ] encryption, decryption and save on main thread
+-   [x] encryption, decryption and save on main thread
