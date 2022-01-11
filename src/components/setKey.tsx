@@ -42,23 +42,22 @@ const SetKeyDialog = () => {
         <Box w="100vw" h="100vh">
             <Center h="100vh" w="100vw">
                 <Stack>
-                    <Heading>encryption key</Heading>
+                    <Heading>Encryption key</Heading>
                     <br />
                     <form onSubmit={formik.handleSubmit}>
                         <FormItem
-                            label="encryption key"
+                            label="Encryption key"
                             isRequired={true}
                             value={formik.values.key}
                             touched={formik.touched.key}
                             onChange={formik.handleChange("key")}
-                            placeholder="enter a key..."
+                            placeholder="enter encryption key"
                             error={formik.errors.key}
-                            variant="ghost"
                         />
 
                         <MotionButton
                             colorScheme="teal"
-                            label="submit"
+                            label="Submit"
                             type="submit"
                         />
                     </form>

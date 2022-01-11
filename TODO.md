@@ -8,4 +8,4 @@
 -   [ ] map name to file and download file
 -   [x] show names of enc files
 -   [x] menu ui
--   [ ] key + delete account flow
+-   [x] key + delete account flow

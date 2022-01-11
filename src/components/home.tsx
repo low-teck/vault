@@ -25,7 +25,7 @@ const Home = () => {
 
     useEffect(() => {
         getData();
-    }, []);
+    });
 
     // const findAndDecrypt = (filename: any) => {
     //     let file = null;

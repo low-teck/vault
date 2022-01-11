@@ -88,7 +88,7 @@ const Signup = () => {
                         colorScheme="cyan"
                         loading={loading}
                         type="submit"
-                        label="sign up"
+                        label="Sign up"
                     />
                 </form>
             </Center>

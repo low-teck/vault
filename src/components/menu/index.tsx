@@ -20,7 +20,7 @@ import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
 import FilterItem from "./filterItem";
 import SortItem from "./sortItem";
-import DeleteAccount from "./changePasswordItem/DeleteAccount";
+import DeleteAccount from "./DeleteAccount";
 
 const Menu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -73,7 +73,7 @@ const Menu = () => {
                     <DrawerFooter>
                         <DeleteAccount />
                         <Button variant="ghost" mr={3} onClick={handleLogout}>
-                            logout
+                            Logout
                         </Button>
                     </DrawerFooter>
                 </DrawerContent>

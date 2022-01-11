@@ -40,7 +40,7 @@ const DeleteAccount = () => {
                 variant="ghost"
                 onClick={() => setIsOpen(true)}
             >
-                delete account
+                Delete Account
             </Button>
 
             <AlertDialog
@@ -55,9 +55,9 @@ const DeleteAccount = () => {
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            are you sure? deleting account will lead to the
+                            Are you sure? Deleting account will lead to the
                             deletion of all the encrypted files and your
-                            personal key
+                            personal key.
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
@@ -66,7 +66,7 @@ const DeleteAccount = () => {
                                 variant="ghost"
                                 onClick={onClose}
                             >
-                                cancel
+                                Cancel
                             </Button>
                             <Button
                                 colorScheme="red"
@@ -74,7 +74,7 @@ const DeleteAccount = () => {
                                 ml={3}
                                 variant="ghost"
                             >
-                                delete
+                                Delete
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
