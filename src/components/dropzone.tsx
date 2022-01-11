@@ -67,19 +67,12 @@ const FileDropzone = () => {
         var file = input;
         var reader = new FileReader();
         reader.onload = async () => {
-            var key = "1234567887654321";
+            let key = await ipcRenderer.invoke("GET_KEY");
+            console.log(key);
             // @ts-ignore
             var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
             var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
 
-            var fileEnc = new Blob([encrypted]); // Create blob from string
-
-            // var a = document.createElement("a");
-            // var url = window.URL.createObjectURL(fileEnc);
-            // var filename = file.name;
-            // a.href = url;
-            // a.download = filename;
-            // a.click();
             const result = await ipcRenderer.invoke("ENC_FILE", {
                 file: encrypted,
                 filename: file.name,
@@ -92,12 +85,9 @@ const FileDropzone = () => {
                     status: "success",
                 });
             }
-
-            // window.URL.revokeObjectURL(url);
         };
         reader.readAsArrayBuffer(file);
         navigate("/home");
-        // console.log(file);
     };
 
     const decrypt = (input: File) => {

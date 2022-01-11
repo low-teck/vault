@@ -69,6 +69,16 @@ function createWindow() {
         }
     });
 
+    ipcMain.handle("SET_KEY", async (event, args) => {
+        await keytar.setPassword("vault_enc_key", username, args.key);
+        return "SUCCESS";
+    });
+
+    ipcMain.handle("GET_KEY", async (event, args) => {
+        const key = await keytar.getPassword("vault_enc_key", username);
+        return key;
+    });
+
     ipcMain.handle("IS_KEY", async (event, args) => {
         const key = await keytar.getPassword("vault_enc_key", username);
         return key !== null;
