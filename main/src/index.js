@@ -11,6 +11,7 @@ const {
 } = require("./queries");
 const keytar = require("keytar");
 const os = require("os");
+const { decrypt } = require("./decrypt");
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -60,8 +61,8 @@ function createWindow() {
 
     ipcMain.handle("DOWNLOAD_FILE", async (event, args) => {
         const file = await getFile(args.filename);
-        //decrypt file and return
-        return "SUCCESS";
+        // decrypt(file.file.data, username);
+        return file;
     });
 
     ipcMain.handle("DELETE_ACCOUNT", async (event, args) => {
