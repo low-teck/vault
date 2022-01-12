@@ -10,3 +10,5 @@
 -   [x] menu ui
 -   [x] key + delete account flow
 -   [x] encryption, decryption and save on main thread
+-   [ ] refresh on store
+-   [x] refresh on delete
