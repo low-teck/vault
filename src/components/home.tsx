@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import Menu from "./menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
-import { ArrowRightIcon, CloseIcon } from "@chakra-ui/icons";
+import { ArrowRightIcon, DeleteIcon } from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import CryptoJS from "crypto-js";
 const { ipcRenderer } = window.require("electron");
@@ -24,37 +24,26 @@ interface IFileMap {
 
 const Home = () => {
     const [filenames, setFilenames] = useState<String[]>([]);
-    const [saved, setSaved] = useState<IFileMap>({});
-    const [deleted, setDeleted] = useState<IFileMap>({});
     const [toggle, setToggle] = useState<boolean>();
     const toast = useToast();
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
         setFilenames(data);
+        console.log(data);
     };
 
     useEffect(() => {
         getData();
     }, [toggle]);
 
-    useEffect(() => {
-        let s: IFileMap = {};
-        let d: IFileMap = {};
-        filenames.map((filename) => {
-            s[filename.toString()] = false;
-            d[filename.toString()] = false;
-        });
-        setSaved(s);
-        setDeleted(d);
-        console.log("render");
-    }, [filenames]);
-
     const decrypt = async (input: any) => {
         var file = input.file.file;
         let key = await ipcRenderer.invoke("GET_KEY");
-        var decrypted = CryptoJS.AES.decrypt(file, key); // Decryption: I: Base64 encoded string (OpenSSL-format) -> O: WordArray
-        var typedArray = convertWordArrayToUint8Array(decrypted); // Convert: WordArray -> typed array
+        var decrypted = CryptoJS.AES.decrypt(file, key);
+        // Decryption: I: Base64 encoded string (OpenSSL-format) -> O: WordArray
+        var typedArray = convertWordArrayToUint8Array(decrypted);
+        // Convert: WordArray -> typed array
 
         var fileDec = new Blob([typedArray]); // Create blob from typed array
 
@@ -103,7 +92,7 @@ const Home = () => {
                             <>
                                 {true && (
                                     <>
-                                        <ListItem key={filename}>
+                                        <ListItem key={filename[0]}>
                                             <HStack
                                                 spacing={5}
                                                 justify="space-between"
@@ -113,11 +102,11 @@ const Home = () => {
                                                         as={ArrowRightIcon}
                                                         color="green.500"
                                                     />
-                                                    <Text>{filename}</Text>
+                                                    <Text>{filename[0]}</Text>
                                                 </HStack>
                                                 <HStack>
                                                     <IconButton
-                                                        aria-label={`download ${filename}`}
+                                                        aria-label={`download ${filename[0]}`}
                                                         variant="ghost"
                                                         icon={
                                                             <DownloadIcon
@@ -126,14 +115,16 @@ const Home = () => {
                                                             />
                                                         }
                                                         onClick={async () => {
+                                                            let name =
+                                                                filename[0];
                                                             let data =
                                                                 await ipcRenderer.invoke(
                                                                     "DEC_FILE",
-                                                                    { filename }
+                                                                    { name }
                                                                 );
                                                             if (data) {
                                                                 toast({
-                                                                    title: `downloaded ${filename}`,
+                                                                    title: `downloaded ${name}`,
                                                                     variant:
                                                                         "left-accent",
                                                                     status: "success",
@@ -151,27 +142,32 @@ const Home = () => {
                                                                 });
                                                             }
                                                             await decrypt(data);
-                                                            setSaved({
-                                                                ...saved,
-                                                                [filename]:
-                                                                    true,
-                                                            });
+                                                            await ipcRenderer.invoke(
+                                                                "SAVE_STATE",
+                                                                { name }
+                                                            );
+                                                            setToggle(!toggle);
                                                         }}
                                                     />
-                                                    {saved[filename] && (
+                                                    {filename[1] && (
                                                         <IconButton
-                                                            aria-label={`delete ${filename}`}
+                                                            aria-label={`delete ${filename[0]}`}
                                                             variant="ghost"
                                                             icon={
-                                                                <CloseIcon
+                                                                <DeleteIcon
                                                                     w={4}
                                                                     h={4}
                                                                 />
                                                             }
                                                             onClick={async () => {
+                                                                let name =
+                                                                    filename[0];
+                                                                console.log(
+                                                                    name
+                                                                );
                                                                 await ipcRenderer.invoke(
                                                                     "DELETE_FILE",
-                                                                    { filename }
+                                                                    { name }
                                                                 );
                                                                 setToggle(
                                                                     !toggle

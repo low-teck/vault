@@ -21,8 +21,12 @@ const getFile = async (filename) => {
 
 const getAllFileNames = async () => {
     let files = await db.data.find({});
-    const fileNames = files ? files.map((file) => file.file.filename) : [];
-    return fileNames;
+    let data = [];
+    files.forEach((file) => {
+        console.log(file);
+        data.push([file.file.filename, file.file.saved]);
+    });
+    return data;
 };
 
 const deleteFiles = async (filename) => {
@@ -38,6 +42,14 @@ const deleteAllFiles = async () => {
     return res;
 };
 
+const updateSaveState = async (filename) => {
+    const res = await db.data.update(
+        { "file.filename": filename },
+        { $set: { "file.saved": true } }
+    );
+    return res;
+};
+
 module.exports = {
     createCredentials,
     getCredentials,
@@ -46,4 +58,5 @@ module.exports = {
     getAllFileNames,
     deleteAllFiles,
     deleteFiles,
+    updateSaveState,
 };

@@ -10,6 +10,7 @@ const {
     getFile,
     deleteAllFiles,
     deleteFiles,
+    updateSaveState,
 } = require("./queries");
 const keytar = require("keytar");
 const os = require("os");
@@ -52,19 +53,24 @@ function createWindow() {
         return "FAILED";
     });
 
+    ipcMain.handle("SAVE_STATE", async (event, args) => {
+        await updateSaveState(args.name);
+        return "SUCCESS";
+    });
+
     ipcMain.handle("USER_EXISTS", async (event, args) => {
         const password = await keytar.getPassword("vault", username);
         return password ? true : false;
     });
 
     ipcMain.handle("DEC_FILE", async (event, args) => {
-        const file = await getFile(args.filename);
+        const file = await getFile(args.name);
         return file;
     });
 
     ipcMain.handle("DELETE_FILE", async (event, args) => {
         try {
-            await deleteFiles(args.filename);
+            await deleteFiles(args.name);
             return true;
         } catch (e) {
             return false;
