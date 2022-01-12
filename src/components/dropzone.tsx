@@ -106,13 +106,23 @@ const FileDropzone = () => {
                     </Button>
                 </Link>
             </Box>
-            <Box bg="black" {...getRootProps({ className: "dropzone" })}>
-                <Center w="60vw" h="20vh">
+            <Center>
+                <Box
+                    w="70vw"
+                    h="30vh"
+                    bg="white"
+                    borderWidth="3px"
+                    borderStyle="dashed"
+                    borderRadius="lg"
+                    {...getRootProps({ className: "dropzone" })}
+                >
                     {/* @ts-ignore */}
                     <Input {...getInputProps()} />
-                    <Text>Drag 'n' drop or touch to add files</Text>
-                </Center>
-            </Box>
+                    <Center h="30vh">
+                        <Text>Drag 'n' drop or touch to add files</Text>
+                    </Center>
+                </Box>
+            </Center>
             <List>
                 {thumbs}
                 <ListItem key="encrypt-file">
