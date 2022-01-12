@@ -89,7 +89,6 @@ const FileDropzone = () => {
             }
         };
         reader.readAsArrayBuffer(file);
-        navigate("/home");
     };
 
     return (

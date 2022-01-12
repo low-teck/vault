@@ -18,19 +18,19 @@ import { DownloadIcon } from "@chakra-ui/icons";
 import CryptoJS from "crypto-js";
 const { ipcRenderer } = window.require("electron");
 
-interface IFileMap {
-    [filename: string]: Boolean;
+interface FileInfo {
+    filename: string;
+    saved: Boolean;
 }
 
 const Home = () => {
-    const [filenames, setFilenames] = useState<String[]>([]);
+    const [fileData, setFileData] = useState<FileInfo[]>([]);
     const [toggle, setToggle] = useState<boolean>();
     const toast = useToast();
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
-        setFilenames(data);
-        console.log(data);
+        setFileData(data);
     };
 
     useEffect(() => {
@@ -86,13 +86,13 @@ const Home = () => {
             <Container>
                 <Heading>my files</Heading>
                 <br />
-                {filenames && (
+                {fileData && (
                     <List spacing={5}>
-                        {filenames.map((filename: any) => (
+                        {fileData.map(({ filename, saved }) => (
                             <>
                                 {true && (
                                     <>
-                                        <ListItem key={filename[0]}>
+                                        <ListItem key={filename}>
                                             <HStack
                                                 spacing={5}
                                                 justify="space-between"
@@ -102,11 +102,11 @@ const Home = () => {
                                                         as={ArrowRightIcon}
                                                         color="green.500"
                                                     />
-                                                    <Text>{filename[0]}</Text>
+                                                    <Text>{filename}</Text>
                                                 </HStack>
                                                 <HStack>
                                                     <IconButton
-                                                        aria-label={`download ${filename[0]}`}
+                                                        aria-label={`download ${filename}`}
                                                         variant="ghost"
                                                         icon={
                                                             <DownloadIcon
@@ -115,8 +115,7 @@ const Home = () => {
                                                             />
                                                         }
                                                         onClick={async () => {
-                                                            let name =
-                                                                filename[0];
+                                                            let name = filename;
                                                             let data =
                                                                 await ipcRenderer.invoke(
                                                                     "DEC_FILE",
@@ -149,9 +148,9 @@ const Home = () => {
                                                             setToggle(!toggle);
                                                         }}
                                                     />
-                                                    {filename[1] && (
+                                                    {saved && (
                                                         <IconButton
-                                                            aria-label={`delete ${filename[0]}`}
+                                                            aria-label={`delete ${filename}`}
                                                             variant="ghost"
                                                             icon={
                                                                 <DeleteIcon
@@ -161,10 +160,7 @@ const Home = () => {
                                                             }
                                                             onClick={async () => {
                                                                 let name =
-                                                                    filename[0];
-                                                                console.log(
-                                                                    name
-                                                                );
+                                                                    filename;
                                                                 await ipcRenderer.invoke(
                                                                     "DELETE_FILE",
                                                                     { name }

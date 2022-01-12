@@ -23,8 +23,7 @@ const getAllFileNames = async () => {
     let files = await db.data.find({});
     let data = [];
     files.forEach((file) => {
-        console.log(file);
-        data.push([file.file.filename, file.file.saved]);
+        data.push({ filename: file.file.filename, saved: file.file.saved });
     });
     return data;
 };
