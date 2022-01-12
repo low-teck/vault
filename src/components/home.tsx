@@ -13,13 +13,20 @@ import {
 } from "@chakra-ui/react";
 import Menu from "./menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
-import { ArrowRightIcon } from "@chakra-ui/icons";
+import { ArrowRightIcon, CloseIcon } from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import CryptoJS from "crypto-js";
 const { ipcRenderer } = window.require("electron");
 
+interface IFileMap {
+    [filename: string]: Boolean;
+}
+
 const Home = () => {
     const [filenames, setFilenames] = useState<String[]>([]);
+    const [saved, setSaved] = useState<IFileMap>({});
+    const [deleted, setDeleted] = useState<IFileMap>({});
+    const [toggle, setToggle] = useState<boolean>();
     const toast = useToast();
 
     const getData = async () => {
@@ -29,7 +36,19 @@ const Home = () => {
 
     useEffect(() => {
         getData();
-    });
+    }, [toggle]);
+
+    useEffect(() => {
+        let s: IFileMap = {};
+        let d: IFileMap = {};
+        filenames.map((filename) => {
+            s[filename.toString()] = false;
+            d[filename.toString()] = false;
+        });
+        setSaved(s);
+        setDeleted(d);
+        console.log("render");
+    }, [filenames]);
 
     const decrypt = async (input: any) => {
         var file = input.file.file;
@@ -42,7 +61,6 @@ const Home = () => {
         var a = document.createElement("a");
         var url = window.URL.createObjectURL(fileDec);
         var filename = input.file.filename;
-        console.log(input.file);
         a.href = url;
         a.download = filename;
         a.click();
@@ -83,32 +101,90 @@ const Home = () => {
                     <List spacing={5}>
                         {filenames.map((filename: any) => (
                             <>
-                                <ListItem key={filename}>
-                                    <HStack spacing={5} justify="space-between">
-                                        <HStack>
-                                            <ListIcon
-                                                as={ArrowRightIcon}
-                                                color="green.500"
-                                            />
-                                            <Text>{filename}</Text>
-                                        </HStack>
-                                        <IconButton
-                                            aria-label={`download ${filename}`}
-                                            variant="ghost"
-                                            icon={<DownloadIcon w={6} h={6} />}
-                                            onClick={async () => {
-                                                let data =
-                                                    await ipcRenderer.invoke(
-                                                        "DOWNLOAD_FILE",
-                                                        { filename }
-                                                    );
-
-                                                decrypt(data);
-                                            }}
-                                        />
-                                    </HStack>
-                                </ListItem>
-                                <Divider />
+                                {true && (
+                                    <>
+                                        <ListItem key={filename}>
+                                            <HStack
+                                                spacing={5}
+                                                justify="space-between"
+                                            >
+                                                <HStack>
+                                                    <ListIcon
+                                                        as={ArrowRightIcon}
+                                                        color="green.500"
+                                                    />
+                                                    <Text>{filename}</Text>
+                                                </HStack>
+                                                <HStack>
+                                                    <IconButton
+                                                        aria-label={`download ${filename}`}
+                                                        variant="ghost"
+                                                        icon={
+                                                            <DownloadIcon
+                                                                w={4}
+                                                                h={4}
+                                                            />
+                                                        }
+                                                        onClick={async () => {
+                                                            let data =
+                                                                await ipcRenderer.invoke(
+                                                                    "DEC_FILE",
+                                                                    { filename }
+                                                                );
+                                                            if (data) {
+                                                                toast({
+                                                                    title: `downloaded ${filename}`,
+                                                                    variant:
+                                                                        "left-accent",
+                                                                    status: "success",
+                                                                    isClosable:
+                                                                        true,
+                                                                });
+                                                            } else {
+                                                                toast({
+                                                                    title: `some error occured, try again :(`,
+                                                                    variant:
+                                                                        "left-accent",
+                                                                    status: "error",
+                                                                    isClosable:
+                                                                        true,
+                                                                });
+                                                            }
+                                                            await decrypt(data);
+                                                            setSaved({
+                                                                ...saved,
+                                                                [filename]:
+                                                                    true,
+                                                            });
+                                                        }}
+                                                    />
+                                                    {saved[filename] && (
+                                                        <IconButton
+                                                            aria-label={`delete ${filename}`}
+                                                            variant="ghost"
+                                                            icon={
+                                                                <CloseIcon
+                                                                    w={4}
+                                                                    h={4}
+                                                                />
+                                                            }
+                                                            onClick={async () => {
+                                                                await ipcRenderer.invoke(
+                                                                    "DELETE_FILE",
+                                                                    { filename }
+                                                                );
+                                                                setToggle(
+                                                                    !toggle
+                                                                );
+                                                            }}
+                                                        />
+                                                    )}
+                                                </HStack>
+                                            </HStack>
+                                        </ListItem>
+                                        <Divider />
+                                    </>
+                                )}
                             </>
                         ))}
                     </List>

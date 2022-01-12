@@ -8,10 +8,11 @@ const {
     getAllFileNames,
     removeFiles,
     getFile,
+    deleteAllFiles,
+    deleteFiles,
 } = require("./queries");
 const keytar = require("keytar");
 const os = require("os");
-const { decrypt } = require("./decrypt");
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
@@ -53,24 +54,28 @@ function createWindow() {
 
     ipcMain.handle("USER_EXISTS", async (event, args) => {
         const password = await keytar.getPassword("vault", username);
-        if (!password) {
-            return false;
-        }
-        return true;
+        return password ? true : false;
     });
 
-    ipcMain.handle("DOWNLOAD_FILE", async (event, args) => {
+    ipcMain.handle("DEC_FILE", async (event, args) => {
         const file = await getFile(args.filename);
-        // decrypt(file.file.data, username);
         return file;
+    });
+
+    ipcMain.handle("DELETE_FILE", async (event, args) => {
+        try {
+            await deleteFiles(args.filename);
+            return true;
+        } catch (e) {
+            return false;
+        }
     });
 
     ipcMain.handle("DELETE_ACCOUNT", async (event, args) => {
         try {
-            await removeFiles();
+            await deleteAllFiles();
             await keytar.deletePassword("vault", username);
             await keytar.deletePassword("vault_enc_key", username);
-
             return true;
         } catch (e) {
             return false;

@@ -25,7 +25,15 @@ const getAllFileNames = async () => {
     return fileNames;
 };
 
-const removeFiles = async () => {
+const deleteFiles = async (filename) => {
+    const res = await db.data.remove(
+        { "file.filename": filename },
+        { multi: true }
+    );
+    return res;
+};
+
+const deleteAllFiles = async () => {
     const res = await db.data.remove({}, { multi: true });
     return res;
 };
@@ -36,5 +44,6 @@ module.exports = {
     saveFile,
     getFile,
     getAllFileNames,
-    removeFiles,
+    deleteAllFiles,
+    deleteFiles,
 };
