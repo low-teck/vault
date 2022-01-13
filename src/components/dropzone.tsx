@@ -4,12 +4,17 @@ import {
     Box,
     Button,
     Center,
+    Container,
+    IconButton,
     Input,
     List,
     ListItem,
     Text,
+    HStack,
     useToast,
+    Divider,
 } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +26,7 @@ interface FileWithPreview extends File {
 
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>();
+    const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
@@ -49,21 +55,25 @@ const FileDropzone = () => {
         files.map((file: FileWithPreview) => {
             return (
                 file && (
-                    // @ts-ignore
-                    <ListItem key={file.path}>
+                    <>
                         {/* @ts-ignore */}
-                        {file.path} - {file.size} bytes
-                        {/* <Img w="xs" h="xs" src={file.preview} /> */}
-                        {/* CAN'T USE LINK HERE [LINK] */}
-                        {/* <Link download href={file.preview} target="_blank">
+                        <ListItem key={file.path}>
+                            {/* @ts-ignore */}
+                            {file.path} - {file.size} bytes
+                            {/* <Img w="xs" h="xs" src={file.preview} /> */}
+                            {/* CAN'T USE LINK HERE [LINK] */}
+                            {/* <Link download href={file.preview} target="_blank">
 							<Button>Download</Button>
 						</Link> */}
-                    </ListItem>
+                        </ListItem>
+                        <Divider />
+                    </>
                 )
             );
         });
 
-    const encrypt = (input: File) => {
+    const encrypt = async (input: File) => {
+        setLoading(true);
         var file = input;
         var reader = new FileReader();
         reader.onload = async () => {
@@ -84,26 +94,26 @@ const FileDropzone = () => {
                     title: `${file.name} saved! you can now delete the original file :)`,
                     isClosable: true,
                     variant: "left-accent",
+                    position: "top-right",
                     status: "success",
                 });
             }
+            setLoading(false);
         };
-        reader.readAsArrayBuffer(file);
+        await reader.readAsArrayBuffer(file);
     };
 
     return (
         <Box>
             <Box>
                 <Link to="/home">
-                    <Button
-                        size="md"
-                        height="48px"
-                        width="200px"
-                        border="2px"
-                        borderColor="green.500"
-                    >
-                        Back
-                    </Button>
+                    <IconButton
+                        alignSelf="flex-end"
+                        margin="2rem"
+                        aria-label={`go back`}
+                        colorScheme="teal"
+                        icon={<ArrowBackIcon h={8} w={10} />}
+                    />
                 </Link>
             </Box>
             <Center>
@@ -124,21 +134,28 @@ const FileDropzone = () => {
                 </Box>
             </Center>
             <List>
-                {thumbs}
-                <ListItem key="encrypt-file">
-                    {files && (
-                        <Button onClick={() => encrypt(files[0])}>
-                            Encrypt
-                        </Button>
-                    )}
-                </ListItem>
-                {/* <ListItem key="decrypt-file">
-                    {files && (
-                        <Button onClick={() => decrypt(files[0])}>
-                            Decrypt
-                        </Button>
-                    )}
-                </ListItem> */}
+                <Container mt={10}>
+                    <List spacing={4}>{thumbs}</List>
+                    <Center m={10}>
+                        {files && (
+                            <Button
+                                colorScheme="teal"
+                                size="lg"
+                                isLoading={loading}
+                                loadingText="Encrypting..."
+                                spinnerPlacement="end"
+                                onClick={() => {
+                                    files.map(async (file: FileWithPreview) => {
+                                        await encrypt(file);
+                                    });
+                                    // setLoading(false);
+                                }}
+                            >
+                                Encrypt
+                            </Button>
+                        )}
+                    </Center>
+                </Container>
             </List>
         </Box>
     );
