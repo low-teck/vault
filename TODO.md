@@ -13,5 +13,5 @@
 -   [x] refresh on store
 -   [x] refresh on delete
 -   [ ] filter
--   [ ] search
+-   [x] fuzzy search
 -   [ ] order
