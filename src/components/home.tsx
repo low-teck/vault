@@ -10,12 +10,17 @@ import {
     Heading,
     IconButton,
     useToast,
+    Input,
 } from "@chakra-ui/react";
 import Menu from "./menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
 import { ArrowRightIcon, DeleteIcon } from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import CryptoJS from "crypto-js";
+import Fuse from "fuse.js";
+import { useDebounce } from "use-debounce/lib";
+import { FormItem } from "../formHelpers";
+import * as _ from "lodash";
 const { ipcRenderer } = window.require("electron");
 
 interface FileInfo {
@@ -23,15 +28,42 @@ interface FileInfo {
     saved: Boolean;
 }
 
+const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
+    includeScore: true,
+    keys: ["filename"],
+};
+
 const Home = () => {
     const [fileData, setFileData] = useState<FileInfo[]>([]);
+    const [queryResults, setQueryResults] = useState<
+        Fuse.FuseResult<FileInfo>[]
+    >([]);
     const [toggle, setToggle] = useState<boolean>();
+    const [query, setQuery] = useState<string>("");
+    const [debouncedQuery] = useDebounce(query, 500);
+
     const toast = useToast();
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
         setFileData(data);
     };
+
+    useEffect(() => {
+        let fuse = new Fuse(fileData, fuseOptions);
+        let res = debouncedQuery
+            ? fuse.search(debouncedQuery)
+            : _.map<FileInfo, Fuse.FuseResult<FileInfo>>(
+                  fileData,
+                  (item, index) => ({
+                      item,
+                      refIndex: index,
+                      matches: [],
+                      score: 1,
+                  })
+              );
+        setQueryResults(res);
+    }, [debouncedQuery, fileData]);
 
     useEffect(() => {
         getData();
@@ -80,19 +112,30 @@ const Home = () => {
     };
     return (
         <Box w="100vw" h="100vh">
-            <Stack spacing={4} direction="row">
+            <Box>
                 <Menu />
-            </Stack>
+            </Box>
             <Container>
+                <Input
+                    value={query}
+                    onChange={(e) => {
+                        e.preventDefault();
+                        setQuery(e.target.value);
+                    }}
+                    variant="filled"
+                    placeholder={"search your files"}
+                />
+                <br />
+                <br />
                 <Heading>my files</Heading>
                 <br />
                 {fileData && (
                     <List spacing={5}>
-                        {fileData.map(({ filename, saved }) => (
+                        {queryResults.map((res) => (
                             <>
                                 {true && (
                                     <>
-                                        <ListItem key={filename}>
+                                        <ListItem key={res.item.filename}>
                                             <HStack
                                                 spacing={5}
                                                 justify="space-between"
@@ -102,11 +145,13 @@ const Home = () => {
                                                         as={ArrowRightIcon}
                                                         color="green.500"
                                                     />
-                                                    <Text>{filename}</Text>
+                                                    <Text>
+                                                        {res.item.filename}
+                                                    </Text>
                                                 </HStack>
                                                 <HStack>
                                                     <IconButton
-                                                        aria-label={`download ${filename}`}
+                                                        aria-label={`download ${res.item.filename}`}
                                                         variant="ghost"
                                                         icon={
                                                             <DownloadIcon
@@ -115,7 +160,9 @@ const Home = () => {
                                                             />
                                                         }
                                                         onClick={async () => {
-                                                            let name = filename;
+                                                            let name =
+                                                                res.item
+                                                                    .filename;
                                                             let data =
                                                                 await ipcRenderer.invoke(
                                                                     "DEC_FILE",
@@ -148,9 +195,9 @@ const Home = () => {
                                                             setToggle(!toggle);
                                                         }}
                                                     />
-                                                    {saved && (
+                                                    {res.item.saved && (
                                                         <IconButton
-                                                            aria-label={`delete ${filename}`}
+                                                            aria-label={`delete ${res.item.filename}`}
                                                             variant="ghost"
                                                             icon={
                                                                 <DeleteIcon
@@ -160,7 +207,8 @@ const Home = () => {
                                                             }
                                                             onClick={async () => {
                                                                 let name =
-                                                                    filename;
+                                                                    res.item
+                                                                        .filename;
                                                                 await ipcRenderer.invoke(
                                                                     "DELETE_FILE",
                                                                     { name }
