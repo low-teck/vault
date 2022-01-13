@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, Center, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, Stack, useToast } from "@chakra-ui/react";
 import { SecureFormItem } from "../../../formHelpers";
 const { ipcRenderer } = window.require("electron");
 

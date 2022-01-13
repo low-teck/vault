@@ -31,3 +31,8 @@ export interface SecureAuthFormItemProps extends AuthFormItemProps {
 	show: boolean;
 	toggle: React.MouseEventHandler;
 }
+
+export interface FileInfo {
+	filename: string;
+	saved: Boolean;
+}

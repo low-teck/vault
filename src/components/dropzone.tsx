@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
     Box,
     Button,
@@ -10,14 +10,12 @@ import {
     List,
     ListItem,
     Text,
-    HStack,
     useToast,
     Divider,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
-import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
 
 interface FileWithPreview extends File {
@@ -27,7 +25,6 @@ interface FileWithPreview extends File {
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>();
     const [loading, setLoading] = useState<boolean>(false);
-    const navigate = useNavigate();
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {
@@ -60,11 +57,6 @@ const FileDropzone = () => {
                         <ListItem key={file.path}>
                             {/* @ts-ignore */}
                             {file.path} - {file.size} bytes
-                            {/* <Img w="xs" h="xs" src={file.preview} /> */}
-                            {/* CAN'T USE LINK HERE [LINK] */}
-                            {/* <Link download href={file.preview} target="_blank">
-							<Button>Download</Button>
-						</Link> */}
                         </ListItem>
                         <Divider />
                     </>
@@ -133,30 +125,28 @@ const FileDropzone = () => {
                     </Center>
                 </Box>
             </Center>
-            <List>
-                <Container mt={10}>
-                    <List spacing={4}>{thumbs}</List>
-                    <Center m={10}>
-                        {files && (
-                            <Button
-                                colorScheme="teal"
-                                size="lg"
-                                isLoading={loading}
-                                loadingText="Encrypting..."
-                                spinnerPlacement="end"
-                                onClick={() => {
-                                    files.map(async (file: FileWithPreview) => {
-                                        await encrypt(file);
-                                    });
-                                    // setLoading(false);
-                                }}
-                            >
-                                Encrypt
-                            </Button>
-                        )}
-                    </Center>
-                </Container>
-            </List>
+            <Container key={1} mt={10}>
+                <List spacing={4}>{thumbs}</List>
+                <Center m={10}>
+                    {files && (
+                        <Button
+                            colorScheme="teal"
+                            size="lg"
+                            isLoading={loading}
+                            loadingText="Encrypting..."
+                            spinnerPlacement="end"
+                            onClick={() => {
+                                files.map(async (file: FileWithPreview) => {
+                                    await encrypt(file);
+                                });
+                                // setLoading(false);
+                            }}
+                        >
+                            Encrypt
+                        </Button>
+                    )}
+                </Center>
+            </Container>
         </Box>
     );
 };
