@@ -19,11 +19,15 @@ const getFile = async (filename) => {
     return file;
 };
 
-const getAllFileNames = async () => {
+const getAllFileData = async () => {
     let files = await db.data.find({});
     let data = [];
     files.forEach((file) => {
-        data.push({ filename: file.file.filename, saved: file.file.saved });
+        data.push({
+            filename: file.file.filename,
+            saved: file.file.saved,
+            date: file.file.date,
+        });
     });
     return data;
 };
@@ -54,7 +58,7 @@ module.exports = {
     getCredentials,
     saveFile,
     getFile,
-    getAllFileNames,
+    getAllFileData,
     deleteAllFiles,
     deleteFiles,
     updateSaveState,

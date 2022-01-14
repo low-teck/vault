@@ -5,7 +5,7 @@ const {
     createCredentials,
     getCredentials,
     saveFile,
-    getAllFileNames,
+    getAllFileData,
     removeFiles,
     getFile,
     deleteAllFiles,
@@ -107,13 +107,16 @@ function createWindow() {
         const file = {
             filename: args.filename,
             file: args.file,
+            saved: false,
+            date: new Date(),
         };
         await saveFile(file);
         return "DONE";
     });
 
     ipcMain.handle("GET_DATA", async (event, args) => {
-        const files = await getAllFileNames();
+        const files = await getAllFileData();
+        console.log(files);
         return files;
     });
 }

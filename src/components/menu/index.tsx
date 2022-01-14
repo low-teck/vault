@@ -20,8 +20,13 @@ import ChangePasswordItem from "./changePasswordItem";
 import FilterItem from "./filterItem";
 import SortItem from "./sortItem";
 import DeleteAccount from "./DeleteAccount";
+import { SortCriteria } from "../../types";
 
-const Menu = () => {
+interface MenuProps {
+    handleSort: (sortCriteria: SortCriteria) => void;
+}
+
+const Menu = ({ handleSort }: MenuProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = React.useRef(null);
     const navigate = useNavigate();
@@ -62,7 +67,7 @@ const Menu = () => {
                         <Accordion allowToggle={true}>
                             <AddFileItem />
                             <FilterItem />
-                            <SortItem />
+                            <SortItem handleSort={handleSort} />
                             <ChangePasswordItem />
                         </Accordion>
                     </DrawerBody>

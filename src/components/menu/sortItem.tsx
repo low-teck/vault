@@ -6,18 +6,28 @@ import {
     RadioGroup,
     Stack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { SortCriteria, SortItemProps } from "../../types";
 
-const SortItem = () => {
-    const [sortCriteria, setSortCriteria] = useState("date");
+const SortItem = ({ handleSort }: SortItemProps) => {
+    const [sortCriteria, setSortCriteria] = useState<SortCriteria>("date");
+
+    const handleSortCriteriaChange = (e: SortCriteria) => {
+        handleSort(e);
+        setSortCriteria(e);
+    };
+
     return (
         <AccordionItem>
             <AccordionButton>sort by</AccordionButton>
             <AccordionPanel>
-                <RadioGroup onChange={setSortCriteria} value={sortCriteria}>
+                <RadioGroup
+                    onChange={handleSortCriteriaChange}
+                    value={sortCriteria}
+                >
                     <Stack spacing={[1, 5]} direction={["column", "row"]}>
                         <Radio value="date">date added</Radio>
-                        <Radio value="name">name</Radio>
+                        <Radio value="filename">name</Radio>
                     </Stack>
                 </RadioGroup>
             </AccordionPanel>

@@ -19,11 +19,13 @@ import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
 import { decrypt } from "./decrypt";
+import { SortCriteria } from "../../types";
 const { ipcRenderer } = window.require("electron");
 
 interface FileInfo {
     filename: string;
     saved: Boolean;
+    date: Date;
 }
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
@@ -39,12 +41,27 @@ const Home = () => {
     const [toggle, setToggle] = useState<boolean>();
     const [query, setQuery] = useState<string>("");
     const [debouncedQuery] = useDebounce(query, 500);
+    const [sort, setSort] = useState<boolean>(false);
 
     const toast = useToast();
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
         setFileData(data);
+    };
+
+    const handleSort = (sortCriteria: SortCriteria) => {
+        let data = fileData;
+        console.log(fileData[0][sortCriteria]);
+        data.sort((a, b) =>
+            sortCriteria == "filename"
+                ? +b[sortCriteria].toLowerCase() -
+                  +a[sortCriteria].toLowerCase()
+                : +a[sortCriteria] - +b[sortCriteria]
+        );
+        console.log(data);
+        setFileData(data);
+        setSort(!sort);
     };
 
     useEffect(() => {
@@ -61,7 +78,7 @@ const Home = () => {
                   })
               );
         setQueryResults(res);
-    }, [debouncedQuery, fileData]);
+    }, [debouncedQuery, fileData, sort]);
 
     useEffect(() => {
         getData();
@@ -75,7 +92,7 @@ const Home = () => {
     return (
         <Box w="100vw" h="100vh" overflowY="scroll" overflowX="hidden">
             <Box position="fixed" zIndex="sticky" margin="4rem">
-                <Menu />
+                <Menu handleSort={handleSort} />
             </Box>
             <Center bg="white">
                 <Box w="50vw">
@@ -99,108 +116,95 @@ const Home = () => {
                         <List spacing={5} w="50vw" marginTop="20vh">
                             {queryResults.map((res) => (
                                 <>
-                                    {true && (
-                                        <>
-                                            <ListItem key={res.item.filename}>
-                                                <HStack
-                                                    spacing={5}
-                                                    justify="space-between"
-                                                >
-                                                    <HStack>
-                                                        <ListIcon
-                                                            as={ArrowRightIcon}
-                                                            color="green.500"
+                                    <ListItem key={res.item.filename}>
+                                        <HStack
+                                            spacing={5}
+                                            justify="space-between"
+                                        >
+                                            <HStack>
+                                                <ListIcon
+                                                    as={ArrowRightIcon}
+                                                    color="green.500"
+                                                />
+                                                <Text>{res.item.filename}</Text>
+                                            </HStack>
+                                            <HStack>
+                                                <IconButton
+                                                    aria-label={`download ${res.item.filename}`}
+                                                    variant="ghost"
+                                                    icon={
+                                                        <DownloadIcon
+                                                            w={4}
+                                                            h={4}
                                                         />
-                                                        <Text>
-                                                            {res.item.filename}
-                                                        </Text>
-                                                    </HStack>
-                                                    <HStack>
-                                                        <IconButton
-                                                            aria-label={`download ${res.item.filename}`}
-                                                            variant="ghost"
-                                                            icon={
-                                                                <DownloadIcon
-                                                                    w={4}
-                                                                    h={4}
-                                                                />
+                                                    }
+                                                    onClick={async () => {
+                                                        let name =
+                                                            res.item.filename;
+                                                        let data =
+                                                            await ipcRenderer.invoke(
+                                                                "DEC_FILE",
+                                                                {
+                                                                    name,
+                                                                }
+                                                            );
+                                                        if (data) {
+                                                            toast({
+                                                                title: `downloaded ${name}`,
+                                                                variant:
+                                                                    "left-accent",
+                                                                status: "success",
+                                                                isClosable:
+                                                                    true,
+                                                            });
+                                                        } else {
+                                                            toast({
+                                                                title: `some error occured, try again :(`,
+                                                                variant:
+                                                                    "left-accent",
+                                                                status: "error",
+                                                                isClosable:
+                                                                    true,
+                                                            });
+                                                        }
+                                                        await decrypt(data);
+                                                        await ipcRenderer.invoke(
+                                                            "SAVE_STATE",
+                                                            {
+                                                                name,
                                                             }
-                                                            onClick={async () => {
-                                                                let name =
-                                                                    res.item
-                                                                        .filename;
-                                                                let data =
-                                                                    await ipcRenderer.invoke(
-                                                                        "DEC_FILE",
-                                                                        {
-                                                                            name,
-                                                                        }
-                                                                    );
-                                                                if (data) {
-                                                                    toast({
-                                                                        title: `downloaded ${name}`,
-                                                                        variant:
-                                                                            "left-accent",
-                                                                        status: "success",
-                                                                        isClosable:
-                                                                            true,
-                                                                    });
-                                                                } else {
-                                                                    toast({
-                                                                        title: `some error occured, try again :(`,
-                                                                        variant:
-                                                                            "left-accent",
-                                                                        status: "error",
-                                                                        isClosable:
-                                                                            true,
-                                                                    });
-                                                                }
-                                                                await decrypt(
-                                                                    data
-                                                                );
-                                                                await ipcRenderer.invoke(
-                                                                    "SAVE_STATE",
-                                                                    {
-                                                                        name,
-                                                                    }
-                                                                );
-                                                                setToggle(
-                                                                    !toggle
-                                                                );
-                                                            }}
-                                                        />
-                                                        {res.item.saved && (
-                                                            <IconButton
-                                                                aria-label={`delete ${res.item.filename}`}
-                                                                variant="ghost"
-                                                                icon={
-                                                                    <DeleteIcon
-                                                                        w={4}
-                                                                        h={4}
-                                                                    />
-                                                                }
-                                                                onClick={async () => {
-                                                                    let name =
-                                                                        res.item
-                                                                            .filename;
-                                                                    await ipcRenderer.invoke(
-                                                                        "DELETE_FILE",
-                                                                        {
-                                                                            name,
-                                                                        }
-                                                                    );
-                                                                    setToggle(
-                                                                        !toggle
-                                                                    );
-                                                                }}
+                                                        );
+                                                        setToggle(!toggle);
+                                                    }}
+                                                />
+                                                {res.item.saved && (
+                                                    <IconButton
+                                                        aria-label={`delete ${res.item.filename}`}
+                                                        variant="ghost"
+                                                        icon={
+                                                            <DeleteIcon
+                                                                w={4}
+                                                                h={4}
                                                             />
-                                                        )}
-                                                    </HStack>
-                                                </HStack>
-                                            </ListItem>
-                                            <Divider />
-                                        </>
-                                    )}
+                                                        }
+                                                        onClick={async () => {
+                                                            let name =
+                                                                res.item
+                                                                    .filename;
+                                                            await ipcRenderer.invoke(
+                                                                "DELETE_FILE",
+                                                                {
+                                                                    name,
+                                                                }
+                                                            );
+                                                            setToggle(!toggle);
+                                                        }}
+                                                    />
+                                                )}
+                                            </HStack>
+                                        </HStack>
+                                    </ListItem>
+                                    <Divider />
                                 </>
                             ))}
                         </List>
