@@ -14,4 +14,6 @@
 -   [x] refresh on delete
 -   [ ] filter
 -   [x] fuzzy search
--   [ ] order
+-   [x] order
+-   [ ] custom fonts
+-   [ ] theme

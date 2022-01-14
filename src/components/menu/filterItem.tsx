@@ -1,3 +1,4 @@
+import React from "react";
 import {
     AccordionButton,
     AccordionItem,
@@ -6,7 +7,6 @@ import {
     CheckboxGroup,
     Stack,
 } from "@chakra-ui/react";
-import React from "react";
 
 const FilterItem = () => {
     return (

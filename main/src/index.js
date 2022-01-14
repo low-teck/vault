@@ -116,7 +116,6 @@ function createWindow() {
 
     ipcMain.handle("GET_DATA", async (event, args) => {
         const files = await getAllFileData();
-        console.log(files);
         return files;
     });
 }

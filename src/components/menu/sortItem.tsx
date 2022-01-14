@@ -19,7 +19,7 @@ const SortItem = ({ handleSort }: SortItemProps) => {
 
     return (
         <AccordionItem>
-            <AccordionButton>sort by</AccordionButton>
+            <AccordionButton>order by</AccordionButton>
             <AccordionPanel>
                 <RadioGroup
                     onChange={handleSortCriteriaChange}
