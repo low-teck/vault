@@ -12,6 +12,7 @@ const SearchFiles = ({ value, handleQueryChanges }: ISearchItems) => {
         <InputGroup>
             <InputLeftElement pointerEvents="none" children={<SearchIcon />} />
             <Input
+                boxSizing="border-box"
                 value={value}
                 focusBorderColor="teal.500"
                 onChange={handleQueryChanges}

@@ -40,8 +40,6 @@ const Menu = () => {
     return (
         <>
             <IconButton
-                alignSelf="flex-end"
-                margin="2rem"
                 aria-label="menu"
                 ref={btnRef}
                 colorScheme="teal"

@@ -17,8 +17,8 @@ const os = require("os");
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 900,
+        height: 800,
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
