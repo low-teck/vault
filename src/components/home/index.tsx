@@ -73,7 +73,7 @@ const Home = () => {
     };
 
     return (
-        <Box w="100vw" h="100vh" overflowX="hidden">
+        <Box w="100vw" h="100vh" overflowY="scroll" overflowX="hidden">
             <Box position="fixed" zIndex="sticky" margin="4rem">
                 <Menu />
             </Box>
