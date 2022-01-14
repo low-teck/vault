@@ -1,3 +1,5 @@
+import CryptoJS from "crypto-js";
+
 const { ipcRenderer } = window.require("electron");
 
 export const decrypt = async (input: any) => {
