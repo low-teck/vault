@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
     Box,
-    Container,
     Text,
     HStack,
     Heading,
     IconButton,
     useToast,
     Center,
-    Flex,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
@@ -52,14 +50,17 @@ const Home = () => {
 
     const handleSort = (sortCriteria: SortCriteria) => {
         let data = fileData;
-        console.log(fileData[0][sortCriteria]);
         data.sort((a, b) =>
-            sortCriteria == "filename"
-                ? +b[sortCriteria].toLowerCase() -
+            sortCriteria === "filename"
+                ? +b[sortCriteria].toLowerCase() <
                   +a[sortCriteria].toLowerCase()
-                : +a[sortCriteria] - +b[sortCriteria]
+                    ? 1
+                    : b[sortCriteria].toLowerCase() >
+                      a[sortCriteria].toLowerCase()
+                    ? -1
+                    : 0
+                : +b[sortCriteria] - +a[sortCriteria]
         );
-        console.log(data);
         setFileData(data);
         setSort(!sort);
     };
