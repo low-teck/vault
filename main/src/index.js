@@ -25,6 +25,7 @@ function createWindow() {
             contextIsolation: false,
             preload: path.join(__dirname, "preload.js"),
         },
+        icon: __dirname + "/assets/icon.icns",
     });
 
     const username = os.userInfo().username;
@@ -107,7 +108,8 @@ function createWindow() {
         const file = {
             filename: args.filename,
             file: args.file,
-            saved: false,
+            type: args.type,
+            saved: args.saved,
             date: new Date(),
         };
         await saveFile(file);

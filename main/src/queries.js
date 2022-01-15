@@ -26,6 +26,7 @@ const getAllFileData = async () => {
         data.push({
             filename: file.file.filename,
             saved: file.file.saved,
+            type: file.file.type,
             date: file.file.date,
         });
     });
