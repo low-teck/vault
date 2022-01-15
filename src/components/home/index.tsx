@@ -20,10 +20,16 @@ import { decrypt } from "./decrypt";
 import { SortCriteria } from "../../types";
 const { ipcRenderer } = window.require("electron");
 
+type Video = "mp4" | "mpeg" | "wmv";
+type Image = "jpg" | "jpeg" | "png";
+type Document = "pdf" | "zip";
+type Ppt = "pptx" | "odp" | "ppt" | "key";
+
 interface FileInfo {
     filename: string;
     saved: Boolean;
     date: Date;
+    type: Video | Image | Document | Ppt;
 }
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
@@ -33,6 +39,7 @@ const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
 
 const Home = () => {
     const [fileData, setFileData] = useState<FileInfo[]>([]);
+    // const [filteredData, setFilteredData] = useState<FileInfo[]>([]);
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
@@ -45,6 +52,7 @@ const Home = () => {
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
+        console.log(data);
         setFileData(data);
     };
 
@@ -64,6 +72,15 @@ const Home = () => {
         setFileData(data);
         setSort(!sort);
     };
+
+    // const handleFiltering = (filters: string[]) => {
+    //     let data = filters.map((filter) => {
+    //         data.filter((file) => {
+    //             // TODO: implement
+    //             return 1;
+    //         });
+    //     });
+    // };
 
     useEffect(() => {
         let fuse = new Fuse(fileData, fuseOptions);

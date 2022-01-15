@@ -66,7 +66,7 @@ const Menu = ({ handleSort }: MenuProps) => {
                     <DrawerBody>
                         <Accordion allowToggle={true}>
                             <AddFileItem />
-                            <FilterItem />
+                            {/* <FilterItem /> */}
                             <SortItem handleSort={handleSort} />
                             <ChangePasswordItem />
                         </Accordion>

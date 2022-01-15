@@ -13,7 +13,7 @@ import {
     useToast,
     Divider,
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
 const { ipcRenderer } = window.require("electron");
@@ -56,7 +56,18 @@ const FileDropzone = () => {
                         {/* @ts-ignore */}
                         <ListItem key={file.path}>
                             {/* @ts-ignore */}
-                            {file.path} - {file.size} bytes
+                            {file.path} <br />{" "}
+                            {(file.size / 1e6).toPrecision(2)} MBs
+                            <IconButton
+                                aria-label="del"
+                                icon={<DeleteIcon />}
+                                onClick={(
+                                    e: React.MouseEvent<HTMLButtonElement>
+                                ) => {
+                                e.preventDefault();
+
+                                }}
+                            />
                         </ListItem>
                         <Divider />
                     </>
@@ -121,7 +132,7 @@ const FileDropzone = () => {
                     {/* @ts-ignore */}
                     <Input {...getInputProps()} />
                     <Center h="30vh">
-                        <Text>Drag 'n' drop or touch to add files</Text>
+                        <Text>drag 'n' drop or touch to add files</Text>
                     </Center>
                 </Box>
             </Center>
