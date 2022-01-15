@@ -11,9 +11,15 @@ import {
     ListItem,
     Text,
     useToast,
+    HStack,
     Divider,
+    VStack,
 } from "@chakra-ui/react";
-import { ArrowBackIcon, DeleteIcon } from "@chakra-ui/icons";
+import {
+    ArrowBackIcon,
+    ArrowForwardIcon,
+    SmallCloseIcon,
+} from "@chakra-ui/icons";
 import { useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
 const { ipcRenderer } = window.require("electron");
@@ -47,6 +53,18 @@ const FileDropzone = () => {
         [files]
     );
 
+    function convertBytes(bytes: any) {
+        if (bytes < 1024) {
+            return bytes + " bytes";
+        } else if (bytes < 1048576) {
+            return (bytes / 1024).toFixed(1) + " KB";
+        } else if (bytes < 1073741824) {
+            return (bytes / 1048576).toFixed(1) + " MB";
+        } else {
+            return (bytes / 1073741824).toFixed(1) + " GB";
+        }
+    }
+
     const thumbs =
         files &&
         files.map((file: FileWithPreview) => {
@@ -55,19 +73,30 @@ const FileDropzone = () => {
                     <>
                         {/* @ts-ignore */}
                         <ListItem key={file.path}>
-                            {/* @ts-ignore */}
-                            {file.path} <br />{" "}
-                            {(file.size / 1e6).toPrecision(2)} MBs
-                            <IconButton
-                                aria-label="del"
-                                icon={<DeleteIcon />}
-                                onClick={(
-                                    e: React.MouseEvent<HTMLButtonElement>
-                                ) => {
-                                e.preventDefault();
-
-                                }}
-                            />
+                            <HStack justify="space-between">
+                                {/* @ts-ignore */}
+                                <HStack>
+                                    <ArrowForwardIcon color="teal" />
+                                    <Text>{file.name}</Text>
+                                </HStack>
+                                <HStack>
+                                    <Text>{convertBytes(file.size)}</Text>
+                                    <IconButton
+                                        aria-label="del"
+                                        colorScheme="red"
+                                        variant="ghost"
+                                        icon={<SmallCloseIcon />}
+                                        onClick={(
+                                            e: React.MouseEvent<HTMLButtonElement>
+                                        ) => {
+                                            e.preventDefault();
+                                            setFiles(
+                                                files.filter((f) => f !== file)
+                                            );
+                                        }}
+                                    />
+                                </HStack>
+                            </HStack>
                         </ListItem>
                         <Divider />
                     </>
@@ -136,28 +165,32 @@ const FileDropzone = () => {
                     </Center>
                 </Box>
             </Center>
-            <Container key={1} mt={10}>
-                <List spacing={4}>{thumbs}</List>
-                <Center m={10}>
-                    {files && (
-                        <Button
-                            colorScheme="teal"
-                            size="lg"
-                            isLoading={loading}
-                            loadingText="Encrypting..."
-                            spinnerPlacement="end"
-                            onClick={() => {
-                                files.map(async (file: FileWithPreview) => {
-                                    await encrypt(file);
-                                });
-                                // setLoading(false);
-                            }}
-                        >
-                            Encrypt
-                        </Button>
-                    )}
-                </Center>
-            </Container>
+            <Center mt={10}>
+                <VStack>
+                    <List w="60vw" spacing={4}>
+                        {thumbs}
+                    </List>
+                    <Center m={10}>
+                        {files && (
+                            <Button
+                                colorScheme="teal"
+                                size="lg"
+                                isLoading={loading}
+                                loadingText="Encrypting..."
+                                spinnerPlacement="end"
+                                onClick={() => {
+                                    files.map(async (file: FileWithPreview) => {
+                                        await encrypt(file);
+                                    });
+                                    // setLoading(false);
+                                }}
+                            >
+                                Encrypt
+                            </Button>
+                        )}
+                    </Center>
+                </VStack>
+            </Center>
         </Box>
     );
 };
