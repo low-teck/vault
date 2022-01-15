@@ -8,6 +8,7 @@ import {
     useToast,
     Center,
     ListItemProps,
+    Container,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
@@ -19,7 +20,7 @@ import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
 import { decrypt } from "./decrypt";
 import { SortCriteria } from "../../types";
-import { AnimatePresence, motion, useIsPresent } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 const { ipcRenderer } = window.require("electron");
 
 type Video = "mp4" | "mpeg" | "wmv";
@@ -67,14 +68,8 @@ const Home = () => {
         let data = fileData;
         data.sort((a, b) =>
             sortCriteria === "filename"
-                ? +b[sortCriteria].toLowerCase() <
-                  +a[sortCriteria].toLowerCase()
-                    ? 1
-                    : b[sortCriteria].toLowerCase() >
-                      a[sortCriteria].toLowerCase()
-                    ? -1
-                    : 0
-                : +b[sortCriteria] - +a[sortCriteria]
+                ? a.filename.localeCompare(b.filename)
+                : a.date.getTime() - b.date.getTime()
         );
         setFileData(data);
         setSort(!sort);
@@ -154,9 +149,11 @@ const Home = () => {
                                                         as={ArrowRightIcon}
                                                         color="green.500"
                                                     />
-                                                    <Text>
-                                                        {res.item.filename}
-                                                    </Text>
+                                                    <Container maxWidth="40vw">
+                                                        <Text>
+                                                            {res.item.filename}
+                                                        </Text>
+                                                    </Container>
                                                 </HStack>
                                                 <HStack>
                                                     <IconButton

@@ -77,7 +77,9 @@ const FileDropzone = () => {
                                 {/* @ts-ignore */}
                                 <HStack>
                                     <ArrowForwardIcon color="teal" />
-                                    <Text>{file.name}</Text>
+                                    <Container maxWidth="50vw">
+                                        <Text>{file.name}</Text>
+                                    </Container>
                                 </HStack>
                                 <HStack>
                                     <Text>{convertBytes(file.size)}</Text>
@@ -136,19 +138,19 @@ const FileDropzone = () => {
     };
 
     return (
-        <Box>
-            <Box>
+        <Box w="100vw" h="100vh" overflowY="scroll" overflowX="hidden">
+            <Box position="fixed" zIndex="sticky">
                 <Link to="/home">
                     <IconButton
                         alignSelf="flex-end"
-                        margin="2rem"
+                        margin="4rem"
                         aria-label={`go back`}
                         colorScheme="teal"
                         icon={<ArrowBackIcon h={8} w={10} />}
                     />
                 </Link>
             </Box>
-            <Center>
+            <Center paddingTop="4rem">
                 <Box
                     w="70vw"
                     h="30vh"
@@ -173,6 +175,7 @@ const FileDropzone = () => {
                     <Center m={10}>
                         {files && (
                             <Button
+                                m="5"
                                 colorScheme="teal"
                                 size="lg"
                                 isLoading={loading}
