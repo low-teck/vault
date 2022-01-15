@@ -7,6 +7,7 @@ import {
     IconButton,
     useToast,
     Center,
+    ListItemProps,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
@@ -36,6 +37,12 @@ interface FileInfo {
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
     includeScore: true,
     keys: ["filename"],
+};
+
+const MotionListItem = motion<ListItemProps>(ListItem);
+
+const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
+    return <MotionListItem layout>{children}</MotionListItem>;
 };
 
 const Home = () => {
@@ -135,8 +142,7 @@ const Home = () => {
                             {queryResults.map((res) => (
                                 <>
                                     <AnimatePresence>
-                                        <motion.div
-                                            layout
+                                        <CustomMotionListItem
                                             key={res.item.filename}
                                         >
                                             <HStack
@@ -230,7 +236,7 @@ const Home = () => {
                                                     )}
                                                 </HStack>
                                             </HStack>
-                                        </motion.div>
+                                        </CustomMotionListItem>
                                     </AnimatePresence>
                                     <Divider />
                                 </>
