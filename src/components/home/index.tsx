@@ -10,6 +10,7 @@ import {
     ListItemProps,
     Container,
     Button,
+    AbsoluteCenter,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
@@ -22,6 +23,7 @@ import SearchFiles from "./searchFiles";
 import { decrypt } from "./decrypt";
 import { SortCriteria } from "../../types";
 import { AnimatePresence, motion, usePresence } from "framer-motion";
+import Loading from "../loading";
 const { ipcRenderer } = window.require("electron");
 
 type Video = "mp4" | "mpeg" | "wmv";
@@ -266,9 +268,9 @@ const Home = () => {
                             ))}
                         </List>
                     ) : (
-                        <Heading w="50vw" marginTop="20vh">
-                            loading...
-                        </Heading>
+                        <AbsoluteCenter>
+                            <Loading />
+                        </AbsoluteCenter>
                     )}
                 </Box>
             </Center>
