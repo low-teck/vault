@@ -20,3 +20,4 @@
 -   [x] scrollbar
 -   [ ] toast timing
 -   [x] back button position
+-   [x] loading

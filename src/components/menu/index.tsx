@@ -9,6 +9,7 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
+    Heading,
     IconButton,
     useDisclosure,
     useToast,
@@ -17,7 +18,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
-import DeleteAccount from "./DeleteAccount";
+import DeleteAccount from "./deleteAccount";
 
 // interface MenuProps {
 //     handleSort: (sortCriteria: SortCriteria) => void;
@@ -58,7 +59,10 @@ const Menu = () => {
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>vault menu</DrawerHeader>
+                    <DrawerHeader>
+                        {" "}
+                        <Heading as="h2"> vault menu </Heading>{" "}
+                    </DrawerHeader>
 
                     <DrawerBody>
                         <Accordion allowToggle={true}>
@@ -69,7 +73,12 @@ const Menu = () => {
 
                     <DrawerFooter>
                         <DeleteAccount />
-                        <Button variant="ghost" mr={3} onClick={handleLogout}>
+                        <Button
+                            marginLeft="1rem"
+                            variant="ghost"
+                            mr={3}
+                            onClick={handleLogout}
+                        >
                             Logout
                         </Button>
                     </DrawerFooter>
