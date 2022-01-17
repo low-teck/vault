@@ -17,16 +17,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
-import FilterItem from "./filterItem";
-import SortItem from "./sortItem";
 import DeleteAccount from "./DeleteAccount";
-import { SortCriteria } from "../../types";
 
-interface MenuProps {
-    handleSort: (sortCriteria: SortCriteria) => void;
-}
+// interface MenuProps {
+//     handleSort: (sortCriteria: SortCriteria) => void;
+// }
 
-const Menu = ({ handleSort }: MenuProps) => {
+const Menu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = React.useRef(null);
     const navigate = useNavigate();
@@ -66,8 +63,6 @@ const Menu = ({ handleSort }: MenuProps) => {
                     <DrawerBody>
                         <Accordion allowToggle={true}>
                             <AddFileItem />
-                            {/* <FilterItem /> */}
-                            <SortItem handleSort={handleSort} />
                             <ChangePasswordItem />
                         </Accordion>
                     </DrawerBody>

@@ -14,7 +14,7 @@
 -   [x] fuzzy search
 -   [x] order
 -   [ ] custom fonts
--   [ ] buggy sorting
+-   [x] buggy sorting
 -   [x] maxWidth of list
 -   [ ] drawer animation
 -   [x] scrollbar
