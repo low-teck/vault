@@ -149,11 +149,12 @@ const Home = () => {
                                     handleQueryChanges={handleQueryChanges}
                                 />
                                 <Button
+                                    minW="4rem"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         setSort(!sort);
                                     }}
-                                    focusBorderColor="teal"
+                                    colorScheme="teal"
                                     margin="1rem"
                                 >
                                     {sort ? "A-Z" : "Date"}
