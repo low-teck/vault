@@ -171,7 +171,14 @@ const Home = () => {
                         <List spacing={5} w="50vw" marginTop="20vh">
                             {[...queryResults].sort(handleSort).map((res) => (
                                 <>
-                                    <ListItem key={res.item.filename}>
+                                    <motion.li
+                                        whileHover={{
+                                            scale: 0.99,
+                                            opacity: 0.5,
+                                            transition: { duration: 0.25 },
+                                        }}
+                                        key={res.item.filename}
+                                    >
                                         <HStack
                                             spacing={5}
                                             justify="space-between"
@@ -262,7 +269,7 @@ const Home = () => {
                                                 )}
                                             </HStack>
                                         </HStack>
-                                    </ListItem>
+                                    </motion.li>
                                     <Divider />
                                 </>
                             ))}
