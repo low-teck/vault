@@ -105,11 +105,9 @@ function createWindow() {
     });
 
     ipcMain.handle("ENC_FILE", async (event, args) => {
+        console.log(args);
         const file = {
-            filename: args.filename,
-            file: args.file,
-            type: args.type,
-            saved: args.saved,
+            ...args,
             date: new Date(),
         };
         await saveFile(file);

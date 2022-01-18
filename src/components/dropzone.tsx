@@ -20,7 +20,7 @@ import {
     ArrowForwardIcon,
     SmallCloseIcon,
 } from "@chakra-ui/icons";
-import { useDropzone } from "react-dropzone";
+import { FileWithPath, useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
 const { ipcRenderer } = window.require("electron");
 
@@ -29,7 +29,7 @@ interface FileWithPreview extends File {
 }
 
 const FileDropzone = () => {
-    const [files, setFiles] = useState<Array<FileWithPreview>>();
+    const [files, setFiles] = useState<Array<FileWithPreview>>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
@@ -67,46 +67,41 @@ const FileDropzone = () => {
 
     const thumbs =
         files &&
-        files.map((file: FileWithPreview) => {
+        files.map((file: FileWithPath, index: number) => {
             return (
                 file && (
-                    <>
-                        {/* @ts-ignore */}
-                        <ListItem key={file.path}>
-                            <HStack justify="space-between">
-                                {/* @ts-ignore */}
-                                <HStack>
-                                    <ArrowForwardIcon color="teal" />
-                                    <Container maxWidth="50vw">
-                                        <Text>{file.name}</Text>
-                                    </Container>
-                                </HStack>
-                                <HStack>
-                                    <Text>{convertBytes(file.size)}</Text>
-                                    <IconButton
-                                        aria-label="del"
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        icon={<SmallCloseIcon />}
-                                        onClick={(
-                                            e: React.MouseEvent<HTMLButtonElement>
-                                        ) => {
-                                            e.preventDefault();
-                                            setFiles(
-                                                files.filter((f) => f !== file)
-                                            );
-                                        }}
-                                    />
-                                </HStack>
+                    <ListItem key={index}>
+                        <HStack justify="space-between">
+                            <HStack>
+                                <ArrowForwardIcon color="teal" />
+                                <Container maxWidth="50vw">
+                                    <Text>{file.name}</Text>
+                                </Container>
                             </HStack>
-                        </ListItem>
-                        <Divider />
-                    </>
+                            <HStack>
+                                <Text>{convertBytes(file.size)}</Text>
+                                <IconButton
+                                    aria-label="del"
+                                    colorScheme="red"
+                                    variant="ghost"
+                                    icon={<SmallCloseIcon />}
+                                    onClick={(
+                                        e: React.MouseEvent<HTMLButtonElement>
+                                    ) => {
+                                        e.preventDefault();
+                                        setFiles(
+                                            files.filter((f) => f !== file)
+                                        );
+                                    }}
+                                />
+                            </HStack>
+                        </HStack>
+                    </ListItem>
                 )
             );
         });
 
-    const encrypt = async (input: File) => {
+    const encrypt = async (input: FileWithPath) => {
         setLoading(true);
         var file = input;
         var reader = new FileReader();
@@ -116,9 +111,12 @@ const FileDropzone = () => {
             var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
             var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
 
+            console.log(file);
             const result = await ipcRenderer.invoke("ENC_FILE", {
                 file: encrypted,
-                filename: file.name,
+                filename: file.name, //@ts-ignore
+                lastModifiedDate: file.lastModifiedDate,
+                path: file.path,
                 type: file.type.split("/")[1],
                 saved: false,
             });
@@ -134,7 +132,7 @@ const FileDropzone = () => {
             }
             setLoading(false);
         };
-        await reader.readAsArrayBuffer(file);
+        reader.readAsArrayBuffer(file);
     };
 
     return (
@@ -182,10 +180,9 @@ const FileDropzone = () => {
                                 loadingText="Encrypting..."
                                 spinnerPlacement="end"
                                 onClick={() => {
-                                    files.map(async (file: FileWithPreview) => {
+                                    files.map(async (file: FileWithPath) => {
                                         await encrypt(file);
                                     });
-                                    // setLoading(false);
                                 }}
                             >
                                 Encrypt

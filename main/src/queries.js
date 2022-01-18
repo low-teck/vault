@@ -28,6 +28,8 @@ const getAllFileData = async () => {
             saved: file.file.saved,
             type: file.file.type,
             date: file.file.date,
+            path: file.file.path,
+            lastModifiedDate: file.file.lastModifiedDate,
         });
     });
     return data;

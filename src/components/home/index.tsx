@@ -89,6 +89,7 @@ const Home = () => {
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
         setFileData(data);
+        console.log(data);
         setLoading(false);
     };
 
@@ -169,15 +170,16 @@ const Home = () => {
                     <br />
                     {!loading ? (
                         <List spacing={5} w="50vw" marginTop="20vh">
-                            {[...queryResults].sort(handleSort).map((res) => (
-                                <>
+                            {[...queryResults]
+                                .sort(handleSort)
+                                .map((res, index: number) => (
                                     <motion.li
                                         whileHover={{
                                             scale: 0.99,
-                                            opacity: 0.5,
+                                            opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
-                                        key={res.item.filename}
+                                        key={index}
                                     >
                                         <HStack
                                             spacing={5}
@@ -270,9 +272,7 @@ const Home = () => {
                                             </HStack>
                                         </HStack>
                                     </motion.li>
-                                    <Divider />
-                                </>
-                            ))}
+                                ))}
                         </List>
                     ) : (
                         <AbsoluteCenter>

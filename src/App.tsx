@@ -15,7 +15,6 @@ const App = () => {
 
     const getUser = async () => {
         const val = await ipcRenderer.invoke("USER_EXISTS");
-        console.log("after :", val);
         setUser(val);
     };
 
