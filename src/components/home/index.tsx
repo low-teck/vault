@@ -89,7 +89,6 @@ const Home = () => {
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
         setFileData(data);
-        console.log(data);
         setLoading(false);
     };
 

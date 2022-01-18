@@ -111,7 +111,6 @@ const FileDropzone = () => {
             var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
             var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
 
-            console.log(file);
             const result = await ipcRenderer.invoke("ENC_FILE", {
                 file: encrypted,
                 filename: file.name, //@ts-ignore

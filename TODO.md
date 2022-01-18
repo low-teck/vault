@@ -21,3 +21,5 @@
 -   [ ] toast timing
 -   [x] back button position
 -   [x] loading
+-   [ ] no bug divider
+-   [ ] info modal
