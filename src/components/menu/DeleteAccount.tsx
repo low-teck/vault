@@ -21,7 +21,6 @@ const DeleteAccount = () => {
 
     const handleDelete = (e: React.MouseEvent) => {
         e.preventDefault();
-        //handle deletion
         ipcRenderer.invoke("DELETE_ACCOUNT");
         toast({
             title: "account deleted",
@@ -50,14 +49,14 @@ const DeleteAccount = () => {
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                        <AlertDialogHeader fontSize="xl" fontWeight="bold">
                             delete account?
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            Are you sure? Deleting account will lead to the
-                            deletion of all the encrypted files and your
-                            personal key.
+                            are you sure? <br />
+                            deleting account will lead to the deletion of all
+                            the encrypted files and your personal key.
                         </AlertDialogBody>
 
                         <AlertDialogFooter>

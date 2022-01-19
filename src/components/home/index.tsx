@@ -11,6 +11,14 @@ import {
     Container,
     Button,
     AbsoluteCenter,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalCloseButton,
+    ModalBody,
+    ModalFooter,
+    useDisclosure,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
@@ -72,6 +80,31 @@ const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
     };
     //@ts-ignore
     return <MotionListItem {...animations}>{children}</MotionListItem>;
+};
+
+const InfoModal = ({ filedata }: { filedata: FileInfo }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    return (
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <ModalOverlay />
+            <ModalContent>
+                <ModalHeader>File</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>{filedata.filename}</ModalBody>
+
+                <ModalFooter>
+                    <Button
+                        colorScheme="teal"
+                        mr={3}
+                        variant="ghost"
+                        onClick={onClose}
+                    >
+                        Close
+                    </Button>
+                </ModalFooter>
+            </ModalContent>
+        </Modal>
+    );
 };
 
 const Home = () => {
@@ -173,8 +206,8 @@ const Home = () => {
                                 .sort(handleSort)
                                 .map((res, index: number) => (
                                     <motion.li
-                                        whileHover={{
-                                            scale: 0.99,
+                                        whileTap={{
+                                            scale: 0.999,
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
