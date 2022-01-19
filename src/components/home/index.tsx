@@ -138,6 +138,7 @@ const Home = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [modalData, setModalData] = useState<FileInfo>();
     const [toggle, setToggle] = useState<boolean>();
+    const [modalToggle, setModalToggle] = useState<boolean>();
     const [query, setQuery] = useState<string>("");
     const [debouncedQuery] = useDebounce(query, 500);
     const [sort, setSort] = useState<boolean>(false);
@@ -185,7 +186,7 @@ const Home = () => {
 
     useEffect(() => {
         onOpen();
-    }, [modalData]);
+    }, [modalToggle]);
 
     const handleQueryChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -240,14 +241,18 @@ const Home = () => {
                             {[...queryResults]
                                 .sort(handleSort)
                                 .map((res, index: number) => (
-                                    <motion.li
+                                    <MotionListItem
                                         whileTap={{
                                             scale: 0.999,
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
-                                        onClick={(e) => {
+                                        bg="whitesmoke"
+                                        minH="10vh"
+                                        borderRadius="md"
+                                        onClick={() => {
                                             setModalData(res.item);
+                                            setModalToggle(!modalToggle);
                                         }}
                                         key={index}
                                     >
@@ -341,7 +346,7 @@ const Home = () => {
                                                 )}
                                             </HStack>
                                         </HStack>
-                                    </motion.li>
+                                    </MotionListItem>
                                 ))}
                         </List>
                     ) : (
