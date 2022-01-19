@@ -62,7 +62,6 @@ const Signup = () => {
                                     lg: "50px",
                                 }}
                                 fontWeight="bold"
-                                fontFamily="Comfortaa"
                             >
                                 Signup
                             </Text>

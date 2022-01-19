@@ -19,6 +19,7 @@ import {
     ModalBody,
     ModalFooter,
     useDisclosure,
+    UnorderedList,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
@@ -41,8 +42,10 @@ type Ppt = "pptx" | "odp" | "ppt" | "key";
 
 interface FileInfo {
     filename: string;
-    saved: Boolean;
+    saved: boolean;
     date: Date;
+    lastModifiedDate: Date;
+    path: string;
     type: Video | Image | Document | Ppt;
 }
 
@@ -82,15 +85,34 @@ const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
     return <MotionListItem {...animations}>{children}</MotionListItem>;
 };
 
-const InfoModal = ({ filedata }: { filedata: FileInfo }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const InfoModal = ({
+    isOpen,
+    onClose,
+    modalData,
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+    modalData: FileInfo;
+}) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>File</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody>{filedata.filename}</ModalBody>
+                <ModalBody>
+                    <UnorderedList>
+                        <ListItem key="filename">{modalData.filename}</ListItem>
+                        <ListItem key="path">{modalData.path}</ListItem>
+                        <ListItem key="type">{modalData.type}</ListItem>
+                        <ListItem key="lastMod">
+                            {modalData.lastModifiedDate.toString()}
+                        </ListItem>
+                        <ListItem key="added">
+                            {modalData.date.toString()}
+                        </ListItem>
+                    </UnorderedList>
+                </ModalBody>
 
                 <ModalFooter>
                     <Button
@@ -113,6 +135,8 @@ const Home = () => {
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [modalData, setModalData] = useState<FileInfo>();
     const [toggle, setToggle] = useState<boolean>();
     const [query, setQuery] = useState<string>("");
     const [debouncedQuery] = useDebounce(query, 500);
@@ -159,6 +183,10 @@ const Home = () => {
         getData();
     }, []);
 
+    useEffect(() => {
+        onOpen();
+    }, [modalData]);
+
     const handleQueryChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setQuery(e.target.value);
@@ -200,6 +228,13 @@ const Home = () => {
                         </Box>
                     </Box>
                     <br />
+                    {modalData && (
+                        <InfoModal
+                            onClose={onClose}
+                            isOpen={isOpen}
+                            modalData={modalData}
+                        />
+                    )}
                     {!loading ? (
                         <List spacing={5} w="50vw" marginTop="20vh">
                             {[...queryResults]
@@ -210,6 +245,9 @@ const Home = () => {
                                             scale: 0.999,
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
+                                        }}
+                                        onClick={(e) => {
+                                            setModalData(res.item);
                                         }}
                                         key={index}
                                     >

@@ -1,15 +1,15 @@
 import { extendTheme } from "@chakra-ui/react";
 
-const colors = {
-	brand: {
-		900: "#1a365d",
-		800: "#153e75",
-		700: "#2a69ac",
-	},
+const theme = extendTheme({
+	// brand: {
+	// 	900: "#1a365d",
+	// 	800: "#153e75",
+	// 	700: "#2a69ac",
+	// },
 	fonts: {
-		heading: "Patrick Hand",
+		heading: "Gochi Hand",
+		body: "Nunito",
 	},
-};
+});
 
-const theme = extendTheme({ colors });
 export default theme;

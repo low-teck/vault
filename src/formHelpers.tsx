@@ -60,7 +60,7 @@ export const FormItem = ({
                     onChange={onChange}
                     value={value}
                     placeholder={placeholder}
-                    focusBorderColor="cyan.300"
+                    focusBorderColor="teal.500"
                     variant={variant}
                 />
             </InputGroup>
@@ -91,7 +91,7 @@ export const SecureFormItem = ({
                     value={value}
                     variant="filled"
                     type={show ? "text" : "password"}
-                    focusBorderColor="cyan.300"
+                    focusBorderColor="teal.500"
                     placeholder={placeholder}
                 />
                 <InputRightElement width="4.5rem">
