@@ -13,7 +13,7 @@
 -   [x] refresh on delete
 -   [x] fuzzy search
 -   [x] order
--   [ ] custom fonts
+-   [x] custom fonts
 -   [x] buggy sorting
 -   [x] maxWidth of list
 -   [ ] drawer animation
@@ -22,4 +22,4 @@
 -   [x] back button position
 -   [x] loading
 -   [ ] no bug divider
--   [ ] info modal
+-   [x] info modal
