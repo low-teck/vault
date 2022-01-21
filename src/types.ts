@@ -32,7 +32,16 @@ export interface SecureAuthFormItemProps extends AuthFormItemProps {
 	toggle: React.MouseEventHandler;
 }
 
+type Video = "mp4" | "mpeg" | "wmv";
+type Image = "jpg" | "jpeg" | "png";
+type Document = "pdf" | "zip";
+type Ppt = "pptx" | "odp" | "ppt" | "key";
+
 export interface FileInfo {
 	filename: string;
-	saved: Boolean;
+	saved: boolean;
+	date: Date;
+	lastModifiedDate: Date;
+	path: string;
+	type: Video | Image | Document | Ppt;
 }

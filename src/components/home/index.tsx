@@ -32,21 +32,9 @@ import SearchFiles from "./searchFiles";
 import { decrypt } from "./decrypt";
 import { AnimatePresence, motion, usePresence } from "framer-motion";
 import Loading from "../loading";
+import { FileInfo } from "../../types";
+import InfoModal from "./infoModal";
 const { ipcRenderer } = window.require("electron");
-
-type Video = "mp4" | "mpeg" | "wmv";
-type Image = "jpg" | "jpeg" | "png";
-type Document = "pdf" | "zip";
-type Ppt = "pptx" | "odp" | "ppt" | "key";
-
-interface FileInfo {
-    filename: string;
-    saved: boolean;
-    date: Date;
-    lastModifiedDate: Date;
-    path: string;
-    type: Video | Image | Document | Ppt;
-}
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
     includeScore: true,
@@ -82,63 +70,6 @@ const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
     };
     //@ts-ignore
     return <MotionListItem {...animations}>{children}</MotionListItem>;
-};
-
-const InfoModal = ({
-    isOpen,
-    onClose,
-    modalData,
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-    modalData: FileInfo;
-}) => {
-    return (
-        <Modal isOpen={isOpen} size="xl" onClose={onClose} isCentered>
-            <ModalOverlay />
-            <ModalContent>
-                <ModalHeader>
-                    <Heading size="lg">information</Heading>
-                </ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                    <UnorderedList>
-                        <ListItem key="filename">
-                            <Heading size="md">name:</Heading>
-                            {modalData.filename}
-                        </ListItem>
-                        <ListItem key="path">
-                            <Heading size="md">original path:</Heading>
-                            {modalData.path}
-                        </ListItem>
-                        <ListItem key="type">
-                            <Heading size="md">file type:</Heading>
-                            {modalData.type}
-                        </ListItem>
-                        <ListItem key="lastMod">
-                            <Heading size="md">date last modified:</Heading>
-                            {modalData.lastModifiedDate.toString()}
-                        </ListItem>
-                        <ListItem key="added">
-                            <Heading size="md">date added:</Heading>
-                            {modalData.date.toString()}
-                        </ListItem>
-                    </UnorderedList>
-                </ModalBody>
-
-                <ModalFooter>
-                    <Button
-                        colorScheme="teal"
-                        mr={3}
-                        variant="ghost"
-                        onClick={onClose}
-                    >
-                        Close
-                    </Button>
-                </ModalFooter>
-            </ModalContent>
-        </Modal>
-    );
 };
 
 const Home = () => {
