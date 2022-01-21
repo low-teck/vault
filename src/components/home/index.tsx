@@ -11,18 +11,10 @@ import {
     Container,
     Button,
     AbsoluteCenter,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
     useDisclosure,
-    UnorderedList,
 } from "@chakra-ui/react";
 import Menu from "../menu";
-import { List, ListItem, ListIcon, Divider } from "@chakra-ui/react";
+import { List, ListItem, ListIcon } from "@chakra-ui/react";
 import { ArrowRightIcon, DeleteIcon } from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import Fuse from "fuse.js";
@@ -129,7 +121,7 @@ const Home = () => {
 
     useEffect(() => {
         onOpen();
-    }, [modalToggle]);
+    }, [modalToggle, onOpen]);
 
     const handleQueryChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
