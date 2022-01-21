@@ -260,7 +260,7 @@ const Home = () => {
                                             transition: { duration: 0.25 },
                                         }}
                                         display="flex"
-                                        bg="whitesmoke"
+                                        bg="#FAFAFA"
                                         minH="10vh"
                                         borderRadius="md"
                                         onClick={() => {
@@ -270,6 +270,7 @@ const Home = () => {
                                         key={index}
                                     >
                                         <HStack
+                                            marginX="0.5rem"
                                             spacing={5}
                                             justify="space-between"
                                             w="100%"
