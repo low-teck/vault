@@ -18,7 +18,7 @@
 -   [x] maxWidth of list
 -   [ ] drawer animation
 -   [x] scrollbar
--   [ ] toast timing
+-   [x] toast timing
 -   [x] back button position
 -   [x] loading
 -   [ ] no bug divider
