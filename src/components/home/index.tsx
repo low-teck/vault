@@ -30,7 +30,6 @@ import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
 import { decrypt } from "./decrypt";
-import { SortCriteria } from "../../types";
 import { AnimatePresence, motion, usePresence } from "framer-motion";
 import Loading from "../loading";
 const { ipcRenderer } = window.require("electron");
@@ -260,6 +259,7 @@ const Home = () => {
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
+                                        display="flex"
                                         bg="whitesmoke"
                                         minH="10vh"
                                         borderRadius="md"

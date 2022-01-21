@@ -36,9 +36,3 @@ export interface FileInfo {
 	filename: string;
 	saved: Boolean;
 }
-
-export type SortCriteria = "filename" | "date";
-
-export interface SortItemProps {
-	handleSort: (sortCriteria: SortCriteria) => void;
-}
