@@ -23,4 +23,4 @@
 -   [x] loading
 -   [ ] no bug divider
 -   [x] info modal
--   [ ] list ui
+-   [x] list ui

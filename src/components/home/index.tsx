@@ -272,6 +272,7 @@ const Home = () => {
                                         <HStack
                                             spacing={5}
                                             justify="space-between"
+                                            w="100%"
                                         >
                                             <HStack>
                                                 <ListIcon
