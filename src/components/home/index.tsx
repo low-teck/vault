@@ -198,12 +198,12 @@ const Home = () => {
                                             justify="space-between"
                                             w="50vw"
                                         >
-                                            <HStack>
+                                            <HStack maxW="30vw">
                                                 <ListIcon
                                                     as={ArrowRightIcon}
                                                     color="green.500"
                                                 />
-                                                <Container maxWidth="40vw">
+                                                <Container>
                                                     <Text>
                                                         {res.item.filename}
                                                     </Text>
