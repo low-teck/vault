@@ -196,7 +196,7 @@ const Home = () => {
                                             marginX="0.5rem"
                                             spacing={5}
                                             justify="space-between"
-                                            w="100%"
+                                            w="50vw"
                                         >
                                             <HStack>
                                                 <ListIcon

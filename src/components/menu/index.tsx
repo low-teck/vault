@@ -1,6 +1,5 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
-    Accordion,
     Button,
     Drawer,
     DrawerBody,
@@ -9,11 +8,13 @@ import {
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
+    Flex,
     Heading,
     IconButton,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
@@ -23,6 +24,8 @@ import DeleteAccount from "./deleteAccount";
 // interface MenuProps {
 //     handleSort: (sortCriteria: SortCriteria) => void;
 // }
+
+const MotionDrawer = motion(Drawer);
 
 const Menu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -49,7 +52,7 @@ const Menu = () => {
                 onClick={onOpen}
                 icon={<HamburgerIcon />}
             />
-            <Drawer
+            <MotionDrawer
                 size="sm"
                 isOpen={isOpen}
                 placement="right"
@@ -61,14 +64,18 @@ const Menu = () => {
                     <DrawerCloseButton />
                     <DrawerHeader>
                         {" "}
-                        <Heading as="h2"> vault menu </Heading>{" "}
+                        <Heading size="2xl"> vault menu </Heading>{" "}
                     </DrawerHeader>
 
                     <DrawerBody>
-                        <Accordion allowToggle={true}>
+                        <Flex
+                            justifyContent="space-evenly"
+                            h="40%"
+                            flexDirection="column"
+                        >
                             <AddFileItem />
                             <ChangePasswordItem />
-                        </Accordion>
+                        </Flex>
                     </DrawerBody>
 
                     <DrawerFooter>
@@ -83,7 +90,7 @@ const Menu = () => {
                         </Button>
                     </DrawerFooter>
                 </DrawerContent>
-            </Drawer>
+            </MotionDrawer>
         </>
     );
 };
