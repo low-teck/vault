@@ -12,6 +12,7 @@ import {
     Button,
     AbsoluteCenter,
     useDisclosure,
+    useColorMode,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon } from "@chakra-ui/react";
@@ -70,6 +71,7 @@ const Home = () => {
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
+    const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [modalData, setModalData] = useState<FileInfo>();
     const [toggle, setToggle] = useState<boolean>();
@@ -133,11 +135,11 @@ const Home = () => {
             <Box position="fixed" zIndex="sticky" margin="4rem">
                 <Menu />
             </Box>
-            <Center bg="white">
+            <Center>
                 <Box w="50vw">
                     <Box
-                        bg="white"
                         overflow="hidden"
+                        bg={colorMode === "dark" ? "gray.800" : "white"}
                         zIndex="sticky"
                         position="fixed"
                     >
@@ -172,7 +174,12 @@ const Home = () => {
                         />
                     )}
                     {!loading ? (
-                        <List spacing={5} w="50vw" marginTop="20vh">
+                        <List
+                            spacing={5}
+                            w="50vw"
+                            position="relative"
+                            marginTop="20vh"
+                        >
                             {[...queryResults]
                                 .sort(handleSort)
                                 .map((res, index: number) => (
@@ -183,7 +190,6 @@ const Home = () => {
                                             transition: { duration: 0.25 },
                                         }}
                                         display="flex"
-                                        bg="#FAFAFA"
                                         minH="10vh"
                                         borderRadius="md"
                                         onClick={() => {

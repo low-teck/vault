@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { HashRouter as Router } from "react-router-dom";
 import theme from "./theme";
 import "@fontsource/nunito";
@@ -10,6 +10,7 @@ import "@fontsource/gochi-hand";
 ReactDOM.render(
 	<Router>
 		<ChakraProvider theme={theme}>
+			<ColorModeScript />
 			<App />
 		</ChakraProvider>
 	</Router>,

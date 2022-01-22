@@ -12,7 +12,6 @@ const { ipcRenderer } = window.require("electron");
 const App = () => {
     const [user, setUser] = useState(false);
     const location = useLocation();
-
     const getUser = async () => {
         const val = await ipcRenderer.invoke("USER_EXISTS");
         setUser(val);

@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
 import DeleteAccount from "./deleteAccount";
+import ToggleTheme from "./toggleTheme";
 
 // interface MenuProps {
 //     handleSort: (sortCriteria: SortCriteria) => void;
@@ -75,6 +76,7 @@ const Menu = () => {
                         >
                             <AddFileItem />
                             <ChangePasswordItem />
+                            <ToggleTheme />
                         </Flex>
                     </DrawerBody>
 

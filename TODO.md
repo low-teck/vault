@@ -6,7 +6,7 @@
 -   [x] form to change password
 -   [x] map name to file and download file
 -   [x] show names of enc files
--   [x] menu ui
+-   [ ] menu ui
 -   [x] key + delete account flow
 -   [x] encryption, decryption and save on main thread
 -   [x] refresh on store
@@ -23,4 +23,4 @@
 -   [x] loading
 -   [x] info modal
 -   [x] list ui
--   [ ] dark mode
+-   [x] dark mode
