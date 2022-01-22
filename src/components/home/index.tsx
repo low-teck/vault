@@ -13,6 +13,8 @@ import {
     AbsoluteCenter,
     useDisclosure,
     useColorMode,
+    useStyleConfig,
+    Divider,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon } from "@chakra-ui/react";
@@ -71,6 +73,7 @@ const Home = () => {
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
+    const styles = useStyleConfig("listItem");
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [modalData, setModalData] = useState<FileInfo>();
@@ -189,6 +192,11 @@ const Home = () => {
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
+                                        bg={
+                                            colorMode === "dark"
+                                                ? "gray.900"
+                                                : "#FAFAFA"
+                                        }
                                         display="flex"
                                         minH="10vh"
                                         borderRadius="md"

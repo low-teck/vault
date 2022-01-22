@@ -26,8 +26,6 @@ import ToggleTheme from "./toggleTheme";
 //     handleSort: (sortCriteria: SortCriteria) => void;
 // }
 
-const MotionDrawer = motion(Drawer);
-
 const Menu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = React.useRef(null);
@@ -53,14 +51,14 @@ const Menu = () => {
                 onClick={onOpen}
                 icon={<HamburgerIcon />}
             />
-            <MotionDrawer
+            <Drawer
                 size="sm"
                 isOpen={isOpen}
                 placement="right"
                 onClose={onClose}
                 finalFocusRef={btnRef}
             >
-                <DrawerOverlay />
+                <DrawerOverlay style={{ backdropFilter: "blur(5px)" }} />
                 <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerHeader>
@@ -92,7 +90,7 @@ const Menu = () => {
                         </Button>
                     </DrawerFooter>
                 </DrawerContent>
-            </MotionDrawer>
+            </Drawer>
         </>
     );
 };

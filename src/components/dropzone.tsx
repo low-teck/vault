@@ -13,6 +13,7 @@ import {
     useToast,
     HStack,
     VStack,
+    useColorMode,
 } from "@chakra-ui/react";
 import {
     ArrowBackIcon,
@@ -30,6 +31,7 @@ interface FileWithPreview extends File {
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const { colorMode, toggleColorMode } = useColorMode();
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {
@@ -69,8 +71,15 @@ const FileDropzone = () => {
         files.map((file: FileWithPath, index: number) => {
             return (
                 file && (
-                    <ListItem key={index}>
-                        <HStack justify="space-between">
+                    <ListItem
+                        display="flex"
+                        w="60vw"
+                        borderRadius="md"
+                        bg={colorMode === "dark" ? "gray.900" : "#FAFAFA"}
+                        key={index}
+                        minH="10vh"
+                    >
+                        <HStack margin="1rem" w="100%" justify="space-between">
                             <HStack>
                                 <ArrowForwardIcon color="teal" />
                                 <Container maxWidth="50vw">
