@@ -14,6 +14,7 @@ const AddFileItem = () => {
             variant="unstyled"
             onClick={handleAddFile}
             fontSize="xl"
+            fontWeight="normal"
         >
             add a file to vault
         </Button>

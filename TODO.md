@@ -23,3 +23,4 @@
 -   [x] loading
 -   [x] info modal
 -   [x] list ui
+-   [ ] dark mode

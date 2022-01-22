@@ -149,7 +149,7 @@ const FileDropzone = () => {
             </Box>
             <Center paddingTop="4rem">
                 <Box
-                    w="70vw"
+                    w="50vw"
                     h="30vh"
                     bg="white"
                     borderWidth="3px"

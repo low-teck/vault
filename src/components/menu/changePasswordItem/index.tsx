@@ -18,6 +18,7 @@ const ChangePasswordItem = () => {
             <Button
                 _focus={{ outline: 0 }}
                 variant="unstyled"
+                fontWeight="normal"
                 onClick={onOpen}
                 fontSize="xl"
             >
