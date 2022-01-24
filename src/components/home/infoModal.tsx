@@ -25,7 +25,7 @@ const InfoModal = ({
 }) => {
     return (
         <Modal isOpen={isOpen} size="xl" onClose={onClose} isCentered>
-            <ModalOverlay style={{ backdropFilter: "blur(5px)" }} />
+            <ModalOverlay backdropFilter="blur(5px)" />
             <ModalContent>
                 <ModalHeader>
                     <Heading size="lg">information</Heading>

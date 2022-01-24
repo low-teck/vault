@@ -58,7 +58,7 @@ const Menu = () => {
                 onClose={onClose}
                 finalFocusRef={btnRef}
             >
-                <DrawerOverlay style={{ backdropFilter: "blur(5px)" }} />
+                <DrawerOverlay backdropFilter="blur(5px)" />
                 <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerHeader>

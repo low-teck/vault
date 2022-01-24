@@ -4,6 +4,7 @@ import {
     ModalBody,
     ModalCloseButton,
     ModalContent,
+    ModalFooter,
     ModalHeader,
     ModalOverlay,
     useDisclosure,
@@ -25,13 +26,14 @@ const ChangePasswordItem = () => {
                 change password
             </Button>
             <Modal isOpen={isOpen} isCentered onClose={onClose}>
-                <ModalOverlay />
+                <ModalOverlay backdropFilter="blur(5px)" />
                 <ModalContent>
                     <ModalHeader>change password</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <ChangePasswordForm />
                     </ModalBody>
+                    <br />
                 </ModalContent>
             </Modal>
         </>
