@@ -132,7 +132,7 @@ const FileDropzone = () => {
                 toast({
                     title: `${file.name} saved! you can now delete the original file :)`,
                     isClosable: true,
-                    duration: 1000,
+                    duration: 2000,
                     variant: "left-accent",
                     position: "top-right",
                     status: "success",
