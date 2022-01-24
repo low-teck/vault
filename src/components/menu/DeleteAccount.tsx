@@ -39,7 +39,7 @@ const DeleteAccount = () => {
                 variant="ghost"
                 onClick={() => setIsOpen(true)}
             >
-                Delete Account
+                delete account
             </Button>
 
             <AlertDialog

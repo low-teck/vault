@@ -73,8 +73,7 @@ const Home = () => {
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
-    const styles = useStyleConfig("listItem");
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [modalData, setModalData] = useState<FileInfo>();
     const [toggle, setToggle] = useState<boolean>();
@@ -194,7 +193,7 @@ const Home = () => {
                                         }}
                                         bg={
                                             colorMode === "dark"
-                                                ? "gray.900"
+                                                ? "gray.700"
                                                 : "#FAFAFA"
                                         }
                                         display="flex"

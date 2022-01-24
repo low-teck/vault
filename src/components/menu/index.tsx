@@ -14,7 +14,6 @@ import {
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
@@ -86,7 +85,7 @@ const Menu = () => {
                             mr={3}
                             onClick={handleLogout}
                         >
-                            Logout
+                            logout
                         </Button>
                     </DrawerFooter>
                 </DrawerContent>

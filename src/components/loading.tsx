@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { useColorMode } from "@chakra-ui/react";
 
 const loadingContainer = {
     width: "2rem",
@@ -45,6 +46,7 @@ const loadingCircleTransition = {
 };
 
 const Loading = () => {
+    const { colorMode } = useColorMode();
     return (
         <motion.div
             style={loadingContainer}
@@ -53,17 +55,26 @@ const Loading = () => {
             animate="end"
         >
             <motion.span
-                style={loadingCircle}
+                style={{
+                    ...loadingCircle,
+                    backgroundColor: colorMode === "dark" ? "white" : "black",
+                }}
                 variants={loadingCircleVariants}
                 transition={loadingCircleTransition}
             />
             <motion.span
-                style={loadingCircle}
+                style={{
+                    ...loadingCircle,
+                    backgroundColor: colorMode === "dark" ? "white" : "black",
+                }}
                 variants={loadingCircleVariants}
                 transition={loadingCircleTransition}
             />
             <motion.span
-                style={loadingCircle}
+                style={{
+                    ...loadingCircle,
+                    backgroundColor: colorMode === "dark" ? "white" : "black",
+                }}
                 variants={loadingCircleVariants}
                 transition={loadingCircleTransition}
             />

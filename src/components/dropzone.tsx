@@ -31,7 +31,7 @@ interface FileWithPreview extends File {
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {

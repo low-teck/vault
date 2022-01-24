@@ -2,7 +2,7 @@ import React from "react";
 import { Button, useColorMode } from "@chakra-ui/react";
 
 const ToggleTheme = () => {
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { toggleColorMode } = useColorMode();
 
     return (
         <Button
