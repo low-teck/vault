@@ -30,7 +30,6 @@ const InfoModal = ({
                 <ModalHeader>
                     <Heading size="lg">information</Heading>
                 </ModalHeader>
-                <ModalCloseButton />
                 <ModalBody>
                     <UnorderedList>
                         <ListItem key="filename">

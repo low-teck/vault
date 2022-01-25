@@ -73,13 +73,14 @@ const FileDropzone = () => {
                 file && (
                     <ListItem
                         display="flex"
-                        w="60vw"
+                        w="50vw"
+                        alignSelf="center"
                         borderRadius="md"
-                        bg={colorMode === "dark" ? "gray.900" : "#FAFAFA"}
+                        bg={colorMode === "dark" ? "gray.700" : "#FAFAFA"}
                         key={index}
                         minH="10vh"
                     >
-                        <HStack margin="1rem" w="100%" justify="space-between">
+                        <HStack marginX="1rem" w="100%" justify="space-between">
                             <HStack>
                                 <ArrowForwardIcon color="teal" />
                                 <Container maxWidth="50vw">
@@ -174,7 +175,7 @@ const FileDropzone = () => {
             </Center>
             <Center mt={10}>
                 <VStack>
-                    <List w="60vw" spacing={4}>
+                    <List w="50vw" spacing={4}>
                         {thumbs}
                     </List>
                     <Center m={10}>

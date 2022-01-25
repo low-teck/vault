@@ -160,7 +160,7 @@ const Home = () => {
                                     colorScheme="teal"
                                     margin="1rem"
                                 >
-                                    {sort ? "A-Z" : "Date"}
+                                    {sort ? "a-z" : "date"}
                                 </Button>
                             </HStack>
                             <br />
@@ -206,7 +206,7 @@ const Home = () => {
                                         key={index}
                                     >
                                         <HStack
-                                            marginX="0.5rem"
+                                            marginX="1rem"
                                             spacing={5}
                                             justify="space-between"
                                             w="50vw"

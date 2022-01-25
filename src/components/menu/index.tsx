@@ -69,6 +69,7 @@ const Menu = () => {
                         <Flex
                             justifyContent="space-evenly"
                             h="40%"
+                            w="100%"
                             flexDirection="column"
                         >
                             <AddFileItem />
