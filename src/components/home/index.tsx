@@ -187,7 +187,7 @@ const Home = () => {
                                 .map((res, index: number) => (
                                     <MotionListItem
                                         whileTap={{
-                                            scale: 0.999,
+                                            scale: 0.99,
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
@@ -198,6 +198,9 @@ const Home = () => {
                                         }
                                         display="flex"
                                         minH="10vh"
+                                        whileHover={{
+                                            translateY: "-0.3rem",
+                                        }}
                                         borderRadius="md"
                                         onClick={() => {
                                             setModalData(res.item);
