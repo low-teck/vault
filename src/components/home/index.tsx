@@ -17,8 +17,9 @@ import {
     Divider,
 } from "@chakra-ui/react";
 import Menu from "../menu";
+import DisplayModal from "./displayModal";
 import { List, ListItem, ListIcon } from "@chakra-ui/react";
-import { ArrowRightIcon, DeleteIcon } from "@chakra-ui/icons";
+import { ArrowRightIcon, DeleteIcon, ViewIcon } from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import Fuse from "fuse.js";
 import { useDebounce } from "use-debounce/lib";
@@ -75,7 +76,13 @@ const Home = () => {
     >([]);
     const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const {
+        isOpen: isOpenDisplayModal,
+        onOpen: onOpenDisplayModal,
+        onClose: onCloseDisplayModal,
+    } = useDisclosure();
     const [modalData, setModalData] = useState<FileInfo>();
+    const [displayModalData, setDisplayModalData] = useState<FileInfo>();
     const [toggle, setToggle] = useState<boolean>();
     const [modalToggle, setModalToggle] = useState<boolean>();
     const [query, setQuery] = useState<string>("");
@@ -175,6 +182,13 @@ const Home = () => {
                             modalData={modalData}
                         />
                     )}
+                    {displayModalData && (
+                        <DisplayModal
+                            isOpen={isOpenDisplayModal}
+                            onClose={onCloseDisplayModal}
+                            modalData={displayModalData}
+                        />
+                    )}
                     {!loading ? (
                         <List
                             spacing={5}
@@ -270,6 +284,16 @@ const Home = () => {
                                                             }
                                                         );
                                                         setToggle(!toggle);
+                                                    }}
+                                                />
+                                                <IconButton
+                                                    aria-label={`download ${res.item.filename}`}
+                                                    variant="ghost"
+                                                    icon={
+                                                        <ViewIcon w={4} h={4} />
+                                                    }
+                                                    onClick={async (e) => {
+                                                        e.stopPropagation();
                                                     }}
                                                 />
                                                 {res.item.saved && (
