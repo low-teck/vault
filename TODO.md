@@ -25,3 +25,5 @@
 -   [x] list ui
 -   [x] dark mode
 -   [ ] micro interactions
+-   [x] flash issue
+-   [ ] out of proportion encrypt list item in small viewport
