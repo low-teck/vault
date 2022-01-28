@@ -15,6 +15,7 @@ import {
     useColorMode,
     useStyleConfig,
     Divider,
+    useColorModeValue,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List, ListItem, ListIcon } from "@chakra-ui/react";
@@ -40,7 +41,6 @@ const MotionListItem = motion<ListItemProps>(ListItem);
 
 const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
     const [isPresent, safeToRemove] = usePresence();
-
     const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
     const animations = {
         layout: true,
@@ -73,6 +73,8 @@ const Home = () => {
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
+    const barBg = useColorModeValue("white", "gray.800");
+    const listBg = useColorModeValue("#FAFAFA", "gray.700");
     const { colorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [modalData, setModalData] = useState<FileInfo>();
@@ -133,7 +135,13 @@ const Home = () => {
     };
 
     return (
-        <Box w="100vw" h="100vh" overflowY="scroll" overflowX="hidden">
+        <Box
+            w="100vw"
+            h="100vh"
+            overflowY="scroll"
+            bg={barBg}
+            overflowX="hidden"
+        >
             <Box position="fixed" zIndex="sticky" margin="4rem">
                 <Menu />
             </Box>
@@ -141,7 +149,7 @@ const Home = () => {
                 <Box w="50vw">
                     <Box
                         overflow="hidden"
-                        bg={colorMode === "dark" ? "gray.800" : "white"}
+                        bg={barBg}
                         zIndex="sticky"
                         position="fixed"
                     >
@@ -191,11 +199,7 @@ const Home = () => {
                                             opacity: 0.75,
                                             transition: { duration: 0.25 },
                                         }}
-                                        bg={
-                                            colorMode === "dark"
-                                                ? "gray.700"
-                                                : "#FAFAFA"
-                                        }
+                                        bg={listBg}
                                         display="flex"
                                         minH="10vh"
                                         whileHover={{
