@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
 import { FormItem, MotionButton } from "../formHelpers";
 import { useNavigate } from "react-router-dom";
+import Strength from "../strength";
 
 const { ipcRenderer } = window.require("electron");
 
@@ -18,13 +19,17 @@ const validationSchema = Yup.object({
 });
 
 const Signup = () => {
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [strength, setStrength] = useState<number>(0);
     const navigate = useNavigate();
     const toast = useToast();
     const formik = useFormik({
         initialValues: {
             password: "",
             confirmPassword: "",
+        },
+        validate: (values) => {
+            setStrength(values.password.length * 8);
         },
         validationSchema,
         onSubmit: async (values) => {
@@ -48,12 +53,11 @@ const Signup = () => {
             formik.resetForm();
         },
     });
-    useEffect(() => {}, []);
     return (
         <Box>
             <Center h="100vh">
                 <form onSubmit={formik.handleSubmit}>
-                    <Stack spacing={[5, 10, 30]} w={[300, 350, 350]}>
+                    <Stack spacing={[5, 10, 40]} w={[300, 350, 350]}>
                         <Center>
                             <Text
                                 fontSize={{
@@ -63,7 +67,7 @@ const Signup = () => {
                                 }}
                                 fontWeight="bold"
                             >
-                                Signup
+                                sign up
                             </Text>
                         </Center>
                     </Stack>
@@ -75,6 +79,7 @@ const Signup = () => {
                         placeholder="enter your password..."
                         error={formik.errors.password}
                     />
+                    <br />
                     <FormItem
                         label="Confirm password"
                         value={formik.values.confirmPassword}
@@ -83,11 +88,13 @@ const Signup = () => {
                         placeholder="confirm your password..."
                         error={formik.errors.confirmPassword}
                     />
+                    <br />
+                    <Strength value={strength} />
                     <MotionButton
                         colorScheme="cyan"
                         loading={loading}
                         type="submit"
-                        label="Sign up"
+                        label="sign up"
                     />
                 </form>
             </Center>

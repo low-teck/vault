@@ -24,4 +24,4 @@
 -   [x] info modal
 -   [x] list ui
 -   [x] dark mode
--   [ ] wired elems ui?
+-   [ ] micro interactions
