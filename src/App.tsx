@@ -7,6 +7,7 @@ import Signin from "./auth/signin";
 import SetKeyDialog from "./components/setKey";
 import { AnimatePresence } from "framer-motion";
 import RoutingAnimation from "./routingAnimation";
+import ThemeModeToggler from "./components/toggleTheme";
 const { ipcRenderer } = window.require("electron");
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
 
     return (
         <AnimatePresence exitBeforeEnter>
+            <ThemeModeToggler aria-label="toggle" />
             <Routes key={location.pathname} location={location}>
                 <Route
                     path="/home"

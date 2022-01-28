@@ -57,11 +57,10 @@ const Menu = () => {
                 onClose={onClose}
                 finalFocusRef={btnRef}
             >
-                <DrawerOverlay />
+                <DrawerOverlay backdropFilter="blur(5px)" />
                 <DrawerContent>
                     <DrawerCloseButton />
                     <DrawerHeader>
-                        {" "}
                         <Heading size="2xl"> vault menu </Heading>{" "}
                     </DrawerHeader>
 
@@ -74,7 +73,6 @@ const Menu = () => {
                         >
                             <AddFileItem />
                             <ChangePasswordItem />
-                            <ToggleTheme />
                         </Flex>
                     </DrawerBody>
 

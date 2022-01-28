@@ -64,7 +64,7 @@ const SetKeyDialog = () => {
                         <br />
                         <MotionButton
                             colorScheme="teal"
-                            label="Submit"
+                            label="submit"
                             type="submit"
                         />
                     </form>
