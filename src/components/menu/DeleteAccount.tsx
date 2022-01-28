@@ -8,6 +8,7 @@ import {
     AlertDialogOverlay,
     useToast,
     Button,
+    Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
@@ -34,20 +35,17 @@ const DeleteAccount = () => {
 
     return (
         <>
-            <Button
-                colorScheme="red"
-                variant="ghost"
-                onClick={() => setIsOpen(true)}
-            >
+            <Text cursor="pointer" onClick={() => setIsOpen(true)}>
                 delete account
-            </Button>
+            </Text>
 
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
+                isCentered
             >
-                <AlertDialogOverlay>
+                <AlertDialogOverlay backdropFilter="blur(5px)">
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize="xl" fontWeight="bold">
                             delete account?
@@ -65,7 +63,7 @@ const DeleteAccount = () => {
                                 variant="ghost"
                                 onClick={onClose}
                             >
-                                Cancel
+                                cancel
                             </Button>
                             <Button
                                 colorScheme="red"
@@ -73,7 +71,7 @@ const DeleteAccount = () => {
                                 ml={3}
                                 variant="ghost"
                             >
-                                Delete
+                                delete
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>

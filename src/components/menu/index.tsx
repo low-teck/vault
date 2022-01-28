@@ -11,6 +11,7 @@ import {
     Flex,
     Heading,
     IconButton,
+    Text,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
@@ -46,42 +47,48 @@ const Menu = () => {
                 icon={<HamburgerIcon />}
             />
             <Drawer
-                size="sm"
+                size="full"
                 isOpen={isOpen}
-                placement="right"
+                placement="left"
                 onClose={onClose}
                 finalFocusRef={btnRef}
             >
-                <DrawerOverlay backdropFilter="blur(5px)" />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>
-                        <Heading size="2xl"> vault menu </Heading>{" "}
-                    </DrawerHeader>
+                <DrawerOverlay />
+                <DrawerContent
+                    backdropFilter="blur(20px)"
+                    background="transparent"
+                >
+                    <DrawerCloseButton
+                        color="white"
+                        _focus={{ outline: 0 }}
+                        position="absolute"
+                        left={0}
+                        top={0}
+                        size="lg"
+                        margin="4rem"
+                    />
+                    {/* <DrawerHeader> */}
+                    {/*     <Heading size="2xl"> vault menu </Heading>{" "} */}
+                    {/* </DrawerHeader> */}
 
                     <DrawerBody>
                         <Flex
                             justifyContent="space-evenly"
-                            h="40%"
+                            alignItems="center"
+                            h="100%"
                             w="100%"
+                            fontSize="3xl"
+                            color="white"
                             flexDirection="column"
                         >
                             <AddFileItem />
                             <ChangePasswordItem />
+                            <Text onClick={handleLogout} cursor="pointer">
+                                logout
+                            </Text>
+                            <DeleteAccount />
                         </Flex>
                     </DrawerBody>
-
-                    <DrawerFooter>
-                        <DeleteAccount />
-                        <Button
-                            marginLeft="1rem"
-                            variant="ghost"
-                            mr={3}
-                            onClick={handleLogout}
-                        >
-                            logout
-                        </Button>
-                    </DrawerFooter>
                 </DrawerContent>
             </Drawer>
         </>

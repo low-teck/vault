@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,15 +9,9 @@ const AddFileItem = () => {
     };
 
     return (
-        <Button
-            _focus={{ outline: 0 }}
-            variant="unstyled"
-            onClick={handleAddFile}
-            fontSize="xl"
-            fontWeight="normal"
-        >
+        <Text onClick={handleAddFile} cursor="pointer">
             add a file to vault
-        </Button>
+        </Text>
     );
 };
 

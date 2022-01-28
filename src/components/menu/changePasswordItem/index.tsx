@@ -7,6 +7,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    Text,
     useDisclosure,
 } from "@chakra-ui/react";
 import ChangePasswordForm from "./changePasswordForm";
@@ -16,15 +17,9 @@ const ChangePasswordItem = () => {
 
     return (
         <>
-            <Button
-                _focus={{ outline: 0 }}
-                variant="unstyled"
-                fontWeight="normal"
-                onClick={onOpen}
-                fontSize="xl"
-            >
+            <Text fontSize="3xl" cursor="pointer" onClick={onOpen}>
                 change password
-            </Button>
+            </Text>
             <Modal isOpen={isOpen} isCentered onClose={onClose}>
                 <ModalOverlay backdropFilter="blur(5px)" />
                 <ModalContent>

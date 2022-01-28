@@ -146,11 +146,10 @@ const FileDropzone = () => {
 
     return (
         <Box w="100vw" h="100vh" overflowY="scroll" overflowX="hidden">
-            <Box position="fixed" zIndex="sticky">
+            <Box position="fixed" margin="4rem" zIndex="sticky">
                 <Link to="/home">
                     <IconButton
                         alignSelf="flex-end"
-                        margin="4rem"
                         aria-label={`go back`}
                         colorScheme="teal"
                         icon={<ArrowBackIcon h={8} w={10} />}
