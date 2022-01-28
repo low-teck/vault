@@ -1,6 +1,6 @@
-import { SearchIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, SearchIcon } from "@chakra-ui/icons";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 
 interface ISearchItems {
     value: string;
@@ -8,10 +8,31 @@ interface ISearchItems {
 }
 
 const SearchFiles = ({ value, handleQueryChanges }: ISearchItems) => {
+    const [foc, setFoc] = useState<boolean>(false);
     return (
         <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<SearchIcon />} />
+            <InputLeftElement
+                pointerEvents="none"
+                children={
+                    !foc ? (
+                        <SearchIcon />
+                    ) : (
+                        <ArrowBackIcon
+                            fontSize="xl"
+                            onClick={() => {
+                                setFoc(false);
+                            }}
+                        />
+                    )
+                }
+            />
             <Input
+                onFocus={() => {
+                    setFoc(true);
+                }}
+                onBlur={() => {
+                    setFoc(false);
+                }}
                 boxSizing="border-box"
                 value={value}
                 focusBorderColor="teal.500"
