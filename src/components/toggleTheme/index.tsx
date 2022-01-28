@@ -14,7 +14,7 @@ const ThemeModeToggler = (props: IconButtonProps) => {
 
     return (
         <IconButton
-            fontSize="4xl"
+            fontSize="3xl"
             variant="ghost"
             position="absolute"
             right={0}
