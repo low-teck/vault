@@ -1,31 +1,67 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
+    Box,
+    BoxProps,
     Button,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
     DrawerContent,
+    DrawerContentProps,
     DrawerFooter,
     DrawerHeader,
     DrawerOverlay,
     Flex,
+    FlexProps,
     Heading,
     IconButton,
     Text,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import { motion } from "framer-motion";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
 import DeleteAccount from "./deleteAccount";
+
+const MotionBox = motion<BoxProps>(Box);
+const MotionFlex = motion<FlexProps>(Flex);
+const MotionDrawerContent = motion<DrawerContentProps>(DrawerContent);
+
+const staggerVariants = {
+    open: {
+        transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+    },
+    closed: {
+        transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    },
+};
+
+const variants = {
+    open: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            y: { stiffness: 1000, velocity: -100 },
+        },
+    },
+    closed: {
+        y: 50,
+        opacity: 0,
+        transition: {
+            y: { stiffness: 1000 },
+        },
+    },
+};
 
 const Menu = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const btnRef = React.useRef(null);
     const navigate = useNavigate();
     const toast = useToast();
+    const containerRef = useRef(null);
 
     const handleLogout = () => {
         toast({
@@ -54,9 +90,13 @@ const Menu = () => {
                 finalFocusRef={btnRef}
             >
                 <DrawerOverlay />
-                <DrawerContent
+                <MotionDrawerContent
                     backdropFilter="blur(20px)"
                     background="transparent"
+                    initial={false}
+                    animate={isOpen ? "open" : "closed"}
+                    custom="100%"
+                    ref={containerRef}
                 >
                     <DrawerCloseButton
                         color="white"
@@ -72,7 +112,8 @@ const Menu = () => {
                     {/* </DrawerHeader> */}
 
                     <DrawerBody>
-                        <Flex
+                        <MotionFlex
+                            variants={staggerVariants}
                             justifyContent="space-evenly"
                             alignItems="center"
                             h="100%"
@@ -81,15 +122,41 @@ const Menu = () => {
                             color="white"
                             flexDirection="column"
                         >
-                            <AddFileItem />
-                            <ChangePasswordItem />
-                            <Text onClick={handleLogout} cursor="pointer">
-                                logout
-                            </Text>
-                            <DeleteAccount />
-                        </Flex>
+                            <MotionBox
+                                whileHover={{ translateY: "-0.5rem" }}
+                                whileTap={{ scale: 0.95 }}
+                                variants={variants}
+                            >
+                                <AddFileItem />
+                            </MotionBox>
+                            <MotionBox
+                                whileHover={{ translateY: "-0.5rem" }}
+                                whileTap={{ scale: 0.95 }}
+                                variants={variants}
+                            >
+                                <ChangePasswordItem />
+                            </MotionBox>
+                            <MotionBox
+                                whileHover={{
+                                    translateY: "-0.5rem",
+                                }}
+                                variants={variants}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <Text onClick={handleLogout} cursor="pointer">
+                                    logout
+                                </Text>
+                            </MotionBox>
+                            <MotionBox
+                                whileHover={{ translateY: "-0.5rem" }}
+                                variants={variants}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <DeleteAccount />
+                            </MotionBox>
+                        </MotionFlex>
                     </DrawerBody>
-                </DrawerContent>
+                </MotionDrawerContent>
             </Drawer>
         </>
     );
