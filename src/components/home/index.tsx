@@ -1,35 +1,23 @@
 import React, { useEffect, useState } from "react";
 import {
     Box,
-    Text,
     HStack,
     Heading,
-    IconButton,
-    useToast,
     Center,
-    ListItemProps,
-    Container,
     Button,
     AbsoluteCenter,
-    useDisclosure,
-    useColorMode,
-    useStyleConfig,
-    Divider,
     useColorModeValue,
 } from "@chakra-ui/react";
 import Menu from "../menu";
-import { List, ListItem, ListIcon } from "@chakra-ui/react";
-import { ArrowRightIcon, DeleteIcon } from "@chakra-ui/icons";
-import { DownloadIcon } from "@chakra-ui/icons";
+import { List } from "@chakra-ui/react";
 import Fuse from "fuse.js";
 import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
-import { decrypt } from "./decrypt";
-import { AnimatePresence, motion, usePresence } from "framer-motion";
+import { usePresence } from "framer-motion";
 import Loading from "../loading";
 import { FileInfo } from "../../types";
-import InfoModal from "./infoModal";
+import FileListItem from "./fileListItem";
 const { ipcRenderer } = window.require("electron");
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
@@ -37,35 +25,33 @@ const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
     keys: ["filename"],
 };
 
-const MotionListItem = motion<ListItemProps>(ListItem);
-
-const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
-    const [isPresent, safeToRemove] = usePresence();
-    const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
-    const animations = {
-        layout: true,
-        initial: "out",
-        style: {
-            position: isPresent ? "static" : "absolute",
-        },
-        animate: isPresent ? "in" : "out",
-        whileTap: "tapped",
-        variants: {
-            in: { scaleY: 1, opacity: 1 },
-            out: { scaleY: 0, opacity: 0, zIndex: -1 },
-            tapped: {
-                scale: 0.98,
-                opacity: 0.5,
-                transition: { duration: 0.1 },
-            },
-        },
-        // @ts-ignore
-        onAnimationComplete: () => !isPresent && safeToRemove(),
-        transition,
-    };
-    //@ts-ignore
-    return <MotionListItem {...animations}>{children}</MotionListItem>;
-};
+//const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
+//    const [isPresent, safeToRemove] = usePresence();
+//    const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
+//    const animations = {
+//        layout: true,
+//        initial: "out",
+//        style: {
+//            position: isPresent ? "static" : "absolute",
+//        },
+//        animate: isPresent ? "in" : "out",
+//        whileTap: "tapped",
+//        variants: {
+//            in: { scaleY: 1, opacity: 1 },
+//            out: { scaleY: 0, opacity: 0, zIndex: -1 },
+//            tapped: {
+//                scale: 0.98,
+//                opacity: 0.5,
+//                transition: { duration: 0.1 },
+//            },
+//        },
+//        // @ts-ignore
+//        onAnimationComplete: () => !isPresent && safeToRemove(),
+//        transition,
+//    };
+//    //@ts-ignore
+//    return <MotionListItem {...animations}>{children}</MotionListItem>;
+//};
 
 const Home = () => {
     const [fileData, setFileData] = useState<FileInfo[]>([]);
@@ -74,16 +60,10 @@ const Home = () => {
         Fuse.FuseResult<FileInfo>[]
     >([]);
     const barBg = useColorModeValue("white", "gray.800");
-    const listBg = useColorModeValue("#FAFAFA", "gray.700");
-    const { colorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const [modalData, setModalData] = useState<FileInfo>();
     const [toggle, setToggle] = useState<boolean>();
-    const [modalToggle, setModalToggle] = useState<boolean>();
     const [query, setQuery] = useState<string>("");
     const [debouncedQuery] = useDebounce(query, 500);
     const [sort, setSort] = useState<boolean>(false);
-    const toast = useToast();
 
     const getData = async () => {
         const data = await ipcRenderer.invoke("GET_DATA");
@@ -125,9 +105,9 @@ const Home = () => {
         getData();
     }, []);
 
-    useEffect(() => {
-        onOpen();
-    }, [modalToggle, onOpen]);
+    const refresh = () => {
+        setToggle(!toggle);
+    };
 
     const handleQueryChanges = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -176,13 +156,7 @@ const Home = () => {
                         </Box>
                     </Box>
                     <br />
-                    {modalData && (
-                        <InfoModal
-                            onClose={onClose}
-                            isOpen={isOpen}
-                            modalData={modalData}
-                        />
-                    )}
+
                     {!loading ? (
                         <List
                             spacing={5}
@@ -192,122 +166,15 @@ const Home = () => {
                         >
                             {[...queryResults]
                                 .sort(handleSort)
-                                .map((res, index: number) => (
-                                    <MotionListItem
-                                        whileTap={{
-                                            scale: 0.99,
-                                            opacity: 0.75,
-                                            transition: { duration: 0.25 },
-                                        }}
-                                        bg={listBg}
-                                        display="flex"
-                                        minH="10vh"
-                                        whileHover={{
-                                            translateY: "-0.3rem",
-                                        }}
-                                        borderRadius="md"
-                                        onClick={() => {
-                                            setModalData(res.item);
-                                            setModalToggle(!modalToggle);
-                                        }}
-                                        key={index}
-                                    >
-                                        <HStack
-                                            marginX="1rem"
-                                            spacing={5}
-                                            justify="space-between"
-                                            w="50vw"
-                                        >
-                                            <HStack maxW="30vw">
-                                                <ListIcon
-                                                    as={ArrowRightIcon}
-                                                    color="green.500"
-                                                />
-                                                <Container>
-                                                    <Text>
-                                                        {res.item.filename}
-                                                    </Text>
-                                                </Container>
-                                            </HStack>
-                                            <HStack>
-                                                <IconButton
-                                                    aria-label={`download ${res.item.filename}`}
-                                                    variant="ghost"
-                                                    icon={
-                                                        <DownloadIcon
-                                                            w={4}
-                                                            h={4}
-                                                        />
-                                                    }
-                                                    onClick={async (e) => {
-                                                        e.stopPropagation();
-                                                        let name =
-                                                            res.item.filename;
-                                                        let data =
-                                                            await ipcRenderer.invoke(
-                                                                "DEC_FILE",
-                                                                {
-                                                                    name,
-                                                                }
-                                                            );
-                                                        if (data) {
-                                                            toast({
-                                                                title: `downloaded ${name}`,
-                                                                variant:
-                                                                    "left-accent",
-                                                                status: "success",
-                                                                isClosable:
-                                                                    true,
-                                                            });
-                                                        } else {
-                                                            toast({
-                                                                title: `some error occured, try again :(`,
-                                                                variant:
-                                                                    "left-accent",
-                                                                status: "error",
-                                                                isClosable:
-                                                                    true,
-                                                            });
-                                                        }
-                                                        await decrypt(data);
-                                                        await ipcRenderer.invoke(
-                                                            "SAVE_STATE",
-                                                            {
-                                                                name,
-                                                            }
-                                                        );
-                                                        setToggle(!toggle);
-                                                    }}
-                                                />
-                                                {res.item.saved && (
-                                                    <IconButton
-                                                        aria-label={`delete ${res.item.filename}`}
-                                                        variant="ghost"
-                                                        icon={
-                                                            <DeleteIcon
-                                                                w={4}
-                                                                h={4}
-                                                            />
-                                                        }
-                                                        onClick={async (e) => {
-                                                            e.stopPropagation();
-                                                            let name =
-                                                                res.item
-                                                                    .filename;
-                                                            await ipcRenderer.invoke(
-                                                                "DELETE_FILE",
-                                                                {
-                                                                    name,
-                                                                }
-                                                            );
-                                                            setToggle(!toggle);
-                                                        }}
-                                                    />
-                                                )}
-                                            </HStack>
-                                        </HStack>
-                                    </MotionListItem>
-                                ))}
+                                .map((res, index: number) => {
+                                    return (
+                                        <FileListItem
+                                            res={res}
+                                            index={index}
+                                            refresh={refresh}
+                                        />
+                                    );
+                                })}
                         </List>
                     ) : (
                         <AbsoluteCenter>
