@@ -73,6 +73,7 @@ const FileListItem = ({ res, index, refresh }: FileListItemProps) => {
             borderRadius="md"
             onClick={() => {
                 onOpen();
+                toggle(false);
             }}
             key={index}
         >
@@ -85,7 +86,7 @@ const FileListItem = ({ res, index, refresh }: FileListItemProps) => {
                         as={ArrowRightIcon}
                         color="green.500"
                     />
-                    <Container>
+                    <Container maxW="100%">
                         <Text>{res.item.filename}</Text>
                     </Container>
                 </HStack>
@@ -126,6 +127,7 @@ const FileListItem = ({ res, index, refresh }: FileListItemProps) => {
                         <IconButton
                             aria-label={`delete ${res.item.filename}`}
                             variant="ghost"
+                            colorScheme="red"
                             icon={<DeleteIcon w={4} h={4} />}
                             onClick={async (e) => {
                                 e.stopPropagation();

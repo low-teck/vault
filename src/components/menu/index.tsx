@@ -123,14 +123,28 @@ const Menu = () => {
                             flexDirection="column"
                         >
                             <MotionBox
-                                whileHover={{ translateY: "-0.5rem" }}
+                                whileHover={{
+                                    translateY: "-1rem",
+                                    transition: {
+                                        type: "spring",
+                                        bounce: 0.6,
+                                        velocity: 0.5,
+                                    },
+                                }}
                                 whileTap={{ scale: 0.95 }}
                                 variants={variants}
                             >
                                 <AddFileItem />
                             </MotionBox>
                             <MotionBox
-                                whileHover={{ translateY: "-0.5rem" }}
+                                whileHover={{
+                                    translateY: "-1rem",
+                                    transition: {
+                                        type: "spring",
+                                        bounce: 0.6,
+                                        velocity: 0.5,
+                                    },
+                                }}
                                 whileTap={{ scale: 0.95 }}
                                 variants={variants}
                             >
@@ -138,7 +152,12 @@ const Menu = () => {
                             </MotionBox>
                             <MotionBox
                                 whileHover={{
-                                    translateY: "-0.5rem",
+                                    translateY: "-1rem",
+                                    transition: {
+                                        type: "spring",
+                                        bounce: 0.6,
+                                        velocity: 0.5,
+                                    },
                                 }}
                                 variants={variants}
                                 whileTap={{ scale: 0.95 }}
@@ -148,7 +167,14 @@ const Menu = () => {
                                 </Text>
                             </MotionBox>
                             <MotionBox
-                                whileHover={{ translateY: "-0.5rem" }}
+                                whileHover={{
+                                    translateY: "-1rem",
+                                    transition: {
+                                        type: "spring",
+                                        bounce: 0.6,
+                                        velocity: 0.5,
+                                    },
+                                }}
                                 variants={variants}
                                 whileTap={{ scale: 0.95 }}
                             >
