@@ -15,7 +15,7 @@ import { DownloadIcon } from "@chakra-ui/icons";
 import Fuse from "fuse.js";
 import * as _ from "lodash";
 import { decrypt } from "./decrypt";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { FileInfo } from "../../types";
 import InfoModal from "./infoModal";
 const { ipcRenderer } = window.require("electron");

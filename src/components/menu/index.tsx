@@ -19,7 +19,7 @@ import {
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
@@ -29,13 +29,20 @@ import DeleteAccount from "./deleteAccount";
 const MotionBox = motion<BoxProps>(Box);
 const MotionFlex = motion<FlexProps>(Flex);
 const MotionDrawerContent = motion<DrawerContentProps>(DrawerContent);
+const MotionDrawerBody = motion(DrawerBody);
 
 const staggerVariants = {
-    open: {
-        transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-    },
     closed: {
-        transition: { staggerChildren: 0.05, staggerDirection: -1 },
+        transition: {
+            staggerChildren: 0.2,
+            staggerDirection: -1,
+        },
+    },
+    open: {
+        transition: {
+            staggerChildren: 0.6,
+            staggerDirection: 1,
+        },
     },
 };
 
@@ -90,99 +97,107 @@ const Menu = () => {
                 finalFocusRef={btnRef}
             >
                 <DrawerOverlay />
-                <MotionDrawerContent
-                    backdropFilter="blur(20px)"
-                    background="transparent"
-                    initial={false}
-                    animate={isOpen ? "open" : "closed"}
-                    custom="100%"
-                    ref={containerRef}
-                >
-                    <DrawerCloseButton
-                        color="white"
-                        _focus={{ outline: 0 }}
-                        position="absolute"
-                        left={0}
-                        top={0}
-                        size="lg"
-                        margin="4rem"
-                    />
-                    {/* <DrawerHeader> */}
-                    {/*     <Heading size="2xl"> vault menu </Heading>{" "} */}
-                    {/* </DrawerHeader> */}
-
-                    <DrawerBody>
-                        <MotionFlex
-                            variants={staggerVariants}
-                            justifyContent="space-evenly"
-                            alignItems="center"
-                            h="100%"
-                            w="100%"
-                            fontSize="3xl"
+                <AnimatePresence>
+                    <MotionDrawerContent
+                        backdropFilter="blur(20px)"
+                        background="transparent"
+                        initial={false}
+                        animate={isOpen ? "open" : "closed"}
+                        custom="100%"
+                        ref={containerRef}
+                    >
+                        <DrawerCloseButton
                             color="white"
-                            flexDirection="column"
-                        >
-                            <MotionBox
-                                whileHover={{
-                                    translateY: "-1rem",
-                                    transition: {
-                                        type: "spring",
-                                        bounce: 0.6,
-                                        velocity: 0.5,
-                                    },
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                variants={variants}
+                            _focus={{ outline: 0 }}
+                            position="absolute"
+                            left={0}
+                            top={0}
+                            size="lg"
+                            margin="4rem"
+                        />
+                        {/* <DrawerHeader> */}
+                        {/*     <Heading size="2xl"> vault menu </Heading>{" "} */}
+                        {/* </DrawerHeader> */}
+
+                        <MotionDrawerBody>
+                            <MotionFlex
+                                variants={staggerVariants}
+                                justifyContent="space-evenly"
+                                animate="open"
+                                exit="closed"
+                                initial="closed"
+                                alignItems="center"
+                                h="100%"
+                                w="100%"
+                                fontSize="3xl"
+                                color="white"
+                                flexDirection="column"
                             >
-                                <AddFileItem />
-                            </MotionBox>
-                            <MotionBox
-                                whileHover={{
-                                    translateY: "-1rem",
-                                    transition: {
-                                        type: "spring",
-                                        bounce: 0.6,
-                                        velocity: 0.5,
-                                    },
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                variants={variants}
-                            >
-                                <ChangePasswordItem />
-                            </MotionBox>
-                            <MotionBox
-                                whileHover={{
-                                    translateY: "-1rem",
-                                    transition: {
-                                        type: "spring",
-                                        bounce: 0.6,
-                                        velocity: 0.5,
-                                    },
-                                }}
-                                variants={variants}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <Text onClick={handleLogout} cursor="pointer">
-                                    logout
-                                </Text>
-                            </MotionBox>
-                            <MotionBox
-                                whileHover={{
-                                    translateY: "-1rem",
-                                    transition: {
-                                        type: "spring",
-                                        bounce: 0.6,
-                                        velocity: 0.5,
-                                    },
-                                }}
-                                variants={variants}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <DeleteAccount />
-                            </MotionBox>
-                        </MotionFlex>
-                    </DrawerBody>
-                </MotionDrawerContent>
+                                <MotionBox
+                                    whileHover={{
+                                        translateY: "-1rem",
+                                        transition: {
+                                            type: "spring",
+                                            bounce: 0.6,
+                                            velocity: 0.5,
+                                        },
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    variants={variants}
+                                >
+                                    <AddFileItem />
+                                </MotionBox>
+                                <MotionBox
+                                    whileHover={{
+                                        translateY: "-1rem",
+                                        transition: {
+                                            type: "spring",
+                                            bounce: 0.6,
+                                            velocity: 0.5,
+                                        },
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    variants={variants}
+                                >
+                                    <ChangePasswordItem />
+                                </MotionBox>
+                                <MotionBox
+                                    whileHover={{
+                                        translateY: "-1rem",
+                                        transition: {
+                                            type: "spring",
+                                            bounce: 0.6,
+                                            velocity: 0.5,
+                                        },
+                                    }}
+                                    variants={variants}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <Text
+                                        onClick={handleLogout}
+                                        cursor="pointer"
+                                    >
+                                        logout
+                                    </Text>
+                                </MotionBox>
+                                <MotionBox
+                                    whileHover={{
+                                        translateY: "-1rem",
+                                        transition: {
+                                            type: "spring",
+                                            bounce: 0.6,
+                                            velocity: 0.5,
+                                        },
+                                    }}
+                                    variants={variants}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <DeleteAccount />
+                                </MotionBox>
+                            </MotionFlex>
+                        </MotionDrawerBody>
+                    </MotionDrawerContent>
+                </AnimatePresence>
             </Drawer>
         </>
     );
