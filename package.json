@@ -2,6 +2,12 @@
 	"name": "x",
 	"version": "0.1.0",
 	"private": true,
+	"main": "main/index.js",
+	"productName": "Vault",
+	"homepage": "./",
+	"author": "low-teck",
+	"license": "MIT",
+	"description": "Vault is a tool for managing your private data",
 	"dependencies": {
 		"@chakra-ui/icons": "^1.1.1",
 		"@chakra-ui/react": "^1.7.2",
@@ -25,6 +31,7 @@
 		"fuse.js": "^6.5.3",
 		"keytar": "^7.7.0",
 		"nedb": "^1.8.0",
+		"nedb-promises": "^5.0.3",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-dropzone": "^11.4.2",
@@ -36,19 +43,50 @@
 		"web-vitals": "^1.0.1",
 		"yup": "^0.32.11"
 	},
+	"build": {
+		"files": [
+			"build/**/*",
+			"node_modules/**/*"
+		],
+		"publish": {
+			"provider": "github",
+			"repo": "vault",
+			"owner": "low-teck"
+		},
+		"mac": {
+			"icon": "build/icon.icns"
+		},
+		"win": {
+			"icon": "build/icon.icns"
+		}
+	},
 	"scripts": {
-		"start": "react-scripts start",
+		"start": "export BROWSER=none && react-scripts start",
+		"start-win": "set BROWSER=none && react-scripts start",
+		"start-electron": "export ELECTRON_START_URL=http://localhost:3000 && cd main && electron .",
+		"start-electron-win": "set ELECTRON_START_URL=http://localhost:3000 && cd main && electron .",
+		"clean": "rm -rf build dist",
+		"clean-win": "rmdir build /S /Q & rmdir dist/S /Q",
 		"build": "react-scripts build",
+		"build-electron": "mkdir build/src && cp -r main/. build/electron",
+		"build-electron-win": "mkdir build/src && robocopy main build/electron /S",
+		"package": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/index.js --publish never",
+		"package-win": "electron-builder build --win -c.extraMetadata.main=build/electron/index.js --publish never",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject",
-		"dev": "BROWSER=none yarn start",
-		"electron": "wait-on tcp:3000 && electron ."
+		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
-		"extends": ["react-app", "react-app/jest"]
+		"extends": [
+			"react-app",
+			"react-app/jest"
+		]
 	},
 	"browserslist": {
-		"production": [">0.2%", "not dead", "not op_mini all"],
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
 		"development": [
 			"last 1 chrome version",
 			"last 1 firefox version",
@@ -58,7 +96,9 @@
 	"devDependencies": {
 		"@types/crypto-js": "^4.0.2",
 		"electron": "^16.0.1",
+		"electron-builder": "^22.14.5",
 		"electron-is-dev": "^2.0.0",
+		"fork-ts-checker-webpack-plugin": "^7.0.0",
 		"prettier": "^2.4.1"
 	}
 }
