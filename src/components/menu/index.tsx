@@ -2,18 +2,14 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import {
     Box,
     BoxProps,
-    Button,
     Drawer,
     DrawerBody,
     DrawerCloseButton,
     DrawerContent,
     DrawerContentProps,
-    DrawerFooter,
-    DrawerHeader,
     DrawerOverlay,
     Flex,
     FlexProps,
-    Heading,
     IconButton,
     Text,
     useDisclosure,
@@ -40,7 +36,7 @@ const staggerVariants = {
     },
     open: {
         transition: {
-            staggerChildren: 0.6,
+            staggerChildren: 0.4,
             staggerDirection: 1,
         },
     },
@@ -135,7 +131,7 @@ const Menu = () => {
                             >
                                 <MotionBox
                                     whileHover={{
-                                        translateY: "-1rem",
+                                        translateY: "-0.5rem",
                                         transition: {
                                             type: "spring",
                                             bounce: 0.6,

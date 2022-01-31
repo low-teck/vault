@@ -14,7 +14,7 @@ import Fuse from "fuse.js";
 import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
-import { usePresence } from "framer-motion";
+import { AnimatePresence, usePresence } from "framer-motion";
 import Loading from "../loading";
 import { FileInfo } from "../../types";
 import FileListItem from "./fileListItem";
@@ -164,17 +164,17 @@ const Home = () => {
                             position="relative"
                             marginTop="20vh"
                         >
-                            {[...queryResults]
-                                .sort(handleSort)
-                                .map((res, index: number) => {
-                                    return (
+                            <AnimatePresence>
+                                {[...queryResults]
+                                    .sort(handleSort)
+                                    .map((res, index: number) => (
                                         <FileListItem
+                                            key={index}
                                             res={res}
-                                            index={index}
                                             refresh={refresh}
                                         />
-                                    );
-                                })}
+                                    ))}
+                            </AnimatePresence>
                         </List>
                     ) : (
                         <AbsoluteCenter>
