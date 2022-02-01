@@ -8,8 +8,8 @@ const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
     password: Yup.string()
-        .required("Password is required to access the vault")
-        .min(6, "Password should be atleast 6 characters in length"),
+        .required("password is required to access the vault")
+        .min(6, "password should be atleast 6 characters in length"),
 });
 
 const Signin = () => {
@@ -65,12 +65,12 @@ const Signin = () => {
                         </Center>
                     </Stack>
                     <SecureFormItem
-                        label="Password"
+                        label="password"
                         value={formik.values.password}
                         touched={formik.touched.password}
                         onChange={formik.handleChange("password")}
                         toggle={handleClick}
-                        placeholder="Enter your password..."
+                        placeholder="enter your password..."
                         error={formik.errors.password}
                         show={show}
                     />
@@ -79,7 +79,7 @@ const Signin = () => {
                         colorScheme="cyan"
                         loading={loading}
                         type="submit"
-                        label="Login"
+                        label="login"
                     />
                 </form>
             </Center>

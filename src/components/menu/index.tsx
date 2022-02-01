@@ -148,7 +148,7 @@ const Menu = () => {
                                 </MotionBox>
                                 <MotionBox
                                     whileHover={{
-                                        translateY: "-1rem",
+                                        translateY: "-0.5rem",
                                         transition: {
                                             type: "spring",
                                             bounce: 0.6,
@@ -162,7 +162,7 @@ const Menu = () => {
                                 </MotionBox>
                                 <MotionBox
                                     whileHover={{
-                                        translateY: "-1rem",
+                                        translateY: "-0.5rem",
                                         transition: {
                                             type: "spring",
                                             bounce: 0.6,
@@ -181,7 +181,7 @@ const Menu = () => {
                                 </MotionBox>
                                 <MotionBox
                                     whileHover={{
-                                        translateY: "-1rem",
+                                        translateY: "-0.5rem",
                                         transition: {
                                             type: "spring",
                                             bounce: 0.6,

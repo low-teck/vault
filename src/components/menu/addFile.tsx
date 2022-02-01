@@ -10,7 +10,7 @@ const AddFileItem = () => {
 
     return (
         <Text onClick={handleAddFile} cursor="pointer">
-            add a file to vault
+            add a file
         </Text>
     );
 };
