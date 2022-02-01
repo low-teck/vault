@@ -12,6 +12,7 @@ import {
     FlexProps,
     IconButton,
     Text,
+    Tooltip,
     useDisclosure,
     useToast,
 } from "@chakra-ui/react";
@@ -20,7 +21,7 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
-import DeleteAccount from "./DeleteAccount";
+import DeleteAccount from "./deleteAccount";
 
 const MotionBox = motion<BoxProps>(Box);
 const MotionFlex = motion<FlexProps>(Flex);
@@ -78,13 +79,15 @@ const Menu = () => {
 
     return (
         <>
-            <IconButton
-                aria-label="menu"
-                ref={btnRef}
-                colorScheme="teal"
-                onClick={onOpen}
-                icon={<HamburgerIcon />}
-            />
+            <Tooltip label="menu">
+                <IconButton
+                    aria-label="menu"
+                    ref={btnRef}
+                    colorScheme="teal"
+                    onClick={onOpen}
+                    icon={<HamburgerIcon />}
+                />
+            </Tooltip>
             <Drawer
                 size="full"
                 isOpen={isOpen}

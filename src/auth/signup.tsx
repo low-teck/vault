@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Center, Heading, Stack, Text, useToast } from "@chakra-ui/react";
 import { FormItem, MotionButton } from "../formHelpers";
 import { useNavigate } from "react-router-dom";
 import Strength from "../strength";
@@ -59,16 +59,7 @@ const Signup = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <Stack spacing={[5, 10, 40]} w={[300, 350, 350]}>
                         <Center>
-                            <Text
-                                fontSize={{
-                                    base: "24px",
-                                    md: "40px",
-                                    lg: "50px",
-                                }}
-                                fontWeight="bold"
-                            >
-                                sign up
-                            </Text>
+                            <Heading size="3xl">sign up</Heading>
                         </Center>
                     </Stack>
                     <FormItem

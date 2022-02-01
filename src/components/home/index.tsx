@@ -7,6 +7,11 @@ import {
     Button,
     AbsoluteCenter,
     useColorModeValue,
+    Text,
+    Icon,
+    Popover,
+    Tooltip,
+    Flex,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List } from "@chakra-ui/react";
@@ -18,6 +23,7 @@ import { AnimatePresence, usePresence } from "framer-motion";
 import Loading from "../loading";
 import { FileInfo } from "../../types";
 import FileListItem from "./fileListItem";
+import { InfoIcon } from "@chakra-ui/icons";
 const { ipcRenderer } = window.require("electron");
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
@@ -139,17 +145,19 @@ const Home = () => {
                                     value={query.toString()}
                                     handleQueryChanges={handleQueryChanges}
                                 />
-                                <Button
-                                    minW="4rem"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setSort(!sort);
-                                    }}
-                                    colorScheme="teal"
-                                    margin="1rem"
-                                >
-                                    {sort ? "a-z" : "date"}
-                                </Button>
+                                <Tooltip label="sort by">
+                                    <Button
+                                        minW="4rem"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setSort(!sort);
+                                        }}
+                                        colorScheme="teal"
+                                        margin="1rem"
+                                    >
+                                        {sort ? "a-z" : "date"}
+                                    </Button>
+                                </Tooltip>
                             </HStack>
                             <br />
                             <Heading>my files</Heading>
@@ -158,24 +166,47 @@ const Home = () => {
                     <br />
 
                     {!loading ? (
-                        <List
-                            spacing={5}
-                            w="50vw"
-                            position="relative"
-                            marginTop="20vh"
-                        >
-                            <AnimatePresence>
-                                {[...queryResults]
-                                    .sort(handleSort)
-                                    .map((res, index: number) => (
-                                        <FileListItem
-                                            key={index}
-                                            res={res}
-                                            refresh={refresh}
+                        queryResults.length ? (
+                            <List
+                                spacing={5}
+                                w="50vw"
+                                position="relative"
+                                marginTop="20vh"
+                            >
+                                <AnimatePresence>
+                                    {[...queryResults]
+                                        .sort(handleSort)
+                                        .map((res, index: number) => (
+                                            <FileListItem
+                                                key={index}
+                                                res={res}
+                                                refresh={refresh}
+                                            />
+                                        ))}
+                                </AnimatePresence>
+                            </List>
+                        ) : (
+                            <AbsoluteCenter>
+                                <Flex
+                                    alignItems="center"
+                                    flexDirection="column"
+                                >
+                                    <Tooltip
+                                        label="try going to the menu and adding a file"
+                                        placement="right"
+                                    >
+                                        <Icon
+                                            as={InfoIcon}
+                                            fontSize="3xl"
+                                            color="teal"
                                         />
-                                    ))}
-                            </AnimatePresence>
-                        </List>
+                                    </Tooltip>
+                                    <Text marginTop="1rem" fontSize="xl">
+                                        no files found!
+                                    </Text>
+                                </Flex>
+                            </AbsoluteCenter>
+                        )
                     ) : (
                         <AbsoluteCenter>
                             <Loading />

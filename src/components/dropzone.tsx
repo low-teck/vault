@@ -161,6 +161,9 @@ const FileDropzone = () => {
                     w="50vw"
                     h="30vh"
                     borderWidth="3px"
+                    _hover={{
+                        borderStyle: "solid",
+                    }}
                     borderStyle="dashed"
                     borderRadius="lg"
                     {...getRootProps({ className: "dropzone" })}
@@ -168,7 +171,9 @@ const FileDropzone = () => {
                     {/* @ts-ignore */}
                     <Input {...getInputProps()} />
                     <Center h="30vh">
-                        <Text>drag 'n' drop or touch to add files</Text>
+                        <Text fontSize="xl">
+                            drag 'n' drop or click to add files
+                        </Text>
                     </Center>
                 </Box>
             </Center>

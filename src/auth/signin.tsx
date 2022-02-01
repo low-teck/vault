@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Center, Heading, Stack, Text, useToast } from "@chakra-ui/react";
 import { MotionButton, SecureFormItem } from "../formHelpers";
 import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
@@ -61,16 +61,7 @@ const Signin = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <Stack spacing={[5, 10, 30]} w={[300, 350, 350]}>
                         <Center>
-                            <Text
-                                fontSize={{
-                                    base: "24px",
-                                    md: "40px",
-                                    lg: "50px",
-                                }}
-                                fontWeight="bold"
-                            >
-                                Login
-                            </Text>
+                            <Heading size="3xl">login</Heading>
                         </Center>
                     </Stack>
                     <SecureFormItem
