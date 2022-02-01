@@ -86,7 +86,7 @@ const MotionFileListItem = ({
                 toggle(true);
             }}
             whileHover={{
-                scale: 0.95,
+                scale: 0.96,
             }}
             onMouseLeave={() => {
                 toggle(false);

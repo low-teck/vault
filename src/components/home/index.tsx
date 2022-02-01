@@ -198,7 +198,7 @@ const Home = () => {
                                         <Icon
                                             as={InfoIcon}
                                             fontSize="3xl"
-                                            color="teal"
+                                            color="teal.200"
                                         />
                                     </Tooltip>
                                     <Text marginTop="1rem" fontSize="xl">
