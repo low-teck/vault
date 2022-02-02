@@ -22,11 +22,14 @@ import {
 } from "@chakra-ui/icons";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
+import { motion } from "framer-motion";
 const { ipcRenderer } = window.require("electron");
 
 interface FileWithPreview extends File {
     preview: string;
 }
+
+const MotionBox = motion(Box);
 
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
@@ -157,25 +160,29 @@ const FileDropzone = () => {
                 </Link>
             </Box>
             <Center paddingTop="4rem">
-                <Box
-                    w="50vw"
-                    h="30vh"
+                <MotionBox
+                    width="50vw"
+                    height="30vh"
                     borderWidth="3px"
-                    _hover={{
+                    whileHover={{
                         borderStyle: "solid",
+                        borderRadius: "20px",
+                        transition: { duration: 0.1 },
                     }}
                     borderStyle="dashed"
                     borderRadius="lg"
                     {...getRootProps({ className: "dropzone" })}
                 >
-                    {/* @ts-ignore */}
-                    <Input {...getInputProps()} />
-                    <Center h="30vh">
-                        <Text fontSize="xl">
-                            drag 'n' drop or click to add files
-                        </Text>
-                    </Center>
-                </Box>
+                    <MotionBox whileTap={{ scale: 0.95 }}>
+                        {/* @ts-ignore */}
+                        <Input {...getInputProps()} />
+                        <Center h="30vh">
+                            <Text fontSize="xl">
+                                drag 'n' drop or click to add files
+                            </Text>
+                        </Center>
+                    </MotionBox>
+                </MotionBox>
             </Center>
             <Center mt={10}>
                 <VStack>
