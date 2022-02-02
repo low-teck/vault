@@ -57,6 +57,10 @@ const FileDropzone = () => {
         [files]
     );
 
+    useEffect(() => {
+        console.log(files);
+    }, [files]);
+
     function convertBytes(bytes: any) {
         if (bytes < 1024) {
             return bytes + " bytes";
@@ -198,6 +202,7 @@ const FileDropzone = () => {
                                 isLoading={loading}
                                 loadingText="Encrypting..."
                                 spinnerPlacement="end"
+                                isDisabled={files.length === 0}
                                 onClick={() => {
                                     files.map(async (file: FileWithPath) => {
                                         await encrypt(file);
