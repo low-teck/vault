@@ -38,12 +38,12 @@ const FileDropzone = () => {
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {
-            let files = acceptedFiles.map((file) =>
+            let newFiles = acceptedFiles.map((file) =>
                 Object.assign(file, {
                     preview: URL.createObjectURL(file),
                 })
             );
-            setFiles(files);
+            setFiles([...files, ...newFiles]);
         },
     });
 
