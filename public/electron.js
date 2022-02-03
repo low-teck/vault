@@ -2,7 +2,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const db = require("./db");
-const URL = require("url").URL;
+const isDev = require("electron-is-dev");
 
 const keytar = require("keytar");
 const os = require("os");
@@ -24,7 +24,9 @@ try {
 
         const username = os.userInfo().username;
 
-        mainWindow.loadFile(path.join(__dirname, "../build/index.html"));
+        isDev
+            ? mainWindow.loadURL("http://localhost:3000")
+            : mainWindow.loadFile(path.join(__dirname, "../build/index.html"));
 
         ipcMain.handle("SIGN_UP", async (event, args) => {
             await keytar.setPassword("vault", username, args.password);
