@@ -14,7 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 import { FileInfo } from "../../types";
-import { decrypt } from "./decrypt";
+import { decrypt, downloadFunc } from "./decrypt";
 const { ipcRenderer } = window.require("electron");
 
 const MotionFlex = motion<FlexProps>(Flex);
@@ -58,15 +58,37 @@ const ContentFlex = ({
 const DownloadModal = ({
     isOpen,
     onClose,
-    modalData,
+    name,
     refresh,
 }: {
     isOpen: boolean;
     onClose: () => void;
-    modalData: FileInfo;
+    name: string;
     refresh: () => void;
 }) => {
     const toast = useToast();
+    const getFile = async (name: string) => {
+        let data = await ipcRenderer.invoke("DEC_FILE", {
+            name,
+        });
+        if (data) {
+            toast({
+                title: `downloaded ${name}`,
+                variant: "left-accent",
+                status: "success",
+                isClosable: true,
+            });
+        } else {
+            toast({
+                title: `some error occured, try again :(`,
+                variant: "left-accent",
+                status: "error",
+                isClosable: true,
+            });
+        }
+
+        return data;
+    };
     return (
         <Modal isOpen={isOpen} size="2xl" onClose={onClose} isCentered>
             <ModalOverlay backdropFilter="blur(5px)" />
@@ -78,56 +100,19 @@ const DownloadModal = ({
                     <Flex justifyContent="space-evenly" h="100%" w="100%">
                         <ContentFlex
                             handler={async () => {
-                                let name = modalData.filename;
-                                let data = await ipcRenderer.invoke(
-                                    "NO_DEC_GET",
-                                    {
-                                        name,
-                                    }
-                                );
-                                if (data) {
-                                    toast({
-                                        title: `downloaded ${name}`,
-                                        variant: "left-accent",
-                                        status: "success",
-                                        isClosable: true,
-                                    });
-                                } else {
-                                    toast({
-                                        title: `some error occured, try again :(`,
-                                        variant: "left-accent",
-                                        status: "error",
-                                        isClosable: true,
-                                    });
-                                }
+                                let data = await getFile(name);
+                                downloadFunc({
+                                    filename: name + ".enc",
+                                    text: data.file.file,
+                                });
+                                refresh();
                             }}
                         >
                             save enc
                         </ContentFlex>
                         <ContentFlex
                             handler={async () => {
-                                let name = modalData.filename;
-                                let data = await ipcRenderer.invoke(
-                                    "DEC_FILE",
-                                    {
-                                        name,
-                                    }
-                                );
-                                if (data) {
-                                    toast({
-                                        title: `downloaded ${name}`,
-                                        variant: "left-accent",
-                                        status: "success",
-                                        isClosable: true,
-                                    });
-                                } else {
-                                    toast({
-                                        title: `some error occured, try again :(`,
-                                        variant: "left-accent",
-                                        status: "error",
-                                        isClosable: true,
-                                    });
-                                }
+                                let data = await getFile(name);
                                 await decrypt(data);
                                 await ipcRenderer.invoke("SAVE_STATE", {
                                     name,

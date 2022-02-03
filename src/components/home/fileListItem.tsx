@@ -126,7 +126,7 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                     refresh={refresh}
                     onClose={onDownloadClose}
                     isOpen={isDownloadOpen}
-                    modalData={res.item}
+                    name={res.item.filename}
                 />
                 <HStack
                     marginX="1rem"

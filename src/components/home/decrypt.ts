@@ -11,10 +11,30 @@ export const decrypt = async (input: any) => {
 	// Convert: WordArray -> typed array
 
 	var fileDec = new Blob([typedArray]); // Create blob from typed array
+	downloadFunc({ filename: input.file.filename, file: fileDec });
+};
 
+export const downloadFunc = ({
+	filename,
+	file,
+	text,
+}: {
+	filename: string;
+	file?: any;
+	text?: string;
+}) => {
+	console.log(filename);
 	var a = document.createElement("a");
-	var url = window.URL.createObjectURL(fileDec);
-	var filename = input.file.filename;
+	var url = "null";
+	if (text) {
+		url = window.URL.createObjectURL(
+			new Blob([text], { type: "text/csv" })
+		);
+	}
+	if (file) {
+		url = window.URL.createObjectURL(file);
+	}
+	var filename = filename;
 	a.href = url;
 	a.download = filename;
 	a.click();
