@@ -27,3 +27,5 @@
 -   [ ] micro interactions
 -   [x] flash issue
 -   [ ] out of proportion encrypt list item in small viewport
+-   [ ] dropzone list item interactions
+-   [x] dropzone add bug(removed previously added files)

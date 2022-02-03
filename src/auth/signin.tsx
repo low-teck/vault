@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Center, Heading, Stack, Text, useToast } from "@chakra-ui/react";
 import { MotionButton, SecureFormItem } from "../formHelpers";
 import { useNavigate } from "react-router-dom";
 const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
     password: Yup.string()
-        .required("Password is required to access the vault")
-        .min(6, "Password should be atleast 6 characters in length"),
+        .required("password is required to access the vault")
+        .min(6, "password should be atleast 6 characters in length"),
 });
 
 const Signin = () => {
@@ -61,25 +61,16 @@ const Signin = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <Stack spacing={[5, 10, 30]} w={[300, 350, 350]}>
                         <Center>
-                            <Text
-                                fontSize={{
-                                    base: "24px",
-                                    md: "40px",
-                                    lg: "50px",
-                                }}
-                                fontWeight="bold"
-                            >
-                                Login
-                            </Text>
+                            <Heading size="3xl">login</Heading>
                         </Center>
                     </Stack>
                     <SecureFormItem
-                        label="Password"
+                        label="password"
                         value={formik.values.password}
                         touched={formik.touched.password}
                         onChange={formik.handleChange("password")}
                         toggle={handleClick}
-                        placeholder="Enter your password..."
+                        placeholder="enter your password..."
                         error={formik.errors.password}
                         show={show}
                     />
@@ -88,7 +79,7 @@ const Signin = () => {
                         colorScheme="cyan"
                         loading={loading}
                         type="submit"
-                        label="Login"
+                        label="login"
                     />
                 </form>
             </Center>

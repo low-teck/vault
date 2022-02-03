@@ -47,7 +47,7 @@ const SetKeyDialog = () => {
         <Box w="100vw" h="100vh">
             <Center h="100vh" w="100vw">
                 <Stack>
-                    <Heading>encryption key</Heading>
+                    <Heading size="3xl">encryption key</Heading>
                     <br />
                     <form onSubmit={formik.handleSubmit}>
                         <FormItem

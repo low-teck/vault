@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Center, Heading, Stack, Text, useToast } from "@chakra-ui/react";
 import { FormItem, MotionButton } from "../formHelpers";
 import { useNavigate } from "react-router-dom";
 import Strength from "../strength";
@@ -10,12 +10,12 @@ const { ipcRenderer } = window.require("electron");
 
 const validationSchema = Yup.object({
     password: Yup.string()
-        .required("Password is required to access the vault")
-        .min(6, "Password should be atleast 6 characters in length"),
+        .required("password is required to access the vault")
+        .min(6, "password should be atleast 6 characters in length"),
     confirmPassword: Yup.string()
-        .required("Confirm the password entered above")
+        .required("confirm the password entered above")
         .min(6)
-        .oneOf([Yup.ref("password"), null], "Passwords must match"),
+        .oneOf([Yup.ref("password"), null], "passwords must match"),
 });
 
 const Signup = () => {
@@ -59,20 +59,11 @@ const Signup = () => {
                 <form onSubmit={formik.handleSubmit}>
                     <Stack spacing={[5, 10, 40]} w={[300, 350, 350]}>
                         <Center>
-                            <Text
-                                fontSize={{
-                                    base: "24px",
-                                    md: "40px",
-                                    lg: "50px",
-                                }}
-                                fontWeight="bold"
-                            >
-                                sign up
-                            </Text>
+                            <Heading size="3xl">sign up</Heading>
                         </Center>
                     </Stack>
                     <FormItem
-                        label="Password"
+                        label="password"
                         value={formik.values.password}
                         touched={formik.touched.password}
                         onChange={formik.handleChange("password")}
@@ -81,7 +72,7 @@ const Signup = () => {
                     />
                     <br />
                     <FormItem
-                        label="Confirm password"
+                        label="ponfirm password"
                         value={formik.values.confirmPassword}
                         touched={formik.touched.confirmPassword}
                         onChange={formik.handleChange("confirmPassword")}

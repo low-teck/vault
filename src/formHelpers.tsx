@@ -6,6 +6,7 @@ import {
     Input,
     InputGroup,
     InputRightElement,
+    Tooltip,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { ViewOffIcon, ViewIcon } from "@chakra-ui/icons";
@@ -95,9 +96,11 @@ export const SecureFormItem = ({
                     placeholder={placeholder}
                 />
                 <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={toggle}>
-                        {show ? <ViewOffIcon /> : <ViewIcon />}
-                    </Button>
+                    <Tooltip label={show ? "hide" : "show"}>
+                        <Button h="1.75rem" size="sm" onClick={toggle}>
+                            {show ? <ViewOffIcon /> : <ViewIcon />}
+                        </Button>
+                    </Tooltip>
                 </InputRightElement>
             </InputGroup>
             <Box h="1vh" textColor="palevioletred">

@@ -22,11 +22,14 @@ import {
 } from "@chakra-ui/icons";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
+import { motion } from "framer-motion";
 const { ipcRenderer } = window.require("electron");
 
 interface FileWithPreview extends File {
     preview: string;
 }
+
+const MotionBox = motion(Box);
 
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
@@ -35,12 +38,12 @@ const FileDropzone = () => {
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {
-            let files = acceptedFiles.map((file) =>
+            let newFiles = acceptedFiles.map((file) =>
                 Object.assign(file, {
                     preview: URL.createObjectURL(file),
                 })
             );
-            setFiles(files);
+            setFiles([...files, ...newFiles]);
         },
     });
 
@@ -53,6 +56,10 @@ const FileDropzone = () => {
         },
         [files]
     );
+
+    useEffect(() => {
+        console.log(files);
+    }, [files]);
 
     function convertBytes(bytes: any) {
         if (bytes < 1024) {
@@ -157,20 +164,29 @@ const FileDropzone = () => {
                 </Link>
             </Box>
             <Center paddingTop="4rem">
-                <Box
-                    w="50vw"
-                    h="30vh"
+                <MotionBox
+                    width="50vw"
+                    height="30vh"
                     borderWidth="3px"
+                    whileHover={{
+                        borderStyle: "solid",
+                        borderRadius: "20px",
+                        transition: { duration: 0.1 },
+                    }}
                     borderStyle="dashed"
                     borderRadius="lg"
                     {...getRootProps({ className: "dropzone" })}
                 >
-                    {/* @ts-ignore */}
-                    <Input {...getInputProps()} />
-                    <Center h="30vh">
-                        <Text>drag 'n' drop or touch to add files</Text>
-                    </Center>
-                </Box>
+                    <MotionBox whileTap={{ scale: 0.95 }}>
+                        {/* @ts-ignore */}
+                        <Input {...getInputProps()} />
+                        <Center h="30vh">
+                            <Text fontSize="xl">
+                                drag 'n' drop or click to add files
+                            </Text>
+                        </Center>
+                    </MotionBox>
+                </MotionBox>
             </Center>
             <Center mt={10}>
                 <VStack>
@@ -186,6 +202,7 @@ const FileDropzone = () => {
                                 isLoading={loading}
                                 loadingText="Encrypting..."
                                 spinnerPlacement="end"
+                                isDisabled={files.length === 0}
                                 onClick={() => {
                                     files.map(async (file: FileWithPath) => {
                                         await encrypt(file);
