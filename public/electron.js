@@ -25,7 +25,9 @@ try {
         const username = os.userInfo().username;
 
         isDev
-            ? mainWindow.loadURL("http://localhost:3000")
+            ? mainWindow.loadURL(
+                  process.env.ELECTRON_START_URL || "http://localhost:3003"
+              )
             : mainWindow.loadFile(path.join(__dirname, "../build/index.html"));
 
         ipcMain.handle("SIGN_UP", async (event, args) => {
