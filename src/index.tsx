@@ -6,13 +6,14 @@ import { HashRouter as Router } from "react-router-dom";
 import theme from "./theme";
 import "@fontsource/nunito";
 import "@fontsource/gochi-hand";
+import "./styles.css";
 
 ReactDOM.render(
-	<Router>
-		<ChakraProvider theme={theme}>
-			<ColorModeScript />
-			<App />
-		</ChakraProvider>
-	</Router>,
-	document.getElementById("root")
+    <Router>
+        <ChakraProvider theme={theme}>
+            <ColorModeScript />
+            <App />
+        </ChakraProvider>
+    </Router>,
+    document.getElementById("root")
 );
