@@ -2,7 +2,7 @@
 	"name": "x",
 	"version": "0.1.0",
 	"private": true,
-	"main": "main/index.js",
+	"main": "public/electron.js",
 	"productName": "Vault",
 	"homepage": "./",
 	"author": "low-teck",
@@ -26,6 +26,7 @@
 		"@types/react-router-dom": "^5.3.2",
 		"concurrently": "^7.0.0",
 		"crypto-js": "^4.1.1",
+		"electron-log": "^4.4.5",
 		"formik": "^2.2.9",
 		"framer-motion": "^4",
 		"fuse.js": "^6.5.3",
@@ -53,27 +54,30 @@
 			"repo": "vault",
 			"owner": "low-teck"
 		},
+		"appId": "com.electron.vault",
+		"productName": "Vault",
+		"directories": {
+			"buildResources": "public"
+		},
 		"mac": {
-			"icon": "build/icon.icns"
+			"target": "dmg"
 		},
 		"win": {
-			"icon": "build/icon.icns"
+			"target": "nsis"
+		},
+		"linux": {
+			"target": "deb"
 		}
 	},
 	"scripts": {
 		"start": "export BROWSER=none && react-scripts start",
 		"start-win": "set BROWSER=none && react-scripts start",
-		"start-electron": "export ELECTRON_START_URL=http://localhost:3000 && cd main && electron .",
-		"start-electron-win": "set ELECTRON_START_URL=http://localhost:3000 && cd main && electron .",
-		"clean": "rm -rf build dist",
-		"clean-win": "rmdir build /S /Q & rmdir dist/S /Q",
+		"start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
 		"build": "react-scripts build",
-		"build-electron": "mkdir build/src && cp -r main/. build/electron",
-		"build-electron-win": "mkdir build/src && robocopy main build/electron /S",
-		"package": "electron-builder build --mac --win -c.extraMetadata.main=build/electron/index.js --publish never",
-		"package-win": "electron-builder build --win -c.extraMetadata.main=build/electron/index.js --publish never",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"electron-pack": "electron-builder -c.extraMetadata.main=build/electron.js",
+		"preelectron-pack": "yarn build"
 	},
 	"eslintConfig": {
 		"extends": [
