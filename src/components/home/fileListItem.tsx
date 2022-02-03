@@ -17,6 +17,7 @@ import { decrypt } from "./decrypt";
 import { motion, usePresence } from "framer-motion";
 import { FileInfo } from "../../types";
 import InfoModal from "./infoModal";
+import DownloadModal from "./downloadModal";
 const { ipcRenderer } = window.require("electron");
 
 const MotionListItem = motion<ListItemProps>(ListItem);
@@ -106,6 +107,11 @@ const MotionFileListItem = ({
 
 const FileListItem = ({ res, refresh }: FileListItemProps) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const {
+        isOpen: isDownloadOpen,
+        onOpen: onDownloadOpen,
+        onClose: onDownloadClose,
+    } = useDisclosure();
     const toast = useToast();
     const [on, toggle] = useState(false);
     return (
@@ -114,6 +120,12 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                 <InfoModal
                     onClose={onClose}
                     isOpen={isOpen}
+                    modalData={res.item}
+                />
+                <DownloadModal
+                    refresh={refresh}
+                    onClose={onDownloadClose}
+                    isOpen={isDownloadOpen}
                     modalData={res.item}
                 />
                 <HStack
@@ -141,33 +153,7 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                             icon={<DownloadIcon w={4} h={4} />}
                             onClick={async (e) => {
                                 e.stopPropagation();
-                                let name = res.item.filename;
-                                let data = await ipcRenderer.invoke(
-                                    "DEC_FILE",
-                                    {
-                                        name,
-                                    }
-                                );
-                                if (data) {
-                                    toast({
-                                        title: `downloaded ${name}`,
-                                        variant: "left-accent",
-                                        status: "success",
-                                        isClosable: true,
-                                    });
-                                } else {
-                                    toast({
-                                        title: `some error occured, try again :(`,
-                                        variant: "left-accent",
-                                        status: "error",
-                                        isClosable: true,
-                                    });
-                                }
-                                await decrypt(data);
-                                await ipcRenderer.invoke("SAVE_STATE", {
-                                    name,
-                                });
-                                refresh();
+                                onDownloadOpen();
                             }}
                         />
                         {res.item.saved && (
