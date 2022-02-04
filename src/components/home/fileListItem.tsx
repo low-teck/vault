@@ -8,9 +8,22 @@ import {
     Container,
     useDisclosure,
     useColorModeValue,
+    MenuButton,
+    Menu,
+    Button,
+    MenuList,
+    MenuItem,
+    MenuDivider,
+    Portal,
+    Tooltip,
 } from "@chakra-ui/react";
 import { ListItem, ListIcon } from "@chakra-ui/react";
-import { ArrowRightIcon, DeleteIcon } from "@chakra-ui/icons";
+import {
+    ArrowRightIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    DeleteIcon,
+} from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import Fuse from "fuse.js";
 import { decrypt } from "./decrypt";
@@ -62,7 +75,7 @@ const MotionFileListItem = ({
         style: {
             position: isPresent ? "static" : "absolute",
         },
-        whileTap: "tapped",
+        // whileTap: "tapped",
         animate: isPresent ? "in" : "out",
         variants: {
             in: { opacity: 1 },
@@ -87,6 +100,9 @@ const MotionFileListItem = ({
                 toggle(true);
             }}
             whileHover={{
+                scale: 0.98,
+            }}
+            whileTap={{
                 scale: 0.96,
             }}
             onMouseLeave={() => {
@@ -147,15 +163,72 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                         </Container>
                     </HStack>
                     <HStack>
-                        <IconButton
-                            aria-label={`download ${res.item.filename}`}
-                            variant="ghost"
-                            icon={<DownloadIcon w={4} h={4} />}
-                            onClick={async (e) => {
-                                e.stopPropagation();
-                                onDownloadOpen();
-                            }}
-                        />
+                        {/* <IconButton */}
+                        {/*     aria-label={`download ${res.item.filename}`} */}
+                        {/*     variant="ghost" */}
+                        {/*     icon={<DownloadIcon w={4} h={4} />} */}
+                        {/*     onClick={async (e) => { */}
+                        {/*         e.stopPropagation(); */}
+                        {/*         onDownloadOpen(); */}
+                        {/*     }} */}
+                        {/* /> */}
+
+                        <Menu>
+                            {({ isOpen }) => (
+                                <>
+                                    <MenuButton
+                                        as={IconButton}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                        icon={
+                                            isOpen ? (
+                                                <ChevronUpIcon />
+                                            ) : (
+                                                <ChevronDownIcon />
+                                            )
+                                        }
+                                        variant="ghost"
+                                    />
+                                    <Portal>
+                                        <MenuList>
+                                            <MenuItem
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            >
+                                                save encrypted
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            >
+                                                save original
+                                            </MenuItem>
+                                            <MenuDivider />
+                                            <Tooltip
+                                                label="save the original file to safely remove"
+                                                isDisabled={res.item.saved}
+                                            >
+                                                <span>
+                                                    <MenuItem
+                                                        isDisabled={
+                                                            !res.item.saved
+                                                        }
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                    >
+                                                        remove
+                                                    </MenuItem>
+                                                </span>
+                                            </Tooltip>
+                                        </MenuList>
+                                    </Portal>
+                                </>
+                            )}
+                        </Menu>
                         {res.item.saved && (
                             <IconButton
                                 aria-label={`delete ${res.item.filename}`}

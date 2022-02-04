@@ -1,8 +1,10 @@
+import { InfoIcon } from "@chakra-ui/icons";
 import {
     Button,
     Flex,
     FlexProps,
     Heading,
+    Icon,
     Modal,
     ModalBody,
     ModalContent,
@@ -29,7 +31,7 @@ const ContentFlex = ({
     return (
         <MotionFlex
             borderWidth="2px"
-            h="sm"
+            h="40"
             whileHover={{
                 borderStyle: "solid",
                 borderRadius: "20px",
@@ -40,11 +42,12 @@ const ContentFlex = ({
             justifyContent="center"
             borderStyle="dashed"
         >
+            <Icon as={InfoIcon} position="static" right={0} top={0} />
             <MotionFlex
                 onClick={handler}
                 alignItems="center"
+                h="40"
                 justifyContent="center"
-                h="sm"
                 w="100%"
                 userSelect="none"
                 whileTap={{ scale: 0.95 }}
@@ -90,7 +93,7 @@ const DownloadModal = ({
         return data;
     };
     return (
-        <Modal isOpen={isOpen} size="2xl" onClose={onClose} isCentered>
+        <Modal isOpen={isOpen} size="xl" onClose={onClose} isCentered>
             <ModalOverlay backdropFilter="blur(5px)" />
             <ModalContent>
                 <ModalHeader>
