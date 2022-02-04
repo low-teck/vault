@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/icons";
 import { DownloadIcon } from "@chakra-ui/icons";
 import Fuse from "fuse.js";
-import { decrypt } from "./decrypt";
+import { decrypt, downloadFunc } from "./decrypt";
 import { motion, usePresence } from "framer-motion";
 import { FileInfo } from "../../types";
 import InfoModal from "./infoModal";
@@ -130,6 +130,29 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
     } = useDisclosure();
     const toast = useToast();
     const [on, toggle] = useState(false);
+
+    const getFile = async (name: string, enc: boolean) => {
+        let data = await ipcRenderer.invoke("DEC_FILE", {
+            name,
+        });
+        if (data) {
+            toast({
+                title: `saved ${enc ? "encrypted " : ""}${name}`,
+                variant: "left-accent",
+                status: "success",
+                isClosable: true,
+            });
+        } else {
+            toast({
+                title: `some error occured, try again :(`,
+                variant: "left-accent",
+                status: "error",
+                isClosable: true,
+            });
+        }
+
+        return data;
+    };
     return (
         <MotionFileListItem key={res.refIndex} toggle={toggle} onOpen={onOpen}>
             <>
@@ -193,16 +216,41 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                                     <Portal>
                                         <MenuList>
                                             <MenuItem
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
+                                                onClick={async (e) => {
+                                                    e.stopPropagation();
+                                                    let name =
+                                                        res.item.filename;
+                                                    let data = await getFile(
+                                                        name,
+                                                        true
+                                                    );
+                                                    downloadFunc({
+                                                        filename: name + ".enc",
+                                                        text: data.file.file,
+                                                    });
+                                                    refresh();
+                                                }}
                                             >
                                                 save encrypted
                                             </MenuItem>
                                             <MenuItem
-                                                onClick={(e) =>
-                                                    e.stopPropagation()
-                                                }
+                                                onClick={async (e) => {
+                                                    e.stopPropagation();
+                                                    let name =
+                                                        res.item.filename;
+                                                    let data = await getFile(
+                                                        name,
+                                                        false
+                                                    );
+                                                    await decrypt(data);
+                                                    await ipcRenderer.invoke(
+                                                        "SAVE_STATE",
+                                                        {
+                                                            name,
+                                                        }
+                                                    );
+                                                    refresh();
+                                                }}
                                             >
                                                 save original
                                             </MenuItem>
@@ -216,9 +264,19 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                                                         isDisabled={
                                                             !res.item.saved
                                                         }
-                                                        onClick={(e) =>
-                                                            e.stopPropagation()
-                                                        }
+                                                        onClick={async (e) => {
+                                                            e.stopPropagation();
+                                                            let name =
+                                                                res.item
+                                                                    .filename;
+                                                            await ipcRenderer.invoke(
+                                                                "DELETE_FILE",
+                                                                {
+                                                                    name,
+                                                                }
+                                                            );
+                                                            refresh();
+                                                        }}
                                                     >
                                                         remove
                                                     </MenuItem>
@@ -229,22 +287,6 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                                 </>
                             )}
                         </Menu>
-                        {res.item.saved && (
-                            <IconButton
-                                aria-label={`delete ${res.item.filename}`}
-                                variant="ghost"
-                                colorScheme="red"
-                                icon={<DeleteIcon w={4} h={4} />}
-                                onClick={async (e) => {
-                                    e.stopPropagation();
-                                    let name = res.item.filename;
-                                    await ipcRenderer.invoke("DELETE_FILE", {
-                                        name,
-                                    });
-                                    refresh();
-                                }}
-                            />
-                        )}
                     </HStack>
                 </HStack>
             </>
