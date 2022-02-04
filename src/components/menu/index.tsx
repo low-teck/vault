@@ -21,7 +21,7 @@ import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import AddFileItem from "./addFile";
 import ChangePasswordItem from "./changePasswordItem";
-import DeleteAccount from "./DeleteAccount";
+import DeleteAccount from "./deleteAccount";
 
 const MotionBox = motion<BoxProps>(Box);
 const MotionFlex = motion<FlexProps>(Flex);
