@@ -66,6 +66,7 @@ const Home = () => {
         Fuse.FuseResult<FileInfo>[]
     >([]);
     const barBg = useColorModeValue("white", "gray.800");
+    const iconScheme = useColorModeValue("teal.500", "teal.200");
     const [toggle, setToggle] = useState<boolean>();
     const [query, setQuery] = useState<string>("");
     const [debouncedQuery] = useDebounce(query, 500);
@@ -198,7 +199,7 @@ const Home = () => {
                                         <Icon
                                             as={InfoIcon}
                                             fontSize="3xl"
-                                            color="teal.200"
+                                            color={iconScheme}
                                         />
                                     </Tooltip>
                                     <Text marginTop="1rem" fontSize="xl">
