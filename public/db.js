@@ -1,12 +1,21 @@
 const { app } = require("electron");
 const Datastore = require("nedb-promises");
+const path = require("path");
 
 class Database {
     constructor() {
-        const dbPath = `${process.cwd()}/data/files.db`;
+        const dbPath = `${__dirname}/files.db`;
+
+        // FOR PRODUCTION USE
+        const dbProdPath = path
+            .join(__dirname, "/files.db")
+            .replace("/app.asar", "");
+
+        console.log(dbPath);
         this.db = Datastore.create({
             filename: dbPath,
             timestampData: true,
+            autoload: true,
         });
     }
 
