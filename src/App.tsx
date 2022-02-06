@@ -20,7 +20,7 @@ const App = () => {
 
     useEffect(() => {
         getUser();
-    });
+    }, []);
 
     return (
         <AnimatePresence exitBeforeEnter>

@@ -100,7 +100,7 @@ const MotionFileListItem = ({
                 toggle(true);
             }}
             whileHover={{
-                scale: 0.98,
+                opacity: 0.8,
             }}
             whileTap={{
                 scale: 0.96,
