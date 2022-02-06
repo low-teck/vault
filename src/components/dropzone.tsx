@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
     Box,
@@ -14,6 +14,11 @@ import {
     HStack,
     VStack,
     useColorMode,
+    useDisclosure,
+    useColorModeValue,
+    ListItemProps,
+    ListIcon,
+    Tooltip,
 } from "@chakra-ui/react";
 import {
     ArrowBackIcon,
@@ -22,14 +27,160 @@ import {
 } from "@chakra-ui/icons";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
-import { motion } from "framer-motion";
+import { motion, usePresence } from "framer-motion";
+import InfoModal from "./home/infoModal";
 const { ipcRenderer } = window.require("electron");
 
 interface FileWithPreview extends File {
     preview: string;
 }
+const variants = {
+    open: {
+        opacity: 1,
+        x: 0,
+        transition: {
+            x: { stiffness: 1000, velocity: -100 },
+        },
+    },
+    closed: {
+        opacity: 0,
+        x: "-1rem",
+        transition: {
+            x: { stiffness: 1000 },
+        },
+    },
+};
+
+const MotionEncListItem = ({
+    children,
+    toggle,
+}: {
+    children: ReactNode;
+    toggle: (value: boolean) => void;
+}) => {
+    const [isPresent, safeToRemove] = usePresence();
+    const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
+    const animations = {
+        layout: true,
+        initial: "out",
+        style: {
+            position: isPresent ? "static" : "absolute",
+        },
+        // whileTap: "tapped",
+        animate: isPresent ? "in" : "out",
+        variants: {
+            in: { opacity: 1 },
+            out: { opacity: 0 },
+            tapped: {
+                scale: 0.99,
+                opacity: 0.75,
+                transition: { duration: 0.25 },
+            },
+        },
+        // @ts-ignore
+        onAnimationComplete: () => !isPresent && safeToRemove(),
+        transition,
+    };
+    const listBg = useColorModeValue("#FAFAFA", "gray.700");
+    return (
+        //@ts-ignore
+        <MotionListItem
+            {...animations}
+            bg={listBg}
+            w="50vw"
+            onMouseEnter={() => {
+                toggle(true);
+            }}
+            whileHover={{
+                scale: 0.98,
+            }}
+            whileTap={{
+                scale: 0.96,
+            }}
+            onMouseLeave={() => {
+                toggle(false);
+            }}
+            alignSelf="center"
+            display="flex"
+            minH="10vh"
+            borderRadius="md"
+            onClick={() => {
+                toggle(false);
+            }}
+        >
+            {children}
+        </MotionListItem>
+    );
+};
 
 const MotionBox = motion(Box);
+const MotionListItem = motion<ListItemProps>(ListItem);
+const MotionListIcon = motion(ListIcon);
+
+const EncListItem = ({
+    file,
+    handleFilter,
+}: {
+    file: FileWithPath;
+    handleFilter: (file: FileWithPath) => void;
+}) => {
+    const [on, toggle] = useState(false);
+    function convertBytes(bytes: any) {
+        if (bytes < 1024) {
+            return bytes + " bytes";
+        } else if (bytes < 1048576) {
+            return (bytes / 1024).toFixed(1) + " KB";
+        } else if (bytes < 1073741824) {
+            return (bytes / 1048576).toFixed(1) + " MB";
+        } else {
+            return (bytes / 1073741824).toFixed(1) + " GB";
+        }
+    }
+    return (
+        file && (
+            <MotionEncListItem toggle={toggle}>
+                <Tooltip
+                    label={file ? convertBytes(file.size) : 0}
+                    placement="right"
+                >
+                    <HStack
+                        marginX="1rem"
+                        spacing={5}
+                        justify="space-between"
+                        w="50vw"
+                    >
+                        <HStack maxW="40vw">
+                            <MotionListIcon
+                                initial="closed"
+                                animate={on ? "open" : "closed"}
+                                variants={variants}
+                                as={ArrowForwardIcon}
+                                color="green.500"
+                            />
+                            <Container maxW="100%">
+                                <Text>{file.name}</Text>
+                            </Container>
+                        </HStack>
+                        <HStack>
+                            <IconButton
+                                aria-label="del"
+                                colorScheme="red"
+                                variant="ghost"
+                                icon={<SmallCloseIcon />}
+                                onClick={(
+                                    e: React.MouseEvent<HTMLButtonElement>
+                                ) => {
+                                    e.preventDefault();
+                                    handleFilter(file);
+                                }}
+                            />
+                        </HStack>
+                    </HStack>
+                </Tooltip>
+            </MotionEncListItem>
+        )
+    );
+};
 
 const FileDropzone = () => {
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
@@ -47,6 +198,10 @@ const FileDropzone = () => {
         },
     });
 
+    const handleFilter = (file: FileWithPath) => {
+        setFiles(files.filter((f) => f !== file));
+    };
+
     useEffect(
         () => () => {
             files &&
@@ -57,65 +212,11 @@ const FileDropzone = () => {
         [files]
     );
 
-    useEffect(() => {
-        console.log(files);
-    }, [files]);
-
-    function convertBytes(bytes: any) {
-        if (bytes < 1024) {
-            return bytes + " bytes";
-        } else if (bytes < 1048576) {
-            return (bytes / 1024).toFixed(1) + " KB";
-        } else if (bytes < 1073741824) {
-            return (bytes / 1048576).toFixed(1) + " MB";
-        } else {
-            return (bytes / 1073741824).toFixed(1) + " GB";
-        }
-    }
-
     const thumbs =
         files &&
-        files.map((file: FileWithPath, index: number) => {
-            return (
-                file && (
-                    <ListItem
-                        display="flex"
-                        w="50vw"
-                        alignSelf="center"
-                        borderRadius="md"
-                        bg={colorMode === "dark" ? "gray.700" : "#FAFAFA"}
-                        key={index}
-                        minH="10vh"
-                    >
-                        <HStack marginX="1rem" w="100%" justify="space-between">
-                            <HStack>
-                                <ArrowForwardIcon color="teal" />
-                                <Container maxWidth="50vw">
-                                    <Text>{file.name}</Text>
-                                </Container>
-                            </HStack>
-                            <HStack>
-                                <Text>{convertBytes(file.size)}</Text>
-                                <IconButton
-                                    aria-label="del"
-                                    colorScheme="red"
-                                    variant="ghost"
-                                    icon={<SmallCloseIcon />}
-                                    onClick={(
-                                        e: React.MouseEvent<HTMLButtonElement>
-                                    ) => {
-                                        e.preventDefault();
-                                        setFiles(
-                                            files.filter((f) => f !== file)
-                                        );
-                                    }}
-                                />
-                            </HStack>
-                        </HStack>
-                    </ListItem>
-                )
-            );
-        });
+        files.map((file, index) => (
+            <EncListItem handleFilter={handleFilter} key={index} file={file} />
+        ));
 
     const encrypt = async (input: FileWithPath) => {
         setLoading(true);

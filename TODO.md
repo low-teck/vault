@@ -16,7 +16,7 @@
 -   [x] custom fonts
 -   [x] buggy sorting
 -   [x] maxWidth of list
--   [ ] drawer animation
+-   [x] drawer animation
 -   [x] scrollbar
 -   [x] toast timing
 -   [x] back button position
@@ -24,8 +24,8 @@
 -   [x] info modal
 -   [x] list ui
 -   [x] dark mode
--   [ ] micro interactions
+-   [x] micro interactions
 -   [x] flash issue
--   [ ] out of proportion encrypt list item in small viewport
--   [ ] dropzone list item interactions
+-   [x] out of proportion encrypt list item in small viewport
+-   [x] dropzone list item interactions
 -   [x] dropzone add bug(removed previously added files)
