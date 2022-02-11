@@ -181,8 +181,10 @@ const EncListItem = ({
 };
 
 const FileDropzone = () => {
+    const n = 5;
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [excess, setExcess] = useState<boolean>(false);
     const { colorMode } = useColorMode();
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
@@ -210,6 +212,10 @@ const FileDropzone = () => {
         [files]
     );
 
+    useEffect(() => {
+        files.length > n ? setExcess(true) : setExcess(false);
+    }, [files]);
+
     const thumbs =
         files &&
         files.map((file, index) => (
@@ -235,7 +241,7 @@ const FileDropzone = () => {
                 saved: false,
             });
 
-            if (result === "DONE") {
+            if (result === "DONE" && !excess) {
                 toast({
                     title: `${file.name} saved! you can now delete the original file :)`,
                     isClosable: true,
@@ -245,9 +251,20 @@ const FileDropzone = () => {
                     status: "success",
                 });
             }
+            if (result === "FAILED") {
+                toast({
+                    title: `${file.name} already exists in the vault :(`,
+                    isClosable: true,
+                    duration: 2000,
+                    variant: "left-accent",
+                    position: "top-right",
+                    status: "error",
+                });
+            }
             setLoading(false);
         };
         reader.readAsArrayBuffer(file);
+        return true;
     };
 
     return (
@@ -299,13 +316,29 @@ const FileDropzone = () => {
                                 colorScheme="teal"
                                 size="lg"
                                 isLoading={loading}
-                                loadingText="Encrypting..."
+                                loadingText="encrypting..."
                                 spinnerPlacement="end"
                                 isDisabled={files.length === 0}
-                                onClick={() => {
-                                    files.map(async (file: FileWithPath) => {
-                                        await encrypt(file);
+                                onClick={async () => {
+                                    Promise.all(
+                                        files.map(
+                                            async (file: FileWithPath) => {
+                                                return await encrypt(file);
+                                            }
+                                        )
+                                    ).then(() => {
+                                        setFiles([]);
+                                        excess &&
+                                            toast({
+                                                title: `saved all files, you can now delete the original files :)`,
+                                                isClosable: true,
+                                                duration: 2000,
+                                                variant: "left-accent",
+                                                position: "top-right",
+                                                status: "success",
+                                            });
                                     });
+                                    setFiles([]);
                                 }}
                             >
                                 encrypt

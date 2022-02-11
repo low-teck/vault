@@ -31,34 +31,6 @@ const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
     keys: ["filename"],
 };
 
-//const CustomMotionListItem = ({ children }: { children: React.ReactNode }) => {
-//    const [isPresent, safeToRemove] = usePresence();
-//    const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
-//    const animations = {
-//        layout: true,
-//        initial: "out",
-//        style: {
-//            position: isPresent ? "static" : "absolute",
-//        },
-//        animate: isPresent ? "in" : "out",
-//        whileTap: "tapped",
-//        variants: {
-//            in: { scaleY: 1, opacity: 1 },
-//            out: { scaleY: 0, opacity: 0, zIndex: -1 },
-//            tapped: {
-//                scale: 0.98,
-//                opacity: 0.5,
-//                transition: { duration: 0.1 },
-//            },
-//        },
-//        // @ts-ignore
-//        onAnimationComplete: () => !isPresent && safeToRemove(),
-//        transition,
-//    };
-//    //@ts-ignore
-//    return <MotionListItem {...animations}>{children}</MotionListItem>;
-//};
-
 const Home = () => {
     const [fileData, setFileData] = useState<FileInfo[]>([]);
     const [loading, setLoading] = useState<boolean>(false);

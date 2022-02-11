@@ -105,8 +105,8 @@ try {
                 ...args,
                 date: new Date(),
             };
-            await db.saveFile(file);
-            return "DONE";
+            const res = await db.saveFile(file);
+            return res ? "DONE" : "FAILED";
         });
 
         ipcMain.handle("GET_DATA", async (event, args) => {

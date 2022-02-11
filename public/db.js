@@ -18,7 +18,11 @@ class Database {
     }
 
     saveFile = async (file) => {
-        const res = await this.db.insert({ file });
+        const f = await this.db.findOne({ "file.filename": file.filename });
+        let res = null;
+        if (!f) {
+            res = await this.db.insert({ file });
+        }
         return res;
     };
 

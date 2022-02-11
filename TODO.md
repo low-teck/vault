@@ -6,7 +6,7 @@
 -   [x] form to change password
 -   [x] map name to file and download file
 -   [x] show names of enc files
--   [ ] menu ui
+-   [x] menu ui
 -   [x] key + delete account flow
 -   [x] encryption, decryption and save on main thread
 -   [x] refresh on store
@@ -29,5 +29,6 @@
 -   [x] out of proportion encrypt list item in small viewport
 -   [x] dropzone list item interactions
 -   [x] dropzone add bug(removed previously added files)
--   [ ] disallow multiple files
--   [ ] remove files as soon as encrypted
+-   [x] disallow multiple files
+-   [x] remove files as soon as encrypted
+-   [x] show 1 toast if files > n
