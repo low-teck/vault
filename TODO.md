@@ -29,3 +29,5 @@
 -   [x] out of proportion encrypt list item in small viewport
 -   [x] dropzone list item interactions
 -   [x] dropzone add bug(removed previously added files)
+-   [ ] disallow multiple files
+-   [ ] remove files as soon as encrypted

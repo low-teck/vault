@@ -14,7 +14,6 @@ import {
     HStack,
     VStack,
     useColorMode,
-    useDisclosure,
     useColorModeValue,
     ListItemProps,
     ListIcon,
@@ -28,7 +27,6 @@ import {
 import { FileWithPath, useDropzone } from "react-dropzone";
 import CryptoJS from "crypto-js";
 import { motion, usePresence } from "framer-motion";
-import InfoModal from "./home/infoModal";
 const { ipcRenderer } = window.require("electron");
 
 interface FileWithPreview extends File {
@@ -310,7 +308,7 @@ const FileDropzone = () => {
                                     });
                                 }}
                             >
-                                Encrypt
+                                encrypt
                             </Button>
                         )}
                     </Center>
