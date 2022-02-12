@@ -32,3 +32,5 @@
 -   [x] disallow multiple files
 -   [x] remove files as soon as encrypted
 -   [x] show 1 toast if files > n
+-   [ ] figure out await on reader
+-   [ ] poll and show toasts

@@ -184,8 +184,6 @@ const FileDropzone = () => {
     const n = 5;
     const [files, setFiles] = useState<Array<FileWithPreview>>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const [excess, setExcess] = useState<boolean>(false);
-    const { colorMode } = useColorMode();
     const toast = useToast();
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles: Array<File>) => {
@@ -212,59 +210,41 @@ const FileDropzone = () => {
         [files]
     );
 
-    useEffect(() => {
-        files.length > n ? setExcess(true) : setExcess(false);
-    }, [files]);
-
     const thumbs =
         files &&
         files.map((file, index) => (
             <EncListItem handleFilter={handleFilter} key={index} file={file} />
         ));
 
-    const encrypt = async (input: FileWithPath) => {
+    const encrypt = async (input: FileWithPath): Promise<string> => {
         setLoading(true);
         var file = input;
         var reader = new FileReader();
-        reader.onload = async () => {
-            let key = await ipcRenderer.invoke("GET_KEY");
-            // @ts-ignore
-            var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
-            var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
+        let result;
+        return new Promise((resolve, reject) => {
+            reader.onload = async () => {
+                reader.onerror = () => {
+                    reader.abort();
+                    reject(new DOMException("Problem parsing input file."));
+                };
+                let key = await ipcRenderer.invoke("GET_KEY");
+                // @ts-ignore
+                var wordArray = CryptoJS.lib.WordArray.create(reader.result); // Convert: ArrayBuffer -> WordArray
+                var encrypted = CryptoJS.AES.encrypt(wordArray, key).toString(); // Encryption: I: WordArray -> O: -> Base64 encoded string (OpenSSL-format)
 
-            const result = await ipcRenderer.invoke("ENC_FILE", {
-                file: encrypted,
-                filename: file.name, //@ts-ignore
-                lastModifiedDate: file.lastModifiedDate,
-                path: file.path,
-                type: file.type.split("/")[1],
-                saved: false,
-            });
-
-            if (result === "DONE" && !excess) {
-                toast({
-                    title: `${file.name} saved! you can now delete the original file :)`,
-                    isClosable: true,
-                    duration: 2000,
-                    variant: "left-accent",
-                    position: "top-right",
-                    status: "success",
+                result = await ipcRenderer.invoke("ENC_FILE", {
+                    file: encrypted,
+                    filename: file.name, //@ts-ignore
+                    lastModifiedDate: file.lastModifiedDate,
+                    path: file.path,
+                    type: file.type.split("/")[1],
+                    saved: false,
                 });
-            }
-            if (result === "FAILED") {
-                toast({
-                    title: `${file.name} already exists in the vault :(`,
-                    isClosable: true,
-                    duration: 2000,
-                    variant: "left-accent",
-                    position: "top-right",
-                    status: "error",
-                });
-            }
-            setLoading(false);
-        };
-        reader.readAsArrayBuffer(file);
-        return true;
+                resolve(result);
+                setLoading(false);
+            };
+            reader.readAsArrayBuffer(file);
+        });
     };
 
     return (
@@ -320,24 +300,45 @@ const FileDropzone = () => {
                                 spinnerPlacement="end"
                                 isDisabled={files.length === 0}
                                 onClick={async () => {
-                                    Promise.all(
-                                        files.map(
-                                            async (file: FileWithPath) => {
-                                                return await encrypt(file);
-                                            }
-                                        )
-                                    ).then(() => {
-                                        setFiles([]);
-                                        excess &&
-                                            toast({
-                                                title: `saved all files, you can now delete the original files :)`,
-                                                isClosable: true,
-                                                duration: 2000,
-                                                variant: "left-accent",
-                                                position: "top-right",
-                                                status: "success",
-                                            });
-                                    });
+                                    const res = await Promise.all(
+                                        files.map((file: FileWithPath) => {
+                                            return encrypt(file);
+                                        })
+                                    );
+
+                                    //toasts
+                                    // if (result === "DONE" && !excess) {
+                                    //     toast({
+                                    //         title: `${file.name} saved! you can now delete the original file :)`,
+                                    //         isClosable: true,
+                                    //         duration: 2000,
+                                    //         variant: "left-accent",
+                                    //         position: "top-right",
+                                    //         status: "success",
+                                    //     });
+                                    // }
+                                    // if (result === "FAILED" && !excess) {
+                                    //     setFailed((failed) => failed + 1);
+                                    //     console.log(failed);
+                                    //     toast({
+                                    //         title: `${file.name} already exists in the vault :(`,
+                                    //         isClosable: true,
+                                    //         duration: 2000,
+                                    //         variant: "left-accent",
+                                    //         position: "top-right",
+                                    //         status: "error",
+                                    //     });
+                                    // }
+                                    console.log(res);
+                                    // excess &&
+                                    //     toast({
+                                    //         title: `saved all files, you can now delete the original files :)`,
+                                    //         isClosable: true,
+                                    //         duration: 2000,
+                                    //         variant: "left-accent",
+                                    //         position: "top-right",
+                                    //         status: "success",
+                                    //     });
                                     setFiles([]);
                                 }}
                             >
