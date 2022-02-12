@@ -216,7 +216,9 @@ const FileDropzone = () => {
             <EncListItem handleFilter={handleFilter} key={index} file={file} />
         ));
 
-    const encrypt = async (input: FileWithPath): Promise<string> => {
+    const encrypt = async (
+        input: FileWithPath
+    ): Promise<{ filename: string; result: string }> => {
         setLoading(true);
         var file = input;
         var reader = new FileReader();
@@ -240,7 +242,7 @@ const FileDropzone = () => {
                     type: file.type.split("/")[1],
                     saved: false,
                 });
-                resolve(result);
+                resolve({ filename: file.name, result });
                 setLoading(false);
             };
             reader.readAsArrayBuffer(file);
