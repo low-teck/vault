@@ -308,39 +308,68 @@ const FileDropzone = () => {
                                         })
                                     );
 
-                                    //toasts
-                                    // if (result === "DONE" && !excess) {
-                                    //     toast({
-                                    //         title: `${file.name} saved! you can now delete the original file :)`,
-                                    //         isClosable: true,
-                                    //         duration: 2000,
-                                    //         variant: "left-accent",
-                                    //         position: "top-right",
-                                    //         status: "success",
-                                    //     });
-                                    // }
-                                    // if (result === "FAILED" && !excess) {
-                                    //     setFailed((failed) => failed + 1);
-                                    //     console.log(failed);
-                                    //     toast({
-                                    //         title: `${file.name} already exists in the vault :(`,
-                                    //         isClosable: true,
-                                    //         duration: 2000,
-                                    //         variant: "left-accent",
-                                    //         position: "top-right",
-                                    //         status: "error",
-                                    //     });
-                                    // }
+                                    let done: string[] = [],
+                                        fail: string[] = [];
                                     console.log(res);
-                                    // excess &&
-                                    //     toast({
-                                    //         title: `saved all files, you can now delete the original files :)`,
-                                    //         isClosable: true,
-                                    //         duration: 2000,
-                                    //         variant: "left-accent",
-                                    //         position: "top-right",
-                                    //         status: "success",
-                                    //     });
+                                    res.forEach((r) => {
+                                        r.result === "DONE"
+                                            ? done.push(r.filename)
+                                            : fail.push(r.filename);
+                                    });
+                                    let total_count = res.length,
+                                        done_count = done.length,
+                                        fail_count = fail.length;
+                                    if (total_count > n) {
+                                        if (fail_count === 0) {
+                                            toast({
+                                                title: `saved all files, you can now delete the original files :)`,
+                                                isClosable: true,
+                                                duration: 2000,
+                                                variant: "left-accent",
+                                                position: "top-right",
+                                                status: "success",
+                                            });
+                                        } else if (fail_count !== total_count) {
+                                            toast({
+                                                title: `some files already exist in the vault, encrypted the rest :)`,
+                                                isClosable: true,
+                                                duration: 2000,
+                                                variant: "left-accent",
+                                                position: "top-right",
+                                                status: "warning",
+                                            });
+                                        } else {
+                                            toast({
+                                                title: `all files already exist in the vault :(`,
+                                                isClosable: true,
+                                                duration: 2000,
+                                                variant: "left-accent",
+                                                position: "top-right",
+                                                status: "error",
+                                            });
+                                        }
+                                    } else {
+                                        done.map((filename) => {
+                                            toast({
+                                                title: `saved ${filename}, you can delete it now  :)`,
+                                                isClosable: true,
+                                                duration: 2000,
+                                                variant: "left-accent",
+                                                position: "top-right",
+                                                status: "success",
+                                            });
+                                        });
+                                        fail.map((filename) => {
+                                            toast({
+                                                title: `${filename} already exists in the vault :(`,
+                                                isClosable: true,
+                                                duration: 2000,
+                                                variant: "left-accent",
+                                                position: "top-right",
+                                                status: "error",
+                                            });
+                                        });
+                                    }
                                     setFiles([]);
                                 }}
                             >
