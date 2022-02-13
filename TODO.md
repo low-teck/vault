@@ -35,3 +35,4 @@
 -   [x] figure out await on reader
 -   [x] poll and show toasts
 -   [ ] fix lag on home load
+-   [ ] infinite scrolling on home screen

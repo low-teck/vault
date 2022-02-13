@@ -11,6 +11,7 @@ import {
     Icon,
     Tooltip,
     Flex,
+    Progress,
 } from "@chakra-ui/react";
 import Menu from "../menu";
 import { List } from "@chakra-ui/react";
@@ -75,12 +76,16 @@ const Home = () => {
     }, [debouncedQuery, fileData]);
 
     useEffect(() => {
-        getData();
+        setTimeout(() => {
+            getData();
+        }, 500);
     }, [toggle]);
 
     useEffect(() => {
         setLoading(true);
-        getData();
+        setTimeout(() => {
+            getData();
+        }, 500);
     }, []);
 
     const refresh = () => {
@@ -114,6 +119,7 @@ const Home = () => {
                         <Box w="50vw" paddingTop="4rem" zIndex="sticky">
                             <HStack marginRight="1">
                                 <SearchFiles
+                                    filesNumber={fileData.length}
                                     value={query.toString()}
                                     handleQueryChanges={handleQueryChanges}
                                 />
@@ -132,6 +138,19 @@ const Home = () => {
                                 </Tooltip>
                             </HStack>
                             <br />
+                            <Progress
+                                sx={{
+                                    "& > div:first-child": {
+                                        transitionProperty: "width",
+                                    },
+                                }}
+                                size="xs"
+                                borderRadius="10px"
+                                colorScheme={"teal"}
+                                max={fileData.length}
+                                value={queryResults.length}
+                            />
+                            <br />
                             <Heading>my files</Heading>
                         </Box>
                     </Box>
@@ -143,19 +162,17 @@ const Home = () => {
                                 spacing={5}
                                 w="50vw"
                                 position="relative"
-                                marginTop="20vh"
+                                marginTop="24vh"
                             >
-                                <AnimatePresence>
-                                    {[...queryResults]
-                                        .sort(handleSort)
-                                        .map((res, index: number) => (
-                                            <FileListItem
-                                                key={index}
-                                                res={res}
-                                                refresh={refresh}
-                                            />
-                                        ))}
-                                </AnimatePresence>
+                                {[...queryResults]
+                                    .sort(handleSort)
+                                    .map((res, index: number) => (
+                                        <FileListItem
+                                            key={index}
+                                            res={res}
+                                            refresh={refresh}
+                                        />
+                                    ))}
                             </List>
                         ) : (
                             <AbsoluteCenter>
@@ -163,16 +180,18 @@ const Home = () => {
                                     alignItems="center"
                                     flexDirection="column"
                                 >
-                                    <Tooltip
-                                        label="try going to the menu and adding a file"
-                                        placement="right"
-                                    >
-                                        <Icon
-                                            as={InfoIcon}
-                                            fontSize="3xl"
-                                            color={iconScheme}
-                                        />
-                                    </Tooltip>
+                                    {fileData && (
+                                        <Tooltip
+                                            label="try going to the menu and adding a file"
+                                            placement="right"
+                                        >
+                                            <Icon
+                                                as={InfoIcon}
+                                                fontSize="3xl"
+                                                color={iconScheme}
+                                            />
+                                        </Tooltip>
+                                    )}
                                     <Text marginTop="1rem" fontSize="xl">
                                         no files found!
                                     </Text>

@@ -64,34 +64,10 @@ const MotionFileListItem = ({
     onOpen: () => void;
     toggle: (value: boolean) => void;
 }) => {
-    const [isPresent, safeToRemove] = usePresence();
-    const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 };
-    const animations = {
-        layout: true,
-        initial: "out",
-        style: {
-            position: isPresent ? "static" : "absolute",
-        },
-        // whileTap: "tapped",
-        animate: isPresent ? "in" : "out",
-        variants: {
-            in: { opacity: 1 },
-            out: { opacity: 0 },
-            tapped: {
-                scale: 0.99,
-                opacity: 0.75,
-                transition: { duration: 0.25 },
-            },
-        },
-        // @ts-ignore
-        onAnimationComplete: () => !isPresent && safeToRemove(),
-        transition,
-    };
     const listBg = useColorModeValue("#FAFAFA", "gray.700");
     return (
         //@ts-ignore
         <MotionListItem
-            {...animations}
             bg={listBg}
             onMouseEnter={() => {
                 toggle(true);
@@ -183,16 +159,6 @@ const FileListItem = ({ res, refresh }: FileListItemProps) => {
                         </Container>
                     </HStack>
                     <HStack>
-                        {/* <IconButton */}
-                        {/*     aria-label={`download ${res.item.filename}`} */}
-                        {/*     variant="ghost" */}
-                        {/*     icon={<DownloadIcon w={4} h={4} />} */}
-                        {/*     onClick={async (e) => { */}
-                        {/*         e.stopPropagation(); */}
-                        {/*         onDownloadOpen(); */}
-                        {/*     }} */}
-                        {/* /> */}
-
                         <Menu>
                             {({ isOpen }) => (
                                 <>
