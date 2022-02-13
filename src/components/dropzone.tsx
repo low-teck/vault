@@ -13,7 +13,6 @@ import {
     useToast,
     HStack,
     VStack,
-    useColorMode,
     useColorModeValue,
     ListItemProps,
     ListIcon,
@@ -317,7 +316,6 @@ const FileDropzone = () => {
                                             : fail.push(r.filename);
                                     });
                                     let total_count = res.length,
-                                        done_count = done.length,
                                         fail_count = fail.length;
                                     if (total_count > n) {
                                         if (fail_count === 0) {
@@ -349,7 +347,7 @@ const FileDropzone = () => {
                                             });
                                         }
                                     } else {
-                                        done.map((filename) => {
+                                        done.forEach((filename) => {
                                             toast({
                                                 title: `saved ${filename}, you can delete it now  :)`,
                                                 isClosable: true,
@@ -359,7 +357,7 @@ const FileDropzone = () => {
                                                 status: "success",
                                             });
                                         });
-                                        fail.map((filename) => {
+                                        fail.forEach((filename) => {
                                             toast({
                                                 title: `${filename} already exists in the vault :(`,
                                                 isClosable: true,

@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
-import { FileInfo } from "../../types";
 import { decrypt, downloadFunc } from "./decrypt";
 const { ipcRenderer } = window.require("electron");
 

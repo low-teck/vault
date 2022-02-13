@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
     Text,
     HStack,
@@ -10,7 +10,6 @@ import {
     useColorModeValue,
     MenuButton,
     Menu,
-    Button,
     MenuList,
     MenuItem,
     MenuDivider,
@@ -22,9 +21,7 @@ import {
     ArrowRightIcon,
     ChevronDownIcon,
     ChevronUpIcon,
-    DeleteIcon,
 } from "@chakra-ui/icons";
-import { DownloadIcon } from "@chakra-ui/icons";
 import Fuse from "fuse.js";
 import { decrypt, downloadFunc } from "./decrypt";
 import { motion, usePresence } from "framer-motion";

@@ -34,7 +34,6 @@ export const downloadFunc = ({
 	if (file) {
 		url = window.URL.createObjectURL(file);
 	}
-	var filename = filename;
 	a.href = url;
 	a.download = filename;
 	a.click();

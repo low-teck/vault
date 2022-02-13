@@ -9,7 +9,6 @@ import {
     useColorModeValue,
     Text,
     Icon,
-    Popover,
     Tooltip,
     Flex,
 } from "@chakra-ui/react";
@@ -19,7 +18,7 @@ import Fuse from "fuse.js";
 import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
-import { AnimatePresence, usePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import Loading from "../loading";
 import { FileInfo } from "../../types";
 import FileListItem from "./fileListItem";
@@ -76,10 +75,12 @@ const Home = () => {
     }, [debouncedQuery, fileData]);
 
     useEffect(() => {
+        console.log("hello");
         getData();
     }, [toggle]);
 
     useEffect(() => {
+        console.log("hello");
         setLoading(true);
         getData();
     }, []);

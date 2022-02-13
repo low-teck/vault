@@ -37,7 +37,7 @@ const staggerVariants = {
     },
     open: {
         transition: {
-            staggerChildren: 0.4,
+            staggerChildren: 0.23,
             staggerDirection: 1,
         },
     },

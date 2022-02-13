@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Center, Heading, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Center, Heading, Stack, useToast } from "@chakra-ui/react";
 import { FormItem, MotionButton } from "../formHelpers";
 import { useNavigate } from "react-router-dom";
 import Strength from "../strength";

@@ -34,3 +34,4 @@
 -   [x] show 1 toast if files > n
 -   [x] figure out await on reader
 -   [x] poll and show toasts
+-   [ ] fix lag on home load
