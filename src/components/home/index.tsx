@@ -32,7 +32,7 @@ const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
 
 const Home = () => {
     const [fileData, setFileData] = useState<FileInfo[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
@@ -75,12 +75,10 @@ const Home = () => {
     }, [debouncedQuery, fileData]);
 
     useEffect(() => {
-        console.log("hello");
         getData();
     }, [toggle]);
 
     useEffect(() => {
-        console.log("hello");
         setLoading(true);
         getData();
     }, []);
