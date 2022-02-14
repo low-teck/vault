@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { Virtuoso } from "react-virtuoso";
 import Menu from "../menu";
-import { List } from "@chakra-ui/react";
 import Fuse from "fuse.js";
 import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
@@ -156,28 +155,13 @@ const Home = () => {
                     {!loading ? (
                         queryResults.length ? (
                             <>
-                                {/* <List */}
-                                {/*     spacing={5} */}
-                                {/*     w="50vw" */}
-                                {/*     position="relative" */}
-                                {/*     marginTop="24vh" */}
-                                {/* > */}
-                                {/*     {[...queryResults] */}
-                                {/*         .sort(handleSort) */}
-                                {/*         .map((res, index: number) => ( */}
-                                {/*             <FileListItem */}
-                                {/*                 key={index} */}
-                                {/*                 res={res} */}
-                                {/*                 refresh={refresh} */}
-                                {/*             /> */}
-                                {/*         ))} */}
-                                {/* </List> */}
                                 <Virtuoso
                                     style={{
                                         overflow: "hidden",
                                         width: "50vw",
+                                        marginBottom: "2vh",
+                                        flexDirection: "column",
                                         position: "absolute",
-                                        height: "65vh",
                                         marginTop: "24vh",
                                     }}
                                     useWindowScroll={true}
