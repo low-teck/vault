@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     Box,
     HStack,
@@ -12,6 +12,7 @@ import {
     Tooltip,
     Flex,
     Progress,
+    IconButton,
 } from "@chakra-ui/react";
 import { Virtuoso } from "react-virtuoso";
 import Menu from "../menu";
@@ -23,12 +24,23 @@ import { AnimatePresence } from "framer-motion";
 import Loading from "../loading";
 import { FileInfo } from "../../types";
 import FileListItem from "./fileListItem";
-import { InfoIcon } from "@chakra-ui/icons";
+import { ArrowDownIcon, ArrowUpIcon, InfoIcon } from "@chakra-ui/icons";
 const { ipcRenderer } = window.require("electron");
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
     includeScore: true,
     keys: ["filename"],
+};
+
+const Footer = () => {
+    return (
+        <Flex w="50vw" h="10vh">
+            <Center w="50vw" h="10vh">
+                if you've reached and here and didn't find your file, it's
+                probably not in vault ;)
+            </Center>
+        </Flex>
+    );
 };
 
 const Home = () => {
@@ -37,6 +49,9 @@ const Home = () => {
     const [queryResults, setQueryResults] = useState<
         Fuse.FuseResult<FileInfo>[]
     >([]);
+    const virtuoso = useRef(null);
+    const behavior = "instant";
+    const align = "center";
     const barBg = useColorModeValue("white", "gray.800");
     const iconScheme = useColorModeValue("teal.500", "teal.200");
     const [toggle, setToggle] = useState<boolean>();
@@ -155,30 +170,74 @@ const Home = () => {
                     {!loading ? (
                         queryResults.length ? (
                             <>
-                                <Virtuoso
-                                    style={{
-                                        overflow: "hidden",
-                                        width: "50vw",
-                                        marginBottom: "2vh",
-                                        flexDirection: "column",
-                                        position: "absolute",
-                                        marginTop: "24vh",
-                                    }}
-                                    useWindowScroll={true}
-                                    data={queryResults.sort(handleSort)}
-                                    itemContent={(
-                                        index: number,
-                                        val: Fuse.FuseResult<FileInfo>
-                                    ) => {
-                                        return (
-                                            <FileListItem
-                                                key={index}
-                                                res={val}
-                                                refresh={refresh}
-                                            />
-                                        );
-                                    }}
-                                />
+                                <div>
+                                    <Virtuoso
+                                        style={{
+                                            overflow: "hidden",
+                                            width: "50vw",
+                                            marginBottom: "2vh",
+                                            flexDirection: "column",
+                                            position: "absolute",
+                                            marginTop: "24vh",
+                                        }}
+                                        components={{ Footer }}
+                                        ref={virtuoso}
+                                        useWindowScroll={true}
+                                        data={queryResults.sort(handleSort)}
+                                        itemContent={(
+                                            index: number,
+                                            val: Fuse.FuseResult<FileInfo>
+                                        ) => {
+                                            return (
+                                                <div>
+                                                    <FileListItem
+                                                        key={index}
+                                                        res={val}
+                                                        refresh={refresh}
+                                                    />
+                                                </div>
+                                            );
+                                        }}
+                                    />
+                                </div>
+                                <Box position="fixed" right="17vw" top="30vh">
+                                    <IconButton
+                                        colorScheme="teal"
+                                        borderRadius="3xl"
+                                        onClick={() => {
+                                            //@ts-ignore
+                                            virtuoso.current?.scrollToIndex({
+                                                index: queryResults.length - 1,
+                                                behavior,
+                                                align,
+                                            });
+                                            return false;
+                                        }}
+                                        aria-label="go-down"
+                                        icon={<ArrowDownIcon />}
+                                    />
+                                </Box>
+                                <Box
+                                    position="fixed"
+                                    right="17vw"
+                                    bottom="10vh"
+                                >
+                                    <IconButton
+                                        colorScheme="teal"
+                                        borderRadius="3xl"
+                                        onClick={() => {
+                                            //@ts-ignore
+                                            virtuoso.current?.scrollToIndex({
+                                                index: 0,
+                                                behavior,
+                                                align,
+                                            });
+                                            return false;
+                                        }}
+                                        icon={<ArrowUpIcon />}
+                                        aria-label="go-up"
+                                    />
+                                </Box>
                             </>
                         ) : (
                             <AbsoluteCenter>
