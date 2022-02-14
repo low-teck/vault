@@ -15,6 +15,7 @@ import {
     MenuDivider,
     Portal,
     Tooltip,
+    Icon,
 } from "@chakra-ui/react";
 import { ListItem, ListIcon } from "@chakra-ui/react";
 import {
@@ -31,7 +32,7 @@ import DownloadModal from "./downloadModal";
 const { ipcRenderer } = window.require("electron");
 
 const MotionListItem = motion<ListItemProps>(ListItem);
-const MotionListIcon = motion(ListIcon);
+const MotionListIcon = motion(Icon);
 
 interface FileListItemProps {
     res: Fuse.FuseResult<FileInfo>;
@@ -67,8 +68,7 @@ const MotionFileListItem = ({
     const listBg = useColorModeValue("#FAFAFA", "gray.700");
     return (
         //@ts-ignore
-        <MotionListItem
-            bg={listBg}
+        <motion.li
             onMouseEnter={() => {
                 toggle(true);
             }}
@@ -81,16 +81,19 @@ const MotionFileListItem = ({
             onMouseLeave={() => {
                 toggle(false);
             }}
-            display="flex"
-            minH="10vh"
-            borderRadius="md"
+            style={{
+                minHeight: "10vh",
+                backgroundColor: listBg,
+                borderRadius: "20px",
+                display: "flex",
+            }}
             onClick={() => {
                 onOpen();
                 toggle(false);
             }}
         >
             {children}
-        </MotionListItem>
+        </motion.li>
     );
 };
 

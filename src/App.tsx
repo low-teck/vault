@@ -8,6 +8,7 @@ import SetKeyDialog from "./components/setKey";
 import { AnimatePresence } from "framer-motion";
 import RoutingAnimation from "./routingAnimation";
 import ThemeModeToggler from "./components/toggleTheme";
+import { Box } from "@chakra-ui/react";
 const { ipcRenderer } = window.require("electron");
 
 const App = () => {

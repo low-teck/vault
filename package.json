@@ -38,6 +38,7 @@
         "react-dropzone": "^11.4.2",
         "react-router-dom": "^6.0.2",
         "react-scripts": "4.0.3",
+        "react-virtuoso": "^2.7.1",
         "typescript": "^4.5.2",
         "use-debounce": "^7.0.1",
         "wait-on": "^6.0.0",
@@ -49,7 +50,10 @@
         "url": "git+https://github.com/low-teck/vault.git"
     },
     "build": {
-        "files": ["build/**/*", "node_modules/**/*"],
+        "files": [
+            "build/**/*",
+            "node_modules/**/*"
+        ],
         "publish": {
             "provider": "github",
             "repo": "vault",
@@ -81,10 +85,17 @@
         "preelectron-pack": "yarn build"
     },
     "eslintConfig": {
-        "extends": ["react-app", "react-app/jest"]
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
     },
     "browserslist": {
-        "production": [">0.2%", "not dead", "not op_mini all"],
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
         "development": [
             "last 1 chrome version",
             "last 1 firefox version",

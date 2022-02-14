@@ -16,7 +16,7 @@ const ThemeModeToggler = (props: IconButtonProps) => {
         <IconButton
             fontSize="3xl"
             variant="ghost"
-            position="absolute"
+            position="fixed"
             right={0}
             margin="4rem"
             onClick={() => toggleColorMode()}

@@ -13,6 +13,7 @@ import {
     Flex,
     Progress,
 } from "@chakra-ui/react";
+import { Virtuoso } from "react-virtuoso";
 import Menu from "../menu";
 import { List } from "@chakra-ui/react";
 import Fuse from "fuse.js";
@@ -76,16 +77,12 @@ const Home = () => {
     }, [debouncedQuery, fileData]);
 
     useEffect(() => {
-        setTimeout(() => {
-            getData();
-        }, 500);
+        getData();
     }, [toggle]);
 
     useEffect(() => {
         setLoading(true);
-        setTimeout(() => {
-            getData();
-        }, 500);
+        getData();
     }, []);
 
     const refresh = () => {
@@ -101,9 +98,9 @@ const Home = () => {
         <Box
             w="100vw"
             h="100vh"
-            overflowY="scroll"
             bg={barBg}
             overflowX="hidden"
+            overflowY="scroll"
         >
             <Box position="fixed" zIndex="sticky" margin="4rem">
                 <Menu />
@@ -158,22 +155,47 @@ const Home = () => {
 
                     {!loading ? (
                         queryResults.length ? (
-                            <List
-                                spacing={5}
-                                w="50vw"
-                                position="relative"
-                                marginTop="24vh"
-                            >
-                                {[...queryResults]
-                                    .sort(handleSort)
-                                    .map((res, index: number) => (
-                                        <FileListItem
-                                            key={index}
-                                            res={res}
-                                            refresh={refresh}
-                                        />
-                                    ))}
-                            </List>
+                            <>
+                                {/* <List */}
+                                {/*     spacing={5} */}
+                                {/*     w="50vw" */}
+                                {/*     position="relative" */}
+                                {/*     marginTop="24vh" */}
+                                {/* > */}
+                                {/*     {[...queryResults] */}
+                                {/*         .sort(handleSort) */}
+                                {/*         .map((res, index: number) => ( */}
+                                {/*             <FileListItem */}
+                                {/*                 key={index} */}
+                                {/*                 res={res} */}
+                                {/*                 refresh={refresh} */}
+                                {/*             /> */}
+                                {/*         ))} */}
+                                {/* </List> */}
+                                <Virtuoso
+                                    style={{
+                                        overflow: "hidden",
+                                        width: "50vw",
+                                        position: "absolute",
+                                        height: "65vh",
+                                        marginTop: "24vh",
+                                    }}
+                                    useWindowScroll={true}
+                                    data={queryResults.sort(handleSort)}
+                                    itemContent={(
+                                        index: number,
+                                        val: Fuse.FuseResult<FileInfo>
+                                    ) => {
+                                        return (
+                                            <FileListItem
+                                                key={index}
+                                                res={val}
+                                                refresh={refresh}
+                                            />
+                                        );
+                                    }}
+                                />
+                            </>
                         ) : (
                             <AbsoluteCenter>
                                 <Flex
