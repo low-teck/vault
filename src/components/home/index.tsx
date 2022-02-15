@@ -13,6 +13,7 @@ import {
     Flex,
     Progress,
     IconButton,
+    IconButtonProps,
 } from "@chakra-ui/react";
 import { Virtuoso } from "react-virtuoso";
 import Menu from "../menu";
@@ -20,12 +21,14 @@ import Fuse from "fuse.js";
 import { useDebounce } from "use-debounce/lib";
 import * as _ from "lodash";
 import SearchFiles from "./searchFiles";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Loading from "../loading";
 import { FileInfo } from "../../types";
 import FileListItem from "./fileListItem";
 import { ArrowDownIcon, ArrowUpIcon, InfoIcon } from "@chakra-ui/icons";
 const { ipcRenderer } = window.require("electron");
+
+const MotionIconButton = motion<IconButtonProps>(IconButton);
 
 const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
     includeScore: true,
@@ -35,9 +38,9 @@ const fuseOptions: Fuse.IFuseOptions<FileInfo> = {
 const Footer = () => {
     return (
         <Flex w="50vw" h="10vh">
-            <Center w="50vw" h="10vh">
+            <Center w="50vw" h="10vh" textAlign="center">
                 if you've reached and here and didn't find your file, it's
-                probably not in vault ;)
+                probably not in vault ; )
             </Center>
         </Flex>
     );
@@ -52,6 +55,7 @@ const Home = () => {
     const virtuoso = useRef(null);
     const behavior = "instant";
     const align = "center";
+    const [visible, setVisible] = useState<boolean>(false);
     const barBg = useColorModeValue("white", "gray.800");
     const iconScheme = useColorModeValue("teal.500", "teal.200");
     const [toggle, setToggle] = useState<boolean>();
@@ -107,6 +111,17 @@ const Home = () => {
         e.preventDefault();
         setQuery(e.target.value);
     };
+
+    const toggleVisible = () => {
+        const scrolled = document.documentElement.scrollTop;
+        if (scrolled > 0) {
+            setVisible(true);
+        } else if (scrolled <= 0) {
+            setVisible(false);
+        }
+    };
+
+    window.addEventListener("scroll", toggleVisible);
 
     return (
         <Box
@@ -200,44 +215,60 @@ const Home = () => {
                                         }}
                                     />
                                 </div>
-                                <Box position="fixed" right="17vw" top="30vh">
-                                    <IconButton
-                                        colorScheme="teal"
-                                        borderRadius="3xl"
-                                        onClick={() => {
-                                            //@ts-ignore
-                                            virtuoso.current?.scrollToIndex({
-                                                index: queryResults.length - 1,
-                                                behavior,
-                                                align,
-                                            });
-                                            return false;
-                                        }}
-                                        aria-label="go-down"
-                                        icon={<ArrowDownIcon />}
-                                    />
-                                </Box>
-                                <Box
-                                    position="fixed"
-                                    right="17vw"
-                                    bottom="10vh"
-                                >
-                                    <IconButton
-                                        colorScheme="teal"
-                                        borderRadius="3xl"
-                                        onClick={() => {
-                                            //@ts-ignore
-                                            virtuoso.current?.scrollToIndex({
-                                                index: 0,
-                                                behavior,
-                                                align,
-                                            });
-                                            return false;
-                                        }}
-                                        icon={<ArrowUpIcon />}
-                                        aria-label="go-up"
-                                    />
-                                </Box>
+                                <AnimatePresence>
+                                    {visible && (
+                                        <Box
+                                            position="fixed"
+                                            right="17vw"
+                                            top="30vh"
+                                        >
+                                            <MotionIconButton
+                                                colorScheme="teal"
+                                                animate={{ scale: 1 }}
+                                                initial={{ scale: 0 }}
+                                                exit={{ scale: 0 }}
+                                                borderRadius="3xl"
+                                                onClick={() => {
+                                                    window.scrollTo({
+                                                        top: document
+                                                            .documentElement
+                                                            .scrollHeight,
+                                                        behavior: "smooth",
+                                                    });
+                                                    return false;
+                                                }}
+                                                aria-label="go-down"
+                                                icon={<ArrowDownIcon />}
+                                            />
+                                        </Box>
+                                    )}
+                                </AnimatePresence>
+                                <AnimatePresence>
+                                    {visible && (
+                                        <Box
+                                            position="fixed"
+                                            right="17vw"
+                                            bottom="10vh"
+                                        >
+                                            <MotionIconButton
+                                                colorScheme="teal"
+                                                borderRadius="3xl"
+                                                animate={{ scale: 1 }}
+                                                initial={{ scale: 0 }}
+                                                exit={{ scale: 0 }}
+                                                onClick={() => {
+                                                    window.scrollTo({
+                                                        top: 0,
+                                                        behavior: "smooth",
+                                                    });
+                                                    return false;
+                                                }}
+                                                icon={<ArrowUpIcon />}
+                                                aria-label="go-up"
+                                            />
+                                        </Box>
+                                    )}
+                                </AnimatePresence>
                             </>
                         ) : (
                             <AbsoluteCenter>
