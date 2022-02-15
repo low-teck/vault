@@ -53,9 +53,8 @@ const Home = () => {
         Fuse.FuseResult<FileInfo>[]
     >([]);
     const virtuoso = useRef(null);
-    const behavior = "instant";
-    const align = "center";
-    const [visible, setVisible] = useState<boolean>(false);
+    const [upVisible, setUpVisible] = useState<boolean>(false);
+    const [downVisible, setDownVisible] = useState<boolean>(true);
     const barBg = useColorModeValue("white", "gray.800");
     const iconScheme = useColorModeValue("teal.500", "teal.200");
     const [toggle, setToggle] = useState<boolean>();
@@ -112,16 +111,25 @@ const Home = () => {
         setQuery(e.target.value);
     };
 
-    const toggleVisible = () => {
+    const toggleUpVisible = () => {
         const scrolled = document.documentElement.scrollTop;
         if (scrolled > 0) {
-            setVisible(true);
+            setUpVisible(true);
         } else if (scrolled <= 0) {
-            setVisible(false);
+            setUpVisible(false);
+        }
+    };
+    const toggleDownVisible = () => {
+        const scrolled = document.documentElement.scrollTop;
+        if (scrolled + 1500 >= document.documentElement.scrollHeight) {
+            setDownVisible(false);
+        } else {
+            setDownVisible(true);
         }
     };
 
-    window.addEventListener("scroll", toggleVisible);
+    window.addEventListener("scroll", toggleDownVisible);
+    window.addEventListener("scroll", toggleUpVisible);
 
     return (
         <Box
@@ -216,7 +224,7 @@ const Home = () => {
                                     />
                                 </div>
                                 <AnimatePresence>
-                                    {visible && (
+                                    {downVisible && (
                                         <Box
                                             position="fixed"
                                             right="17vw"
@@ -244,7 +252,7 @@ const Home = () => {
                                     )}
                                 </AnimatePresence>
                                 <AnimatePresence>
-                                    {visible && (
+                                    {upVisible && (
                                         <Box
                                             position="fixed"
                                             right="17vw"
