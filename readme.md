@@ -1,10 +1,11 @@
 ![www vaultenc live](https://user-images.githubusercontent.com/63122405/155536095-347831e9-29ee-43d9-a486-e7f1dd288b37.png)
 
 # Vault 🔐
-
 A react-electron app that secures user data locally using AES algorithm with the help of [nedb](https://www.npmjs.com/package/nedb-promises) and [crypto-js](https://www.npmjs.com/package/crypto-js) ans styled with [chakra-ui](https://chakra-ui.com/).
 
 You can download app for your platform from [vaultenc.live](https://vaultenc.live)
+
+https://user-images.githubusercontent.com/63122405/155539592-c61cceef-d8b7-43b0-bf74-cb48f2a22279.mov
 
 </br>
 
