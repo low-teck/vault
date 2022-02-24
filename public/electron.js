@@ -23,7 +23,11 @@ try {
 
         const username = os.userInfo().username;
 
-        mainWindow.loadFile(path.join(__dirname, "../build/index.html"));
+        // mainWindow.loadFile(path.join(__dirname, "../build/index.html"));
+
+        mainWindow.loadURL(
+            process.env.ELECTRON_START_URL || "http://localhost:3000"
+        );
 
         ipcMain.handle("SIGN_UP", async (event, args) => {
             await keytar.setPassword("vault", username, args.password);
