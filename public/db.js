@@ -12,7 +12,7 @@ class Database {
             .replace("/app.asar", "");
 
         this.db = Datastore.create({
-            filename: dbPath,
+            filename: dbProdPath,
             timestampData: true,
         });
     }
